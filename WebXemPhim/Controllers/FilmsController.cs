@@ -38,6 +38,7 @@ namespace WebXemPhim.Controllers
         // GET: Films/Create
         public ActionResult Create()
         {
+            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View();
         }
 
@@ -46,15 +47,36 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FilmId,Title,OriginalTitle,Description,ReleaseYear,IsMovie,IsCompleted,EpsisodeCount,ThumbnailUrl,CreatedAt,UpdateAt,ViewCount,AverageRating")] Film film)
+        public ActionResult Create(Film film, HttpPostedFileBase Thumbnail)
         {
             if (ModelState.IsValid)
             {
+                if (Thumbnail != null && Thumbnail.ContentLength > 0)
+                {
+                    // Tạo đường dẫn vật lý đến thư mục Banner
+                    var folderPath = Server.MapPath("~/Upload/Banner");
+                    // Kiểm tra nếu thư mục chưa tồn tại thì tự động tạo mới
+                    if (!System.IO.Directory.Exists(folderPath))
+                    {
+                        System.IO.Directory.CreateDirectory(folderPath);
+                    }
+
+                    // Tạo tên file duy nhất
+                    var fileName = Guid.NewGuid().ToString() + "_" + System.IO.Path.GetFileName(Thumbnail.FileName);
+                    var path = System.IO.Path.Combine(folderPath, fileName);
+                    // Lưu file lên server
+                    Thumbnail.SaveAs(path);
+                    // Lưu đường dẫn tương đối vào thuộc tính của đối tượng Film
+                    film.ThumbnailUrl = "/Upload/Banner/" + fileName;
+                }
                 db.Films.Add(film);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            // Nếu có lỗi thì quay lại view với model hiện tại
+            // Đồng thời cần truyền lại MultiSelectList nếu có dùng chọn thể loại nhiều
+            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View(film);
         }
 
