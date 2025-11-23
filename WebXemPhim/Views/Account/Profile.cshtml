@@ -1,0 +1,129 @@
+﻿@model WebXemPhim.Models.User
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+}
+
+<style>
+    .profile-container {
+        max-width: 760px;
+        margin: 0 auto;
+    }
+
+    .profile-card {
+        background: #18191a;
+        color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        padding: 54px 40px;
+    }
+
+    .profile-title {
+        color: #66fcf1;
+        font-size: 2rem;
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 36px;
+    }
+
+    .profile-avatar {
+        width: 112px;
+        height: 112px;
+        margin-bottom: 16px;
+        object-fit: cover;
+    }
+
+    .profile-field {
+        display: flex;
+        align-items: center;
+        margin-bottom: 26px;
+    }
+
+        .profile-field label.form-label {
+            min-width: 130px;
+            margin-bottom: 0;
+            margin-right: 12px;
+            font-weight: 600;
+            color: #66fcf1;
+        }
+
+        .profile-field .form-control,
+        .profile-field textarea {
+            flex: 1 1 0;
+            margin-right: 30px;
+            min-width: 0;
+            font-size: 1rem;
+        }
+
+        .profile-field .btn-outline-info {
+            min-width: 100px;
+            margin-left: 12px;
+        }
+
+    .profile-card .btn-info.w-100 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height:80vh;">
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-title">Thông Tin Cá Nhân</div>
+            @using (Html.BeginForm("ProfileUpdate", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="text-center mb-4">
+                    <img src="@Url.Content(Model.Avatar ?? "~/Images/default-avatar.png")" alt="Avatar" class="rounded-circle profile-avatar shadow" />
+                    <br />
+                    <label for="Avatar" class="btn btn-outline-info btn-sm mt-2 mb-2">Chỉnh sửa ảnh</label>
+                    <input type="file" name="Avatar" id="Avatar" class="d-none" accept="image/*" />
+                </div>
+                <div class="profile-field">
+                    <label class="form-label">Biệt danh</label>
+                    @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control", style = "background:#242526; color:#fff;" })
+                    <button type="submit" name="EditField" value="Nickname" class="btn btn-outline-info">Chỉnh Sửa</button>
+                </div>
+                <div class="profile-field">
+                    <label class="form-label">Giới thiệu</label>
+                    @Html.TextAreaFor(m => m.AboutMe, 2, 40, new { @class = "form-control", style = "background:#242526; color:#fff;" })
+                    <button type="submit" name="EditField" value="GioiThieu" class="btn btn-outline-info">Chỉnh Sửa</button>
+                </div>
+                <div class="profile-field">
+                    <label class="form-label">Tên đăng nhập</label>
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", style = "background:#242526; color:#fff;" })
+                    <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
+
+                </div>
+                <div class="profile-field">
+                    <label class="form-label">Email</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "background:#242526; color:#fff;" })
+                    <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
+
+                </div>
+                <div class="profile-field">
+                    <label class="form-label">Quyền</label>
+                    <span class="badge bg-info text-dark">@Model.Role</span>
+
+                </div>
+                <div class="profile-field">
+                    <label class="form-label">Ngày tạo</label>
+                    <span>@Model.CreatedAt.ToString("dd/MM/yyyy")</span>
+                    <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
+                </div>
+                <button type="submit" class="btn btn-info w-100" style="color:#0b0c10;">Cập Nhật Toàn Bộ</button>
+            }
+            <div class="text-center mt-3">
+                <a href="@Url.Action("Logout", "Account")" class="btn btn-outline-danger px-4">Đăng xuất</a>
+            </div>
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger mt-2 text-center">@ViewBag.Error</div>
+            }
+            @if (ViewBag.Success != null)
+            {
+                <div class="alert alert-success mt-2 text-center">@ViewBag.Success</div>
+            }
+        </div>
+    </div>
+</div>

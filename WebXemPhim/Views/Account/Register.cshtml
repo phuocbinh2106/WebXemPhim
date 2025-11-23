@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Đăng ký";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height:70vh;">
+    <div class="card shadow-lg p-4 rounded" style="max-width:400px; width:100%;background:#1f2833; color:#fff;">
+        <h2 class="mb-4 text-center" style="color:#66fcf1;">Đăng ký tài khoản</h2>
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label for="Username" class="form-label">Tên đăng nhập</label>
+                <input type="text" name="Username" class="form-control" placeholder="Tên đăng nhập" style="background:#0b0c10; color:#fff;" />
+            </div>
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email</label>
+                <input type="email" name="Email" class="form-control" placeholder="Email" style="background:#0b0c10; color:#fff;" />
+            </div>
+            <div class="mb-3">
+                <label for="Password" class="form-label">Mật khẩu</label>
+                <input type="password" name="Password" class="form-control" placeholder="Mật khẩu" style="background:#0b0c10; color:#fff;" />
+            </div>
+            <button type="submit" class="btn btn-info w-100 mb-2" style="color:#0b0c10; font-weight:600;">Đăng ký</button>
+        }
+        <!-- THÔNG BÁO LỖI ĐẶT NGOÀI BLOCK FORM -->
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mt-2 text-center">@ViewBag.Error</div>
+        }
+        <div class="text-center mt-3">
+            <span>Đã có tài khoản?</span>
+            <a href="@Url.Action("Login", "Account")" class="btn btn-link" style="color:#66fcf1;font-weight:600;">Đăng nhập ngay</a>
+        </div>
+    </div>
+</div>
+
+
