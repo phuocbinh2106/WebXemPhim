@@ -38,7 +38,7 @@
 
         <div class="mb-3 form-check">
             @Html.CheckBoxFor(m => m.IsMovie, new { @class = "form-check-input" })
-            @Html.LabelFor(m => m.IsMovie, "Phim lẻ", new { @class = "form-check-label" })
+            @Html.LabelFor(m => m.IsMovie, "Phim bộ", new { @class = "form-check-label" })
         </div>
         <div class="mb-3 form-check">
             @Html.CheckBoxFor(m => m.IsCompleted, new { @class = "form-check-input" })
@@ -51,7 +51,7 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Ảnh poster phim</label>
+            <label class="form-label">Ảnh nền phim</label>
             <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept="image/*" />
         </div>
 
