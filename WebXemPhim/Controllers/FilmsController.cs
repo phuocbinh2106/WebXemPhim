@@ -18,7 +18,25 @@ namespace WebXemPhim.Controllers
         // GET: Films
         public ActionResult Index()
         {
-            return View(db.Films.ToList());
+            var latestFilms = db.Films
+                    .OrderByDescending(f => f.CreatedAt) // sắp xếp theo ngày tạo
+                    .Take(4) // chỉ 4 phim
+                    .ToList();
+            return View(latestFilms);
+        }
+        public ActionResult MoreFilms(int page = 1, int pageSize = 8)
+        {
+            var films = db.Films
+                          .OrderByDescending(f => f.CreatedAt)
+                          .Skip((page - 1) * pageSize) // bỏ qua các phim cũ
+                          .Take(pageSize) // lấy số phim theo trang
+                          .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalFilms = db.Films.Count();
+
+            return View(films);
         }
         // GET: Films/Create
         public ActionResult Create()
@@ -159,5 +177,6 @@ namespace WebXemPhim.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }

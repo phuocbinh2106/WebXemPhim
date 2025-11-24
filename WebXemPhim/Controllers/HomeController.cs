@@ -12,7 +12,7 @@ namespace WebXemPhim.Controllers
         private AppDbContext db = new AppDbContext();
         public ActionResult Index()
         {
-            return RedirectToAction("Create", "Films");
+            return View();
         }
 
         public ActionResult About()

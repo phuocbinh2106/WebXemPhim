@@ -199,5 +199,25 @@
             </div>
         }
     </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="new-movies.html" style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">Xem thêm</a>
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        <div class="film-list">
+            @foreach (var film in Model)
+            {
+                <div class="film-item">
+                    <img src="@film.ThumbnailUrl" alt="@film.Title" style="width:150px;height:auto;" />
+                    <h4>@film.Title</h4>
+                </div>
+            }
+        </div>
 
+        <a class="btn btn-primary" href="@Url.Action("MoreFilms", "Films")">Xem thêm</a>
+    }
+    else
+    {
+        <p>Chưa có phim nào.</p>
+    }
 </main>
