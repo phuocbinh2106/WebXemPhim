@@ -124,6 +124,14 @@
     <Compile Include="Migrations\202511230928201_InitialCreate.Designer.cs">
       <DependentUpon>202511230928201_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202511240850042_AddAdminAccount.cs" />
+    <Compile Include="Migrations\202511240850042_AddAdminAccount.Designer.cs">
+      <DependentUpon>202511240850042_AddAdminAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202511240852069_ChangePassword.cs" />
+    <Compile Include="Migrations\202511240852069_ChangePassword.Designer.cs">
+      <DependentUpon>202511240852069_ChangePassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -213,6 +221,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202511230928201_InitialCreate.resx">
       <DependentUpon>202511230928201_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202511240850042_AddAdminAccount.resx">
+      <DependentUpon>202511240850042_AddAdminAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202511240852069_ChangePassword.resx">
+      <DependentUpon>202511240852069_ChangePassword.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
