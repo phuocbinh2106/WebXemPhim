@@ -145,42 +145,101 @@
 <div class="trending-title-line"></div>
 <div class="swiper trending-slider">
     <div class="swiper-wrapper">
-        @foreach (var film in Model)
-        {
-            <div class="swiper-slide">
-                <a href="/Films/Details/@film.FilmId">
-                    <div class="movie-card-trending">
-                        <img src="@film.ThumbnailUrl" alt="@film.Title" class="movie-trending-img">
-                        <div class="movie--info">
-                            <div class="trendingmovie-trending-title">@film.Title</div>
-                            <div class="movie-trending-sub">@film.OriginalTitle</div>
-                        </div>
-                    </div>
-                </a>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/giathien.jpg" alt="Già Thiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Già Thiên</div>
+                    <div class="movie-trending-sub">Zhe Tian</div>
+                </div>
             </div>
-        }
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thonphetinhkhong.jpg" alt="Thôn Phệ Tinh Không" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thôn Phệ Tinh Không</div>
+                    <div class="movie-trending-sub">Swallowed Star</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauladailuc2.jpg" alt="Đấu La Đại Lục 2: Tuyệt Thế Đường Môn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu La Đại Lục 2: Tuyệt Thế Đường Môn</div>
+                    <div class="movie-trending-sub">Douluo Dalu II: Jue Shi Tang Men</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thananvuongtoa.jpg" alt="Thần Ấn Vương Tọa" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thần Ấn Vương Tọa</div>
+                    <div class="movie-trending-sub">Throne Of Seal</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauphathuongkhung.jpg" alt="Đấu Phá Thương Khung" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu Phá Thương Khung</div>
+                    <div class="movie-trending-sub">Fights Break Sphere S</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/phamnhan.jpg" alt="Phàm Nhân Tu Tiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Phàm Nhân Tu Tiên</div>
+                    <div class="movie-trending-sub">Fanren Xiu Xian Chuan S3</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/tiennghich.png" alt="Tiên Nghịch" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Tiên Nghịch</div>
+                    <div class="movie-trending-sub">Xian Ni</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/mucthanky.jpg" alt="Mục Thần Ký" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Mục Thần Ký</div>
+                    <div class="movie-trending-sub">Mu Shen Ji</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/vudongcankhon.webp" alt="Vũ Động Càn Khôn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Vũ Động Càn Khôn</div>
+                    <div class="movie-trending-sub">Wu Dong Qian Kun</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thegioihoanmy.jpg" alt="Thế Giới Hoàn Mỹ" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thế Giới Hoàn Mỹ</div>
+                    <div class="movie-trending-sub">Perfect World</div>
+                </div>
+            </div>
+        </div>
+        <!-- ... Thêm slide cho phim khác nếu muốn -->
     </div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
 </div>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script>
-    var swiper = new Swiper('.trending-slider', {
-        slidesPerView: 4,
-        spaceBetween: 24,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        loop: true,
-        breakpoints: {
-            1200: { slidesPerView: 4 },
-            900: { slidesPerView: 3 },
-            600: { slidesPerView: 2 },
-            0: { slidesPerView: 1 }
-        }
-    });
-</script>
 
 
 
