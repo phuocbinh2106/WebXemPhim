@@ -1,33 +1,210 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Trang Chủ - HoatHinh3D";
 }
+<style>
+    .trending-row {
+        display: flex;
+        gap: 24px;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 18px 0 0 0;
+    }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+    .movie-card-trending {
+        position: relative;
+        width: 285px;
+        height: 380px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #222;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.14);
+    }
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+    .movie-trending-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        display: block;
+    }
+
+    /* Overlay ở phía dưới hình, mang màu nền tối */
+    .movie-trending-info {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top, rgba(25,25,25,0.93) 88%, rgba(25,25,25,0.05) 99%);
+        padding: 22px 22px 18px 22px;
+        z-index: 2;
+    }
+
+    /* Tên phim */
+    .movie-trending-title {
+        color: #fff;
+        font-size: 1.19em;
+        font-weight: 700;
+        margin-bottom: 4px;
+        letter-spacing: 0.2px;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.12);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+    }
+    /* Phụ đề */
+    .movie-trending-sub {
+        color: #fff; /* Đổi sang màu trắng */
+        font-size: 0.93em; /* Nhỏ hơn */
+        font-weight: 400; /* Chữ mỏng hơn */
+        opacity: 0.85; /* Nhạt vừa phải để nổi phần trên */
+        letter-spacing: 0.08px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .trending-title {
+        font-size: 1.05em; /* Nhỏ hơn mặc định */
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        background: linear-gradient(90deg, #ffc107 10%, #fd2d87 90%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        margin-bottom: 12px;
+        display: inline-block;
+        line-height: 1.18;
+    }
+    .trending-title-line {
+        width: 100%;
+        max-width: 1273px;
+        height: 1.5px;
+        margin-top: 4px;
+        margin-bottom: 16px;
+        border-radius: 1.5px;
+        background: linear-gradient(90deg, #ffc107 0px, #fd2d87 70px, #fd2d87 140px, #232328 141px, /* Phần sau của line */
+        #232328 100% );
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<h3 class="trending-title">
+    <i class="fas fa-fire"></i> ĐANG THỊNH HÀNH
+</h3>
+<div class="trending-title-line"></div>
+<div class="swiper trending-slider">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/giathien.jpg" alt="Già Thiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Già Thiên</div>
+                    <div class="movie-trending-sub">Zhe Tian</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thonphetinhkhong.jpg" alt="Thôn Phệ Tinh Không" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thôn Phệ Tinh Không</div>
+                    <div class="movie-trending-sub">Swallowed Star</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauladailuc2.jpg" alt="Đấu La Đại Lục 2: Tuyệt Thế Đường Môn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu La Đại Lục 2: Tuyệt Thế Đường Môn</div>
+                    <div class="movie-trending-sub">Douluo Dalu II: Jue Shi Tang Men</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thananvuongtoa.jpg" alt="Thần Ấn Vương Tọa" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thần Ấn Vương Tọa</div>
+                    <div class="movie-trending-sub">Throne Of Seal</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauphathuongkhung.jpg" alt="Đấu Phá Thương Khung" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu Phá Thương Khung</div>
+                    <div class="movie-trending-sub">Fights Break Sphere S</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/phamnhan.jpg" alt="Phàm Nhân Tu Tiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Phàm Nhân Tu Tiên</div>
+                    <div class="movie-trending-sub">Fanren Xiu Xian Chuan S3</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/tiennghich.png" alt="Tiên Nghịch" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Tiên Nghịch</div>
+                    <div class="movie-trending-sub">Xian Ni</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/mucthanky.jpg" alt="Mục Thần Ký" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Mục Thần Ký</div>
+                    <div class="movie-trending-sub">Mu Shen Ji</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/vudongcankhon.webp" alt="Vũ Động Càn Khôn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Vũ Động Càn Khôn</div>
+                    <div class="movie-trending-sub">Wu Dong Qian Kun</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thegioihoanmy.jpg" alt="Thế Giới Hoàn Mỹ" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thế Giới Hoàn Mỹ</div>
+                    <div class="movie-trending-sub">Perfect World</div>
+                </div>
+            </div>
+        </div>
+        <!-- ... Thêm slide cho phim khác nếu muốn -->
     </div>
-</main>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.trending-slider', {
+        slidesPerView: 4,
+        spaceBetween: 24,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        loop: true,
+        breakpoints: {
+            1200: { slidesPerView: 4 },
+            900: { slidesPerView: 3 },
+            600: { slidesPerView: 2 },
+            0: { slidesPerView: 1 }
+        }
+    });
+</script>
