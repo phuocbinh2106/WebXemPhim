@@ -24,40 +24,29 @@
             background-color: #1C1C1C;
         }
 
-        /* Dòng dưới: căn 3 phần đều nhau, search giữa. */
-        .container-fluid.d-flex.align-items-center {
-            display: flex !important;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            padding-left: 66px;
-            padding-right: 66px;
-            gap: 12px;
-        }
-
         .navbar-brand {
             color: #FFB930 !important;
             font-weight: bold;
-            font-size: 2em;
+            font-size: 1.5em;
             letter-spacing: 2px;
             margin-right: 42px;
             min-width: 220px;
         }
 
         .modern-search-bar {
-            width: 320px;
-            max-width: 520px;
+            width: 420px;
+            max-width: 570px;
             position: relative;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             background: #191919;
-            border-radius: 20px;
+            border-radius: 18px;
             border: 1.5px solid #323435;
-            padding-left: 42px;
-            height: 45px;
-            margin: 0 30px;
-            flex: 1 1 420px;
+            padding-left: 36px;
+            height: 40px; /* Thấp hơn */
+            margin-left: 0px; /* Nhích sang trái thêm, bạn tăng/giảm tuỳ ý */
+            margin-right: 0;
         }
 
             .modern-search-bar input {
@@ -81,13 +70,13 @@
 
         .search-icon {
             position: absolute;
-            left: 14px;
+            left: 10px;
             top: 0;
             bottom: 0;
             display: flex;
             align-items: center;
             color: #eaeaea;
-            font-size: 1.22em;
+            font-size: 1.08em;
             opacity: 0.8;
             pointer-events: none;
         }
@@ -148,7 +137,7 @@
                 gap: 16px;
                 justify-content: flex-start;
                 align-items: center;
-                padding: 0 0 0 100px; /* chỉnh padding này ngang bằng với logo bên trên */
+                padding: 0 0 0 300px; /* chỉnh padding này ngang bằng với logo bên trên */
                 margin: 0;
                 min-height: 45px;
             }
@@ -206,12 +195,9 @@
 </head>
 <body>
     <!-- NAVBAR HEADER -->
-    <nav class="navbar navbar-expand-lg navbar-dark py-2">
-        <div class="container-fluid d-flex align-items-center">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
             <a class="navbar-brand" href="@Url.Action("Index", "Home")">🎬HoatHinh3D</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <form class="modern-search-bar">
                 <h3 class="search-icon"><i class="fa fa-search"></i></h3>
                 <input type="text" placeholder="Search..." />
