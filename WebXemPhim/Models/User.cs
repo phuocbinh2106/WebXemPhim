@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -18,6 +19,8 @@ namespace WebXemPhim.Models
         public string Role { get; set; } = "User"; // User or Admin
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string Avatar { get; set; }
+        public DbSet<User> Users { get; set; }
+
         //Navigation
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Favourite> Favourites { get; set; }

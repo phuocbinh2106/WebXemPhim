@@ -10,6 +10,7 @@ using WebXemPhim.Models;
 
 namespace WebXemPhim.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FilmsController : Controller
     {
         private AppDbContext db = new AppDbContext();
@@ -34,6 +35,7 @@ namespace WebXemPhim.Controllers
             }
             return View(film);
         }
+        [Authorize(Roles = "Admin")]
 
         // GET: Films/Create
         public ActionResult Create()
