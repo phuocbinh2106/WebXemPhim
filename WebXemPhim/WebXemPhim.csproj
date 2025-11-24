@@ -117,7 +117,6 @@
     <Compile Include="Controllers\FilmsController.cs" />
     <Compile Include="Controllers\GenresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IActionResult.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -176,11 +175,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Upload\Banner\daupha.jpg" />
-    <Content Include="Upload\Banner\mucthanky.jpg" />
-    <Content Include="Upload\Banner\phamnhan.jpg" />
-    <Content Include="Upload\Banner\thegioi.jpg" />
-    <Content Include="Upload\Banner\tiennghich.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -214,6 +208,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Upload\Avatar\" />
+    <Folder Include="Upload\Banner\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202511230928201_InitialCreate.resx">
