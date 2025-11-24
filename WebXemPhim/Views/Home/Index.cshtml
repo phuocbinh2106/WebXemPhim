@@ -2,6 +2,62 @@
     ViewBag.Title = "Trang Chủ - HoatHinh3D";
 }
 <style>
+    body {
+        background-color: #1a1a1a;
+        color: #f5f5f5;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .navbar {
+        background-color: #111;
+    }
+
+    .navbar-brand {
+        color: #fff !important;
+        font-weight: bold;
+    }
+
+    .movie-grid {
+        justify-content: center;
+    }
+
+    .card.movie-card-item {
+        background-color: #1a1a1a;
+        border: none;
+        overflow: hidden;
+    }
+    .card-text {
+        color: #aaa;
+        font-size: 0.9em;
+    }
+
+    .episode-badge {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        background-color: #e50914;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.85em;
+        z-index: 10;
+    }
+
+    .card-img-top.movie-poster {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .btn-warning-custom {
+        background-color: #ffc107;
+        color: #1a1a1a;
+        font-weight: bold;
+        border: none;
+        padding: 10px 30px;
+        margin-top: 20px;
+    }
+
     .trending-row {
         display: flex;
         gap: 24px;
@@ -62,6 +118,7 @@
         letter-spacing: 0.08px;
         text-shadow: 0 1px 4px rgba(0,0,0,0.07);
     }
+
     .trending-title {
         font-size: 1.05em; /* Nhỏ hơn mặc định */
         font-weight: bold;
@@ -75,6 +132,7 @@
         display: inline-block;
         line-height: 1.18;
     }
+
     .trending-title-line {
         width: 100%;
         max-width: 1273px;
@@ -208,3 +266,123 @@
         }
     });
 </script>
+<main class="container py-5">
+    <h2 class="mt-5 mb-3" style="color: #ffc107; border-left: 4px solid #ffc107; padding-left: 10px;">
+        MỚI CẬP NHẬT
+    </h2>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 movie-grid mb-5">
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/tiende.jpg" class="card-img-top" alt="Tiên Đế Trở Về">
+                <div class="episode-badge">Tập 7</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Tiên Đế Trở Về</h5>
+                    <p class="card-text text-muted">Return of Immortal Emperor</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/dailuc.jpg" class="card-img-top" alt="Đại Lục Linh Võ">
+                <div class="episode-badge">Tập 129</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Đại Lục Linh Võ</h5>
+                    <p class="card-text text-muted">Língwŭ Continent</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/vankiem.jpg" class="card-img-top" alt="Vạn Kiếm Vướng Chúa">
+                <div class="episode-badge">Tập 57</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Vạn Kiếm Vướng Chúa</h5>
+                    <p class="card-text text-muted">Throne of Ten Thousand Swords</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/truta.jpg" class="card-img-top" alt="Trong Tông Môn Trừ Tà Ra">
+                <div class="episode-badge">Tập 105</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Trong Tông Môn Trừ Tà Ra</h5>
+                    <p class="card-text text-muted">Everyone In The Sect, Except M...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/chiton.jpg" class="card-img-top" alt="Nghịch Thiên Chí Tôn">
+                <div class="episode-badge">Tập 466</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Nghịch Thiên Chí Tôn</h5>
+                    <p class="card-text text-muted">Ni Tian Zhi Zun</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/thantai.jpg" class="card-img-top" alt="Thần Tại Quýnh Đồ">
+                <div class="episode-badge">Tập 20</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Thần Tại Quýnh Đồ</h5>
+                    <p class="card-text text-muted">Oh My God!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/thienmenh.jpg" class="card-img-top" alt="Thiên Mệnh Đại Thần Hoàng">
+                <div class="episode-badge">Tập 26</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Thiên Mệnh Đại Thần Hoàng</h5>
+                    <p class="card-text text-muted">Tian Ming Da Shen Huang</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/tiennghich.jpg" class="card-img-top" alt="Tiên Nghịch">
+                <div class="episode-badge">Tập 116</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Tiên Nghịch</h5>
+                    <p class="card-text text-muted">Xian Ni</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/mucthan.jpg" class="card-img-top" alt="Mục Thần Ký">
+                <div class="episode-badge">Tập 59</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Mục Thần Ký</h5>
+                    <p class="card-text text-muted">Mu Shen Ji</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/vothan.jpg" class="card-img-top" alt="Vô Thần Chúa Tể">
+                <div class="episode-badge">Tập 60</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Vô Thần Chúa Tể</h5>
+                    <p class="card-text text-muted">Wu Shen Zhu Zai</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
