@@ -130,9 +130,9 @@ namespace WebXemPhim.Controllers
             if (Avatar != null && Avatar.ContentLength > 0)
             {
                 string fileName = Path.GetFileName(Avatar.FileName);
-                string filePath = Path.Combine(Server.MapPath("~/Upload/Avatars"), fileName);
+                string filePath = Path.Combine(Server.MapPath("~/Upload/Avatar"), fileName);
                 Avatar.SaveAs(filePath);
-                user.Avatar = "/Upload/Avatars/" + fileName;
+                user.Avatar = "/Upload/Avatar/" + fileName;
                 Session["Avatar"] = user.Avatar;
             }
 
