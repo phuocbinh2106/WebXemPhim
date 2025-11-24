@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -53,22 +54,12 @@ namespace WebXemPhim.Controllers
             {
                 if (Thumbnail != null && Thumbnail.ContentLength > 0)
                 {
-                    // Tạo đường dẫn vật lý đến thư mục Banner
-                    var folderPath = Server.MapPath("~/Upload/Banner");
-                    // Kiểm tra nếu thư mục chưa tồn tại thì tự động tạo mới
-                    if (!System.IO.Directory.Exists(folderPath))
-                    {
-                        System.IO.Directory.CreateDirectory(folderPath);
-                    }
-
-                    // Tạo tên file duy nhất
-                    var fileName = Guid.NewGuid().ToString() + "_" + System.IO.Path.GetFileName(Thumbnail.FileName);
-                    var path = System.IO.Path.Combine(folderPath, fileName);
-                    // Lưu file lên server
+                    string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
+                    string path = Server.MapPath("~/Upload/Banner" + fileName);
                     Thumbnail.SaveAs(path);
-                    // Lưu đường dẫn tương đối vào thuộc tính của đối tượng Film
                     film.ThumbnailUrl = "/Upload/Banner/" + fileName;
                 }
+
                 db.Films.Add(film);
                 db.SaveChanges();
                 return RedirectToAction("Index");
