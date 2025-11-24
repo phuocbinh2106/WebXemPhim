@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.IO;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -51,51 +51,24 @@ namespace WebXemPhim.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Xử lý upload ảnh
                 if (Thumbnail != null && Thumbnail.ContentLength > 0)
                 {
-                    var folderPath = Server.MapPath("~/Upload/Banner");
-                    if (!Directory.Exists(folderPath))
-                    {
-                        Directory.CreateDirectory(folderPath);
-                    }
-
-                    var fileName = Guid.NewGuid() + "_" + Path.GetFileName(Thumbnail.FileName);
-                    var path = Path.Combine(folderPath, fileName);
-
+                    string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
+                    string path = Server.MapPath("~/Upload/Banner" + fileName);
                     Thumbnail.SaveAs(path);
                     film.ThumbnailUrl = "/Upload/Banner/" + fileName;
                 }
 
-                // GÁN NGÀY TẠO
-                film.CreatedAt = DateTime.Now;
-
-                // GÁN THỂ LOẠI
-                if (SelectedGenreIds != null)
-                {
-                    film.Genres = new List<Genre>();
-                    foreach (var id in SelectedGenreIds)
-                    {
-                        var genre = db.Genres.Find(id);
-                        if (genre != null)
-                        {
-                            film.Genres.Add(genre);
-                        }
-                    }
-                }
-
                 db.Films.Add(film);
                 db.SaveChanges();
-
                 return RedirectToAction("Index");
             }
 
-            // Nếu lỗi thì hiện lại danh sách thể loại
-            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName", SelectedGenreIds);
-
+            // Nếu có lỗi thì quay lại view với model hiện tại
+            // Đồng thời cần truyền lại MultiSelectList nếu có dùng chọn thể loại nhiều
+            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View(film);
         }
-
 
         // GET: Films/Details/5
         public ActionResult Details(int? id)
