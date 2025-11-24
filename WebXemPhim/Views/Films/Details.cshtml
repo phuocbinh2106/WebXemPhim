@@ -1,17 +1,72 @@
 ﻿@model WebXemPhim.Models.Film
 
-<div class="film-detail-container">
-    <div class="detail-poster">
-        <img src="@Model.ThumbnailUrl" alt="@Model.Title" />
-    </div>
-    <div class="detail-info">
-        <h2>@Model.Title</h2>
-        <div><b>Tên khác:</b> @Model.OriginalTitle</div>
-        <div><b>Thể loại:</b> ... (render list nếu có)</div>
-        <div><b>Mô tả/Tổng quan:</b> @Model.Description</div>
-        <div><b>Số tập:</b> @Model.EpsisodeCount</div>
-        <div><b>Lượt xem:</b> @Model.ViewCount</div>
-        <div><b>Điểm đánh giá:</b> @Model.AverageRating</div>
-        <!-- Thêm các thông tin khác nếu muốn -->
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card bg-dark border-0 shadow-sm">
+                <img src="@Model.ThumbnailUrl"
+                     alt="@Model.Title"
+                     class="img-fluid rounded shadow"
+                     style="width:auto; max-width:300px; max-height:400px; object-fit:cover;">
+
+
+            </div>
+        </div>
+        <div class="col-md-8 text-light">
+            <h2 class="mb-2">@Model.Title</h2>
+            @if (!string.IsNullOrEmpty(Model.OriginalTitle))
+            {
+                <div class="text-muted mb-2">Tên gốc: @Model.OriginalTitle</div>
+            }
+
+            <div class="mb-2">
+                <span class="badge bg-secondary me-2">@Model.ReleaseYear</span>
+                @if (Model.IsMovie)
+                {
+                    <span class="badge bg-danger me-2">Phim lẻ</span>
+                }
+                else
+                {
+                    <span class="badge bg-primary me-2">Phim bộ</span>
+                }
+                @if (Model.IsCompleted)
+                {
+                    <span class="badge bg-success">Trọn bộ</span>
+                }
+                else
+                {
+                    <span class="badge bg-warning text-dark">Đang chiếu</span>
+                }
+            </div>
+
+            <div class="mb-2">
+                <span class="me-3"><i class="bi bi-collection-play"></i> @Model.EpsisodeCount tập</span>
+                <span class="me-3"><i class="bi bi-eye"></i> @Model.ViewCount lượt xem</span>
+                <span class="text-warning"><i class="bi bi-star-fill"></i> @Model.AverageRating / 10</span>
+            </div>
+
+            <hr class="border-secondary" />
+
+            <h5 class="mb-2">Nội dung</h5>
+            <p class="text-muted" style="white-space:pre-line;">
+                @Model.Description
+            </p>
+
+            <div class="mt-4 d-flex flex-wrap gap-2">
+                @Html.ActionLink("Xem danh sách phim", "Index", null, new { @class = "btn btn-outline-light" })
+                @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.FilmId }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Xoá", "Delete", new { id = Model.FilmId }, new { @class = "btn btn-danger" })
+            </div>
+
+            <div class="mt-3 text-muted small">
+                Tạo lúc: @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm") |
+                Cập nhật: @Model.UpdateAt?.ToString("dd/MM/yyyy HH:mm")
+            </div>
+        </div>
     </div>
 </div>
