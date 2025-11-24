@@ -1,11 +1,7 @@
-﻿@model List<WebXemPhim.Models.Film>
-
+﻿@model IEnumerable<WebXemPhim.Models.Film>
 @{
     ViewBag.Title = "Trang Chủ - HoatHinh3D";
 }
-
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
 <style>
     body {
         background-color: #1a1a1a;
@@ -13,65 +9,19 @@
         font-family: 'Arial', sans-serif;
     }
 
-    .navbar {
-        background-color: #111;
+    .movie-grid {
+        justify-content: center;
     }
 
-    .navbar-brand {
-        color: #fff !important;
-        font-weight: bold;
-    }
-
-    /* Common movie card style (trending & grid) */
-    .movie-card-trending {
-        position: relative;
-        border-radius: 10px;
+    .card.movie-card-item {
+        background-color: #1a1a1a;
+        border: none;
         overflow: hidden;
-        background: #222;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.14);
-        transition: transform 0.2s;
     }
 
-        .movie-card-trending:hover {
-            transform: scale(1.03);
-        }
-
-    .movie-trending-img {
-        width: 100%;
-        height: 380px;
-        object-fit: cover;
-        border-radius: 10px;
-        display: block;
-    }
-
-    .movie-trending-info {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to top, rgba(25,25,25,0.93) 88%, rgba(25,25,25,0.05) 99%);
-        padding: 22px 22px 18px 22px;
-        z-index: 2;
-    }
-
-    .movie-trending-title {
-        color: #fff;
-        font-size: 1.19em;
-        font-weight: 700;
-        margin-bottom: 4px;
-        letter-spacing: 0.2px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .movie-trending-sub {
-        color: #fff;
-        font-size: 0.93em;
-        font-weight: 400;
-        opacity: 0.85;
-        letter-spacing: 0.08px;
-        text-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    .card-text {
+        color: #aaa;
+        font-size: 0.9em;
     }
 
     .episode-badge {
@@ -87,13 +37,90 @@
         z-index: 10;
     }
 
+    .card-img-top.movie-poster {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .btn-warning-custom {
+        background-color: #ffc107;
+        color: #1a1a1a;
+        font-weight: bold;
+        border: none;
+        padding: 10px 30px;
+        margin-top: 20px;
+    }
+
+    .trending-row {
+        display: flex;
+        gap: 24px;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 18px 0 0 0;
+    }
+
+    .movie-card-trending {
+        position: relative;
+        width: 285px;
+        height: 380px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #222;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.14);
+    }
+
+    .movie-trending-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        display: block;
+    }
+
+    /* Overlay ở phía dưới hình, mang màu nền tối */
+    .movie-trending-info {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top, rgba(25,25,25,0.93) 88%, rgba(25,25,25,0.05) 99%);
+        padding: 22px 22px 18px 22px;
+        z-index: 2;
+    }
+
+    /* Tên phim */
+    .movie-trending-title {
+        color: #fff;
+        font-size: 1.19em;
+        font-weight: 700;
+        margin-bottom: 4px;
+        letter-spacing: 0.2px;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.12);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+    }
+    /* Phụ đề */
+    .movie-trending-sub {
+        color: #fff; /* Đổi sang màu trắng */
+        font-size: 0.93em; /* Nhỏ hơn */
+        font-weight: 400; /* Chữ mỏng hơn */
+        opacity: 0.85; /* Nhạt vừa phải để nổi phần trên */
+        letter-spacing: 0.08px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
     .trending-title {
-        font-size: 1.05em;
+        font-size: 1.05em; /* Nhỏ hơn mặc định */
         font-weight: bold;
         letter-spacing: 0.5px;
         background: linear-gradient(90deg, #ffc107 10%, #fd2d87 90%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
         margin-bottom: 12px;
         display: inline-block;
         line-height: 1.18;
@@ -106,118 +133,251 @@
         margin-top: 4px;
         margin-bottom: 16px;
         border-radius: 1.5px;
-        background: linear-gradient(90deg, #ffc107 0px, #fd2d87 70px, #fd2d87 140px, #232328 141px, #232328 100%);
+        background: linear-gradient(90deg, #ffc107 0px, #fd2d87 70px, #fd2d87 140px, #232328 141px, /* Phần sau của line */
+        #232328 100% );
         box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     }
-
-    .movie-grid {
-        justify-content: center;
-    }
 </style>
-
-<main class="container py-5">
-
-    <h3 class="trending-title"><i class="fas fa-fire"></i> ĐANG THỊNH HÀNH</h3>
-    <div class="trending-title-line"></div>
-
-    <div class="swiper trending-slider">
-        <div class="swiper-wrapper">
-            @foreach (var banner in new[]{
-                new { Img="~/Upload/Banner/giathien.jpg", Title="Già Thiên", Sub="Zhe Tian"},
-                new { Img="~/Upload/Banner/thonphetinhkhong.jpg", Title="Thôn Phệ Tinh Không", Sub="Swallowed Star"},
-                new { Img="~/Upload/Banner/dauladailuc2.jpg", Title="Đấu La Đại Lục 2: Tuyệt Thế Đường Môn", Sub="Douluo Dalu II: Jue Shi Tang Men"},
-                new { Img="~/Upload/Banner/thananvuongtoa.jpg", Title="Thần Ấn Vương Tọa", Sub="Throne Of Seal"},
-                new { Img="~/Upload/Banner/dauphathuongkhung.jpg", Title="Đấu Phá Thương Khung", Sub="Fights Break Sphere S"},
-                new { Img="~/Upload/Banner/phamnhan.jpg", Title="Phàm Nhân Tu Tiên", Sub="Fanren Xiu Xian Chuan S3"},
-                new { Img="~/Upload/Banner/tiennghich.png", Title="Tiên Nghịch", Sub="Xian Ni"},
-                new { Img="~/Upload/Banner/mucthanky.jpg", Title="Mục Thần Ký", Sub="Mu Shen Ji"},
-                new { Img="~/Upload/Banner/vudongcankhon.webp", Title="Vũ Động Càn Khôn", Sub="Wu Dong Qian Kun"},
-                new { Img="~/Upload/Banner/thegioihoanmy.jpg", Title="Thế Giới Hoàn Mỹ", Sub="Perfect World"}
-            })
-            {
-                <div class="swiper-slide">
-                    <div class="movie-card-trending">
-                        <img src="@Url.Content(banner.Img)" alt="@banner.Title" class="movie-trending-img" />
-                        <div class="movie-trending-info">
-                            <div class="movie-trending-title">@banner.Title</div>
-                            <div class="movie-trending-sub">@banner.Sub</div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        var swiper = new Swiper('.trending-slider', {
-            slidesPerView: 4,
-            spaceBetween: 24,
-            loop: true,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                1200: { slidesPerView: 4 },
-                900: { slidesPerView: 3 },
-                600: { slidesPerView: 2 },
-                0: { slidesPerView: 1 }
-            }
-        });
-    </script>
-
-    <!-- Grid Mới Cập Nhật: chuyển sang style trending -->
-    <h2 class="mt-5 mb-3 trending-title">MỚI CẬP NHẬT</h2>
-
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 movie-grid mb-5">
-        @* Dữ liệu từ Banner mới cập nhật *@
-        @foreach (var film in new[]{
-            new { Img="~/Upload/Banner/tiende.jpg", Title="Tiên Đế Trở Về", Sub="Return of Immortal Emperor", Episode="Tập 7"},
-            new { Img="~/Upload/Banner/dailuc.jpg", Title="Đại Lục Linh Võ", Sub="Língwŭ Continent", Episode="Tập 129"},
-            new { Img="~/Upload/Banner/vankiem.jpg", Title="Vạn Kiếm Vướng Chúa", Sub="Throne of Ten Thousand Swords", Episode="Tập 57"},
-            new { Img="~/Upload/Banner/truta.jpg", Title="Trong Tông Môn Trừ Tà Ra", Sub="Everyone In The Sect, Except M...", Episode="Tập 105"},
-            new { Img="~/Upload/Banner/chiton.jpg", Title="Nghịch Thiên Chí Tôn", Sub="Ni Tian Zhi Zun", Episode="Tập 466"},
-            new { Img="~/Upload/Banner/thantai.jpg", Title="Thần Tại Quýnh Đồ", Sub="Oh My God!", Episode="Tập 20"},
-            new { Img="~/Upload/Banner/thienmenh.jpg", Title="Thiên Mệnh Đại Thần Hoàng", Sub="Tian Ming Da Shen Huang", Episode="Tập 26"},
-            new { Img="~/Upload/Banner/tiennghich.jpg", Title="Tiên Nghịch", Sub="Xian Ni", Episode="Tập 116"},
-            new { Img="~/Upload/Banner/mucthan.jpg", Title="Mục Thần Ký", Sub="Mu Shen Ji", Episode="Tập 59"},
-            new { Img="~/Upload/Banner/vothan.jpg", Title="Vô Thần Chúa Tể", Sub="Wu Shen Zhu Zai", Episode="Tập 60"}
-        })
-        {
-            <div class="col">
-                <div class="movie-card-trending">
-                    <img src="@Url.Content(film.Img)" alt="@film.Title" class="movie-trending-img" />
-                    <div class="episode-badge">@film.Episode</div>
-                    <div class="movie-trending-info">
-                        <div class="movie-trending-title">@film.Title</div>
-                        <div class="movie-trending-sub">@film.Sub</div>
-                    </div>
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<h3 class="trending-title">
+    <i class="fas fa-fire"></i> ĐANG THỊNH HÀNH
+</h3>
+<div class="trending-title-line"></div>
+<div class="swiper trending-slider">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/giathien.jpg" alt="Già Thiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Già Thiên</div>
+                    <div class="movie-trending-sub">Zhe Tian</div>
                 </div>
             </div>
-        }
-    </div>
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="new-movies.html" style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">Xem thêm</a>
-    </div>
-    @if (Model != null && Model.Any())
-    {
-        <div class="film-list">
-            @foreach (var film in Model)
-            {
-                <div class="film-item">
-                    <img src="@film.ThumbnailUrl" alt="@film.Title" style="width:150px;height:auto;" />
-                    <h4>@film.Title</h4>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thonphetinhkhong.jpg" alt="Thôn Phệ Tinh Không" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thôn Phệ Tinh Không</div>
+                    <div class="movie-trending-sub">Swallowed Star</div>
                 </div>
-            }
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauladailuc2.jpg" alt="Đấu La Đại Lục 2: Tuyệt Thế Đường Môn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu La Đại Lục 2: Tuyệt Thế Đường Môn</div>
+                    <div class="movie-trending-sub">Douluo Dalu II: Jue Shi Tang Men</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thananvuongtoa.jpg" alt="Thần Ấn Vương Tọa" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thần Ấn Vương Tọa</div>
+                    <div class="movie-trending-sub">Throne Of Seal</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauphathuongkhung.jpg" alt="Đấu Phá Thương Khung" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu Phá Thương Khung</div>
+                    <div class="movie-trending-sub">Fights Break Sphere S</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/phamnhan.jpg" alt="Phàm Nhân Tu Tiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Phàm Nhân Tu Tiên</div>
+                    <div class="movie-trending-sub">Fanren Xiu Xian Chuan S3</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/tiennghich.png" alt="Tiên Nghịch" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Tiên Nghịch</div>
+                    <div class="movie-trending-sub">Xian Ni</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/mucthanky.jpg" alt="Mục Thần Ký" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Mục Thần Ký</div>
+                    <div class="movie-trending-sub">Mu Shen Ji</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/vudongcankhon.webp" alt="Vũ Động Càn Khôn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Vũ Động Càn Khôn</div>
+                    <div class="movie-trending-sub">Wu Dong Qian Kun</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thegioihoanmy.jpg" alt="Thế Giới Hoàn Mỹ" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thế Giới Hoàn Mỹ</div>
+                    <div class="movie-trending-sub">Perfect World</div>
+                </div>
+            </div>
+        </div>
+        <!-- ... Thêm slide cho phim khác nếu muốn -->
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.trending-slider', {
+        slidesPerView: 4,
+        spaceBetween: 24,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        loop: true,
+        breakpoints: {
+            1200: { slidesPerView: 4 },
+            900: { slidesPerView: 3 },
+            600: { slidesPerView: 2 },
+            0: { slidesPerView: 1 }
+        }
+    });
+</script>
+<main class="container py-5">
+    <h2 class="mt-5 mb-3" style="color: #ffc107; border-left: 4px solid #ffc107; padding-left: 10px;">
+        MỚI CẬP NHẬT
+    </h2>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 movie-grid mb-5">
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/tiende.jpg" class="card-img-top" alt="Tiên Đế Trở Về">
+                <div class="episode-badge">Tập 7</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Tiên Đế Trở Về</h5>
+                    <p class="card-text text-muted">Return of Immortal Emperor</p>
+                </div>
+            </div>
         </div>
 
-        <a class="btn btn-primary" href="@Url.Action("MoreFilms", "Films")">Xem thêm</a>
-    }
-    else
-    {
-        <p>Chưa có phim nào.</p>
-    }
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/dailuc.jpg" class="card-img-top" alt="Đại Lục Linh Võ">
+                <div class="episode-badge">Tập 129</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Đại Lục Linh Võ</h5>
+                    <p class="card-text text-muted">Língwŭ Continent</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/vankiem.jpg" class="card-img-top" alt="Vạn Kiếm Vướng Chúa">
+                <div class="episode-badge">Tập 57</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Vạn Kiếm Vướng Chúa</h5>
+                    <p class="card-text text-muted">Throne of Ten Thousand Swords</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/truta.jpg" class="card-img-top" alt="Trong Tông Môn Trừ Tà Ra">
+                <div class="episode-badge">Tập 105</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Trong Tông Môn Trừ Tà Ra</h5>
+                    <p class="card-text text-muted">Everyone In The Sect, Except M...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/chiton.jpg" class="card-img-top" alt="Nghịch Thiên Chí Tôn">
+                <div class="episode-badge">Tập 466</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Nghịch Thiên Chí Tôn</h5>
+                    <p class="card-text text-muted">Ni Tian Zhi Zun</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/thantai.jpg" class="card-img-top" alt="Thần Tại Quýnh Đồ">
+                <div class="episode-badge">Tập 20</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Thần Tại Quýnh Đồ</h5>
+                    <p class="card-text text-muted">Oh My God!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/thienmenh.jpg" class="card-img-top" alt="Thiên Mệnh Đại Thần Hoàng">
+                <div class="episode-badge">Tập 26</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Thiên Mệnh Đại Thần Hoàng</h5>
+                    <p class="card-text text-muted">Tian Ming Da Shen Huang</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/tiennghich.jpg" class="card-img-top" alt="Tiên Nghịch">
+                <div class="episode-badge">Tập 116</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Tiên Nghịch</h5>
+                    <p class="card-text text-muted">Xian Ni</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/mucthan.jpg" class="card-img-top" alt="Mục Thần Ký">
+                <div class="episode-badge">Tập 59</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Mục Thần Ký</h5>
+                    <p class="card-text text-muted">Mu Shen Ji</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 movie-card-item">
+                <img src="~/Upload/Banner/vothan.jpg" class="card-img-top" alt="Vô Thần Chúa Tể">
+                <div class="episode-badge">Tập 60</div>
+                <div class="card-body p-2">
+                    <h5 class="card-title text-truncate">Vô Thần Chúa Tể</h5>
+                    <p class="card-text text-muted">Wu Shen Zhu Zai</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </main>
