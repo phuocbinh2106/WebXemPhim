@@ -73,21 +73,16 @@ namespace WebXemPhim.Controllers
         // GET: Films/Details/5
         public ActionResult Details(int? id)
         {
-            var film = db.Films
-                .Include("Genres")
-                .Include("Episodes")
-                .Include("Ratings")
-                .FirstOrDefault(f => f.FilmId == id);
-            if (film == null) return HttpNotFound();
-
-            var vm = new FilmDetailsViewModel
+            if (id == null)
             {
-                Film = film,
-                Episodes = film.Episodes.OrderByDescending(e => e.EpisodeNumber).ToList(),
-                // Có thể bổ sung comments nếu có
-            };
-
-            return View(vm); // Tìm file Details.cshtml ở Views/Film
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Film film = db.Films.Find(id);
+            if (film == null)
+            {
+                return HttpNotFound();
+            }
+            return View(film);
         }
         
         // GET: Films/Edit/5
