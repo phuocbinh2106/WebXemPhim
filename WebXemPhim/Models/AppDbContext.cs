@@ -23,6 +23,7 @@ namespace WebXemPhim.Models
         public DbSet<Favourite> Favourites { get; set; }
         public DbSet<WatchHistory> WatchHistories { get; set; }
         public DbSet<VideoSource> VideoSources { get; set; }
+        public object FilmGenres { get; internal set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

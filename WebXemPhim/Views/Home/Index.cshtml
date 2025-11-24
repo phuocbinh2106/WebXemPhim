@@ -1,33 +1,107 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<WebXemPhim.Models.Film>
+@{
+    ViewBag.Title = "Trang Chủ - HoatHinh3D";
 }
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<main class="container py-5">
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+    <h3 class="trending-title"><i class="fas fa-fire"></i> ĐANG THỊNH HÀNH</h3>
+    <div class="trending-title-line"></div>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+    <div class="swiper trending-slider">
+        <div class="swiper-wrapper">
+            @foreach (var banner in new[]{
+                new { Img="~/Upload/Banner/giathien.jpg", Title="Già Thiên", Sub="Zhe Tian"},
+                new { Img="~/Upload/Banner/thonphetinhkhong.jpg", Title="Thôn Phệ Tinh Không", Sub="Swallowed Star"},
+                new { Img="~/Upload/Banner/dauladailuc2.jpg", Title="Đấu La Đại Lục 2: Tuyệt Thế Đường Môn", Sub="Douluo Dalu II: Jue Shi Tang Men"},
+                new { Img="~/Upload/Banner/thananvuongtoa.jpg", Title="Thần Ấn Vương Tọa", Sub="Throne Of Seal"},
+                new { Img="~/Upload/Banner/dauphathuongkhung.jpg", Title="Đấu Phá Thương Khung", Sub="Fights Break Sphere S"},
+                new { Img="~/Upload/Banner/phamnhan.jpg", Title="Phàm Nhân Tu Tiên", Sub="Fanren Xiu Xian Chuan S3"},
+                new { Img="~/Upload/Banner/tiennghich.png", Title="Tiên Nghịch", Sub="Xian Ni"},
+                new { Img="~/Upload/Banner/mucthanky.jpg", Title="Mục Thần Ký", Sub="Mu Shen Ji"},
+                new { Img="~/Upload/Banner/vudongcankhon.webp", Title="Vũ Động Càn Khôn", Sub="Wu Dong Qian Kun"},
+                new { Img="~/Upload/Banner/thegioihoanmy.jpg", Title="Thế Giới Hoàn Mỹ", Sub="Perfect World"}
+            })
+            {
+                <div class="swiper-slide">
+                    <div class="movie-card-trending">
+                        <img src="@Url.Content(banner.Img)" alt="@banner.Title" class="movie-trending-img" />
+                        <div class="movie-trending-info">
+                            <div class="movie-trending-title">@banner.Title</div>
+                            <div class="movie-trending-sub">@banner.Sub</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper('.trending-slider', {
+            slidesPerView: 4,
+            spaceBetween: 24,
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                1200: { slidesPerView: 4 },
+                900: { slidesPerView: 3 },
+                600: { slidesPerView: 2 },
+                0: { slidesPerView: 1 }
+            }
+        });
+    </script>
+
+    <!-- Grid Mới Cập Nhật: chuyển sang style trending -->
+    <h2 class="mt-5 mb-3 trending-title">MỚI CẬP NHẬT</h2>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 movie-grid mb-5">
+        @* Dữ liệu từ Banner mới cập nhật *@
+        @foreach (var film in new[]{
+            new { Img="~/Upload/Banner/tiende.jpg", Title="Tiên Đế Trở Về", Sub="Return of Immortal Emperor", Episode="Tập 7"},
+            new { Img="~/Upload/Banner/dailuc.jpg", Title="Đại Lục Linh Võ", Sub="Língwŭ Continent", Episode="Tập 129"},
+            new { Img="~/Upload/Banner/vankiem.jpg", Title="Vạn Kiếm Vướng Chúa", Sub="Throne of Ten Thousand Swords", Episode="Tập 57"},
+            new { Img="~/Upload/Banner/truta.jpg", Title="Trong Tông Môn Trừ Tà Ra", Sub="Everyone In The Sect, Except M...", Episode="Tập 105"},
+            new { Img="~/Upload/Banner/chiton.jpg", Title="Nghịch Thiên Chí Tôn", Sub="Ni Tian Zhi Zun", Episode="Tập 466"},
+            new { Img="~/Upload/Banner/thantai.jpg", Title="Thần Tại Quýnh Đồ", Sub="Oh My God!", Episode="Tập 20"},
+            new { Img="~/Upload/Banner/thienmenh.jpg", Title="Thiên Mệnh Đại Thần Hoàng", Sub="Tian Ming Da Shen Huang", Episode="Tập 26"},
+            new { Img="~/Upload/Banner/tiennghich.jpg", Title="Tiên Nghịch", Sub="Xian Ni", Episode="Tập 116"},
+            new { Img="~/Upload/Banner/mucthan.jpg", Title="Mục Thần Ký", Sub="Mu Shen Ji", Episode="Tập 59"},
+            new { Img="~/Upload/Banner/vothan.jpg", Title="Vô Thần Chúa Tể", Sub="Wu Shen Zhu Zai", Episode="Tập 60"}
+        })
+        {
+            <div class="col">
+                <div class="movie-card-trending">
+                    <img src="@Url.Content(film.Img)" alt="@film.Title" class="movie-trending-img" />
+                    <div class="episode-badge">@film.Episode</div>
+                    <div class="movie-trending-info">
+                        <div class="movie-trending-title">@film.Title</div>
+                        <div class="movie-trending-sub">@film.Sub</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="MoreFilms.html" style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">Xem thêm</a>
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        <div class="film-list">
+            @foreach (var film in Model)
+            {
+                <div class="film-item">
+                    <img src="@film.ThumbnailUrl" alt="@film.Title" style="width:150px;height:auto;" />
+                    <h4>@film.Title</h4>
+                </div>
+            }
+        </div>
+
+        <a class="btn btn-primary" href="@Url.Action("MoreFilms", "Home")">Xem thêm</a>
+    }
 </main>

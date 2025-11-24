@@ -10,171 +10,114 @@
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- FontAwesome cho icon người dùng -->
+    <!-- FontAwesome cho icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <style>
-        body {
-            background-color: #0b0c10;
-            color: #fff;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .navbar {
-            background-color: #1f2833;
-        }
-
-        .navbar-brand {
-            color: #66fcf1 !important;
-            font-weight: bold;
-        }
-
-        .nav-link {
-            color: #c5c6c7 !important;
-            margin-right: 15px;
-        }
-
-            .nav-link:hover {
-                color: #66fcf1 !important;
-            }
-
-        .movie-card {
-            background-color: #1f2833;
-            border: none;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-            .movie-card:hover {
-                transform: scale(1.03);
-            }
-
-        .movie-title {
-            font-weight: 600;
-            color: #fff;
-            text-align: center;
-            margin-top: 8px;
-        }
-
-        footer {
-            background-color: #1f2833;
-            color: #c5c6c7;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
-        }
-        /* ---- MENU USER NỀN ĐEN ---- */
-        .dropdown-menu.user-menu {
-            background: #18191a !important;
-            color: #fff !important;
-            border: none;
-        }
-
-            .dropdown-menu.user-menu .dropdown-item,
-            .dropdown-menu.user-menu .fw-bold {
-                color: #fff !important;
-            }
-
-                .dropdown-menu.user-menu .dropdown-item.text-danger {
-                    color: #ff6961 !important;
-                }
-
-            .dropdown-menu.user-menu i {
-                color: #66fcf1 !important;
-            }
-    </style>
+    <link href="~/Content/MyStyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <!-- NAVBAR -->
+    <!-- NAVBAR HEADER -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")">🎬 HoatHinh3D</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <form class="d-flex ms-3" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Tìm kiếm phim..." aria-label="Search" style="background-color: #212529; color: white; border: 1px solid #495057;">
-                    <button class="btn btn-outline-info" type="submit">Tìm</button>
-                </form>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        @if (Session["UserId"] != null)
-                        {
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                @{
-                                    var avatar = Session["Avatar"] != null
-                                        ? Session["Avatar"].ToString()
-                                        : null;
-                                }
-                                @if (!string.IsNullOrEmpty(avatar))
-                                {
-                                    <img src="@Url.Content(avatar)" alt="Avatar" class="rounded-circle me-2" width="32" height="32" />
-                                }
-                                else
-                                {
-                                    <i class="fa fa-user-circle me-2" style="font-size: 1.8rem; color: #66fcf1;"></i>
-                                }
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow user-menu" aria-labelledby="profileDropdown" style="min-width:220px;">
-                                <li class="px-3 py-2">
-                                    <div class="d-flex align-items-center">
-                                        @if (!string.IsNullOrEmpty(avatar))
-                                        {
-                                            <img src="@Url.Content(avatar)" alt="Avatar" class="rounded-circle me-2" width="48" height="48" />
-                                        }
-                                        else
-                                        {
-                                            <i class="fa fa-user-circle me-2" style="font-size: 2.5rem; color: #66fcf1;"></i>
-                                        }
-                                        <span class="fw-bold" style="font-size:1.1rem">@Session["Nickname"]</span>
-                                    </div>
-                                </li>
-                                <li><hr class="dropdown-divider" /></li>
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">🎬HoatHinh3D</a>
+            <form class="modern-search-bar">
+                <h3 class="search-icon"><i class="fa fa-search"></i></h3>
+                <input type="text" placeholder="Tìm Kiếm ..." />
+            </form>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    @if (Session["UserId"] != null)
+                    {
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @{
+                                var avatar = Session["Avatar"] != null
+                                    ? Session["Avatar"].ToString()
+                                    : null;
+                            }
+                            @if (!string.IsNullOrEmpty(avatar))
+                            {
+                                <img src="@Url.Content(avatar)" alt="Avatar" class="rounded-circle me-2" width="32" height="32" />
+                            }
+                            else
+                            {
+                                <i class="fa fa-user-circle me-2" style="font-size: 1.8rem; color: #FFD800;"></i>
+                            }
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow user-menu" aria-labelledby="profileDropdown" style="min-width:220px;">
+                            <li class="px-3 py-2">
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(avatar))
+                                    {
+                                        <img src="@Url.Content(avatar)" alt="Avatar" class="rounded-circle me-2" width="48" height="48" />
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-user-circle me-2" style="font-size: 2.5rem; color: #FFD800;"></i>
+                                    }
+                                    <span class="fw-bold" style="font-size:1.1rem">@Session["Nickname"]</span>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Profile", "Account")">
+                                    <i class="fa fa-user me-2"></i>Thông tin cá nhân
+                                </a>
+                            </li>
+                            @if (Session["Role"] != null && Session["Role"].ToString().ToLower() == "admin")
+                            {
                                 <li>
-                                    <a class="dropdown-item" href="@Url.Action("Profile", "Account")">
-                                        <i class="fa fa-user me-2"></i>Thông tin cá nhân
+                                    <a class="dropdown-item" href="@Url.Action("Index", "Films")">
+                                        <i class="fa fa-film me-2"></i>Quản lý phim
                                     </a>
                                 </li>
-                                @if (Session["Role"] != null && Session["Role"].ToString().ToLower() == "admin")
-                                {
-                                    <li>
-                                        <a class="dropdown-item" href="@Url.Action("Index", "Films")">
-                                            <i class="fa fa-film me-2"></i>Quản lý phim
-                                        </a>
-                                    </li>
-                                }
-                                <li>
-                                    <a class="dropdown-item text-danger" href="@Url.Action("Logout", "Account")">
-                                        <i class="fa fa-sign-out-alt me-2"></i>Đăng xuất
-                                    </a>
-                                </li>
-                            </ul>
-                        }
-                        else
-                        {
-                            <a class="nav-link" href="@Url.Action("Login", "Account")">
-                                <i class="fa fa-user-circle" style="font-size: 1.8rem; color: #66fcf1;"></i>
-                            </a>
-                        }
-                    </li>
-                </ul>
-            </div>
+                            }
+                            <li>
+                                <a class="dropdown-item text-danger" href="@Url.Action("Logout", "Account")">
+                                    <i class="fa fa-sign-out-alt me-2"></i>Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="@Url.Action("Login", "Account")">
+                            <i class="fa fa-user-circle" style="font-size: 1.8rem; color: #FFD800;"></i>
+                        </a>
+                    }
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- MENU NGANG -->
+    <nav class="navbar navbar-expand-lg" style="background:#1F2021;">
+        <div class="container">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="fas fa-home"></i> Trang chủ</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="genreDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Thể Loại <i class="fas fa-chevron-down"></i>
+                    </a>
+                    @Html.Action("GenreDropdown", "Genres")
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Phim Lẻ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Đang Chiếu <i class="fas fa-sync-alt"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Lịch Chiếu <i class="fas fa-calendar-alt"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Hoàn Thành</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-trophy"></i> Top 10 HH3D</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-thumbs-up"></i> Đánh Giá Cao</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- MAIN CONTENT -->
+
     <div class="container mt-4">
         @RenderBody()
     </div>
 
-    <!-- FOOTER -->
     <footer>
         <p>&copy; @DateTime.Now.Year - HoatHinh3D | Thiết kế bởi LinhDepZaiSo1VN 🎥</p>
     </footer>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
