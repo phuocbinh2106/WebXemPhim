@@ -1,183 +1,212 @@
 ﻿@{
     ViewBag.Title = "Trang Chủ - HoatHinh3D";
 }
-
 <style>
-    body {
-        background-color: #1a1a1a; 
-        color: #f5f5f5;
-        font-family: 'Arial', sans-serif;
+    .trending-row {
+        display: flex;
+        gap: 24px;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 18px 0 0 0;
     }
 
-    .navbar {
-        background-color: #111; 
-    }
-
-    .navbar-brand {
-        color: #fff !important;
-        font-weight: bold;
-    }
-
-    .movie-grid {
-        justify-content: center; 
-    }
-
-    .card.movie-card-item {
-        background-color: #1a1a1a; 
-        border: none;
-        overflow: hidden;
+    .movie-card-trending {
         position: relative;
-        transition: transform 0.3s, box-shadow 0.3s;
+        width: 285px;
+        height: 380px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #222;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.14);
     }
 
-        .card.movie-card-item:hover {
-            transform: scale(1.03); 
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-
-    .movie-card-item img {
-        height: 350px;
+    .movie-trending-img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
-        border-radius: 4px;
+        border-radius: 10px;
+        display: block;
     }
 
-    .card-body {
-        padding: 10px 0 0 0 !important;
-        text-align: left;
+    /* Overlay ở phía dưới hình, mang màu nền tối */
+    .movie-trending-info {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top, rgba(25,25,25,0.93) 88%, rgba(25,25,25,0.05) 99%);
+        padding: 22px 22px 18px 22px;
+        z-index: 2;
     }
 
-    .card-title {
-        font-size: 1.1em;
-        margin-bottom: 2px;
+    /* Tên phim */
+    .movie-trending-title {
         color: #fff;
+        font-size: 1.19em;
+        font-weight: 700;
+        margin-bottom: 4px;
+        letter-spacing: 0.2px;
+        text-shadow: 0 1px 8px rgba(0,0,0,0.12);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+    }
+    /* Phụ đề */
+    .movie-trending-sub {
+        color: #fff; /* Đổi sang màu trắng */
+        font-size: 0.93em; /* Nhỏ hơn */
+        font-weight: 400; /* Chữ mỏng hơn */
+        opacity: 0.85; /* Nhạt vừa phải để nổi phần trên */
+        letter-spacing: 0.08px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.07);
     }
 
-    .card-text {
-        color: #aaa;
-        font-size: 0.9em;
-    }
-
-    .rating-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: #000000e0;
-        color: #ffc107; 
-        padding: 3px 8px;
-        border-radius: 4px;
+    .trending-title {
+        font-size: 1.05em; /* Nhỏ hơn mặc định */
         font-weight: bold;
-        font-size: 0.9em;
+        letter-spacing: 0.5px;
+        background: linear-gradient(90deg, #ffc107 10%, #fd2d87 90%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        margin-bottom: 12px;
+        display: inline-block;
+        line-height: 1.18;
     }
 
-    .rank-badge {
-        position: absolute;
-        top: 10px;
-        left: 0px; 
-        background-color: #ffc107; 
-        color: #1a1a1a;
-        padding: 5px 8px;
-        border-radius: 0 4px 4px 0;
-        font-weight: bold;
-        font-size: 1.1em;
-    }
-
-    .btn-warning-custom {
-        background-color: #ffc107; 
-        color: #1a1a1a;
-        font-weight: bold;
-        border: none;
-        padding: 10px 30px;
-        margin-top: 20px;
+    .trending-title-line {
+        width: 100%;
+        max-width: 1273px;
+        height: 1.5px;
+        margin-top: 4px;
+        margin-bottom: 16px;
+        border-radius: 1.5px;
+        background: linear-gradient(90deg, #ffc107 0px, #fd2d87 70px, #fd2d87 140px, #232328 141px, /* Phần sau của line */
+        #232328 100% );
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     }
 </style>
-
-<header class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #111;">
-    <div class="container">
-        <a class="navbar-brand" href="#">HoatHinh3D</a>
-
-        <div class="d-flex me-auto ms-5">
-            <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" style="width: 200px; background-color: #333; color: white; border: none;">
-            <button class="btn btn-primary" type="submit" style="background-color: #007bff; border-color: #007bff;">Tìm</button>
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<h3 class="trending-title">
+    <i class="fas fa-fire"></i> ĐANG THỊNH HÀNH
+</h3>
+<div class="trending-title-line"></div>
+<div class="swiper trending-slider">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/giathien.jpg" alt="Già Thiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Già Thiên</div>
+                    <div class="movie-trending-sub">Zhe Tian</div>
+                </div>
+            </div>
         </div>
-
-        <div class="collapse navbar-collapse justify-content-end">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link active" href="#">Trang Chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Phim Mới</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Thể Loại</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Liên Hệ</a></li>
-            </ul>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thonphetinhkhong.jpg" alt="Thôn Phệ Tinh Không" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thôn Phệ Tinh Không</div>
+                    <div class="movie-trending-sub">Swallowed Star</div>
+                </div>
+            </div>
         </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauladailuc2.jpg" alt="Đấu La Đại Lục 2: Tuyệt Thế Đường Môn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu La Đại Lục 2: Tuyệt Thế Đường Môn</div>
+                    <div class="movie-trending-sub">Douluo Dalu II: Jue Shi Tang Men</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thananvuongtoa.jpg" alt="Thần Ấn Vương Tọa" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thần Ấn Vương Tọa</div>
+                    <div class="movie-trending-sub">Throne Of Seal</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/dauphathuongkhung.jpg" alt="Đấu Phá Thương Khung" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Đấu Phá Thương Khung</div>
+                    <div class="movie-trending-sub">Fights Break Sphere S</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/phamnhan.jpg" alt="Phàm Nhân Tu Tiên" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Phàm Nhân Tu Tiên</div>
+                    <div class="movie-trending-sub">Fanren Xiu Xian Chuan S3</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/tiennghich.png" alt="Tiên Nghịch" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Tiên Nghịch</div>
+                    <div class="movie-trending-sub">Xian Ni</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/mucthanky.jpg" alt="Mục Thần Ký" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Mục Thần Ký</div>
+                    <div class="movie-trending-sub">Mu Shen Ji</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/vudongcankhon.webp" alt="Vũ Động Càn Khôn" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Vũ Động Càn Khôn</div>
+                    <div class="movie-trending-sub">Wu Dong Qian Kun</div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="movie-card-trending">
+                <img src="~/Upload/Banner/thegioihoanmy.jpg" alt="Thế Giới Hoàn Mỹ" class="movie-trending-img">
+                <div class="movie-trending-info">
+                    <div class="movie-trending-title">Thế Giới Hoàn Mỹ</div>
+                    <div class="movie-trending-sub">Perfect World</div>
+                </div>
+            </div>
+        </div>
+        <!-- ... Thêm slide cho phim khác nếu muốn -->
     </div>
-</header>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
 
-<main class="container py-5">
-
-    <h2 class="text-center mb-4" style="color: #ffc107;">
-        <i class="fas fa-fire"></i> <b>ĐANG THỊNH HÀNH</b>
-    </h2>
-
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 movie-grid justify-content-center">
-
-        <div class="col" style="max-width: 250px;">
-            <div class="card h-100 movie-card-item">
-                <img src="/Banner/daupha.jpg" class="card-img-top" alt="Đấu Phá Thương Khung">
-                <div class="rank-badge">1</div>
-                <div class="rating-badge">4.0</div>
-                <div class="card-body">
-                    <h5 class="card-title text-truncate">Đấu Phá Thương Khung</h5>
-                    <p class="card-text text-muted">Fights Break Sphere S</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col" style="max-width: 250px;">
-            <div class="card h-100 movie-card-item">
-                <img src="/Banner/tiennghich.jpg" class="card-img-top" alt="Tiên Nghịch">
-                <div class="rank-badge">2</div>
-                <div class="rating-badge">4.5</div>
-                <div class="card-body">
-                    <h5 class="card-title text-truncate">Tiên Nghịch</h5>
-                    <p class="card-text text-muted">Xian Ni</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col" style="max-width: 250px;">
-            <div class="card h-100 movie-card-item">
-                <img src="/Banner/muthanky.jpg" class="card-img-top" alt="Mục Thần Ký">
-                <div class="rank-badge">3</div>
-                <div class="rating-badge">4.6</div>
-                <div class="card-body">
-                    <h5 class="card-title text-truncate">Mục Thần Ký</h5>
-                    <p class="card-text text-muted">Mu Shen Ji</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col" style="max-width: 250px;">
-            <div class="card h-100 movie-card-item">
-                <img src="/Banner/phamnhan.jpg" class="card-img-top" alt="Phàm Nhân Tu Tiên">
-                <div class="rank-badge">4</div>
-                <div class="rating-badge">4.4</div>
-                <div class="card-body">
-                    <h5 class="card-title text-truncate">Phàm Nhân Tu Tiên</h5>
-                    <p class="card-text text-muted">Fanren Xiu Xian Chuan S3</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col" style="max-width: 250px;">
-            <div class="card h-100 movie-card-item">
-                <img src="/Banner/thegioi.jpg" class="card-img-top" alt="Thế Giới Hoàn Mỹ">
-                <div class="rank-badge">5</div>
-                <div class="rating-badge">4.3</div>
-                <div class="card-body">
-                    <h5 class="card-title text-truncate">Thế Giới Hoàn Mỹ</h5>
-                    <p class="card-text text-muted">Fanren Xiu Xian Chuan S3</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</main>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.trending-slider', {
+        slidesPerView: 4,
+        spaceBetween: 24,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        loop: true,
+        breakpoints: {
+            1200: { slidesPerView: 4 },
+            900: { slidesPerView: 3 },
+            600: { slidesPerView: 2 },
+            0: { slidesPerView: 1 }
+        }
+    });
+</script>
