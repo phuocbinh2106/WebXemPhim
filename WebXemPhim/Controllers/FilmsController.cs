@@ -18,37 +18,36 @@ namespace WebXemPhim.Controllers
         // GET: Films
         public ActionResult Index()
         {
-            return View(db.Films.ToList());
+            var latestFilms = db.Films
+                    .OrderByDescending(f => f.CreatedAt) // sắp xếp theo ngày tạo
+                    .Take(4) // chỉ 4 phim
+                    .ToList();
+            return View(latestFilms);
         }
-
-        // GET: Films/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult MoreFilms(int page = 1, int pageSize = 8)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Film film = db.Films.Find(id);
-            if (film == null)
-            {
-                return HttpNotFound();
-            }
-            return View(film);
-        }
+            var films = db.Films
+                          .OrderByDescending(f => f.CreatedAt)
+                          .Skip((page - 1) * pageSize) // bỏ qua các phim cũ
+                          .Take(pageSize) // lấy số phim theo trang
+                          .ToList();
 
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalFilms = db.Films.Count();
+
+            return View(films);
+        }
         // GET: Films/Create
         public ActionResult Create()
         {
+            // Nếu muốn chọn thể loại khi tạo phim
             ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View();
         }
-
-        // POST: Films/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Film film, HttpPostedFileBase Thumbnail)
+        public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
         {
             if (ModelState.IsValid)
             {
@@ -71,6 +70,21 @@ namespace WebXemPhim.Controllers
             return View(film);
         }
 
+        // GET: Films/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Film film = db.Films.Find(id);
+            if (film == null)
+            {
+                return HttpNotFound();
+            }
+            return View(film);
+        }
+        
         // GET: Films/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -136,5 +150,6 @@ namespace WebXemPhim.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }
