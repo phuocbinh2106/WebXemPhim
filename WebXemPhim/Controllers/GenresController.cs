@@ -14,6 +14,11 @@ namespace WebXemPhim.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
+        public PartialViewResult GenreDropdown()
+        {
+            var genres = db.Genres.ToList();
+            return PartialView("_GenreDropdown", genres);
+        }
         // GET: Genres
         public ActionResult Index()
         {

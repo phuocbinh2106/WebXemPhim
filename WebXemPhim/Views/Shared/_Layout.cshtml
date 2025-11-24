@@ -191,6 +191,23 @@
             padding: 20px 0;
             margin-top: 40px;
         }
+        /* Thanh dropdown thể loại*/
+        .genre-dropdown-menu {
+            background: #233348 !important;
+            border-radius: 8px;
+            min-width: 210px;
+        }
+
+            .genre-dropdown-menu .dropdown-item {
+                color: #fff !important;
+                font-size: 1.1em;
+                padding: 10px 24px;
+            }
+
+                .genre-dropdown-menu .dropdown-item:hover {
+                    background: #1f2736 !important;
+                    color: #FFD800 !important;
+                }
     </style>
 </head>
 <body>
@@ -200,7 +217,7 @@
             <a class="navbar-brand" href="@Url.Action("Index", "Home")">🎬HoatHinh3D</a>
             <form class="modern-search-bar">
                 <h3 class="search-icon"><i class="fa fa-search"></i></h3>
-                <input type="text" placeholder="Search..." />
+                <input type="text" placeholder="Tìm Kiếm ..." />
             </form>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
@@ -267,18 +284,28 @@
         </div>
     </nav>
     <!-- MENU NGANG -->
-    <nav class="main-menu">
-        <ul>
-            <li><a href="/"><i class="fas fa-home"></i> Trang chủ</a></li>
-            <li><a href="#">Thể Loại <i class="fas fa-chevron-down" style="font-size:0.9em;"></i></a></li>
-            <li><a href="#">Phim Lẻ</a></li>
-            <li><a href="#">Đang Chiếu <i class="fas fa-sync-alt"></i></a></li>
-            <li><a href="#">Lịch Chiếu <i class="fas fa-calendar-alt"></i></a></li>
-            <li><a href="#"><i class="fas fa-check-circle"></i> Hoàn Thành</a></li>
-            <li><a href="#"><i class="fas fa-trophy"></i> Top 10 HH3D</a></li>
-            <li><a href="#"><i class="fas fa-thumbs-up"></i> Đánh Giá Cao</a></li>
-        </ul>
+    <nav class="navbar navbar-expand-lg" style="background:#1F2021;">
+        <div class="container">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="fas fa-home"></i> Trang chủ</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="genreDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Thể Loại <i class="fas fa-chevron-down"></i>
+                    </a>
+                    @Html.Action("GenreDropdown", "Genres")
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Phim Lẻ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Đang Chiếu <i class="fas fa-sync-alt"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Lịch Chiếu <i class="fas fa-calendar-alt"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Hoàn Thành</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-trophy"></i> Top 10 HH3D</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-thumbs-up"></i> Đánh Giá Cao</a></li>
+            </ul>
+        </div>
     </nav>
+
 
     <div class="container mt-4">
         @RenderBody()
@@ -287,7 +314,6 @@
     <footer>
         <p>&copy; @DateTime.Now.Year - HoatHinh3D | Thiết kế bởi LinhDepZaiSo1VN 🎥</p>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
