@@ -130,6 +130,7 @@
     <Compile Include="Models\Episode.cs" />
     <Compile Include="Models\Favourite.cs" />
     <Compile Include="Models\Film.cs" />
+    <Compile Include="Models\FilmDetailsViewModel.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Schedule.cs" />
