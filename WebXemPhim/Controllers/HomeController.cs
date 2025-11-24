@@ -12,7 +12,12 @@ namespace WebXemPhim.Controllers
         private AppDbContext db = new AppDbContext();
         public ActionResult Index()
         {
-            return View();
+            // Lấy 8 phim mới nhất theo ngày tạo (CreatedAt) hoặc theo ID nếu không có trường này
+            var films = db.Films
+                .OrderByDescending(f => f.CreatedAt) // Nếu không có CreatedAt => OrderByDescending(f => f.FilmId)
+                .Take(8)
+                .ToList();
+            return View(films); // Sử dụng model là List<Film>
         }
 
         public ActionResult About()

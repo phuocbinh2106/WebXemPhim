@@ -18,11 +18,10 @@ namespace WebXemPhim.Controllers
         // GET: Films
         public ActionResult Index()
         {
-            var latestFilms = db.Films
-                    .OrderByDescending(f => f.CreatedAt) // sắp xếp theo ngày tạo
-                    .Take(4) // chỉ 4 phim
-                    .ToList();
-            return View(latestFilms);
+            var films = db.Films
+                .OrderByDescending(f => f.CreatedAt) // hoặc FilmId nếu không có ngày tạo
+                .ToList();
+            return View(films);
         }
         public ActionResult MoreFilms(int page = 1, int pageSize = 8)
         {
@@ -37,6 +36,12 @@ namespace WebXemPhim.Controllers
             ViewBag.TotalFilms = db.Films.Count();
 
             return View(films);
+        }
+        public ActionResult Watch(int id, int ep)
+        {
+            var episode = db.Episodes.FirstOrDefault(e => e.FilmId == id && e.EpisodeNumber == ep);
+            if (episode == null) return HttpNotFound();
+            return View(episode);
         }
         // GET: Films/Create
         public ActionResult Create()
@@ -77,7 +82,11 @@ namespace WebXemPhim.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Film film = db.Films.Find(id);
+            Film film = db.Films
+                .Include(f => f.Episodes)
+                .Include(f => f.Genres)
+                .FirstOrDefault(f => f.FilmId == id);
+
             if (film == null)
             {
                 return HttpNotFound();
