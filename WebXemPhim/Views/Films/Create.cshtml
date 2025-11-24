@@ -1,131 +1,63 @@
 ﻿@model WebXemPhim.Models.Film
-
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm phim mới";
 }
 
-<h2>Create</h2>
+<h2 class="text-light mb-4">Thêm phim mới</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Films", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Film</h4>
-        <hr />
+    <div class="bg-dark text-light rounded p-4 shadow-lg" style="max-width:700px; margin:auto">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Title, "Tên phim", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control bg-secondary text-light" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.OriginalTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OriginalTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OriginalTitle, "", new { @class = "text-danger" })
-            </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.OriginalTitle, "Tên gốc", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.OriginalTitle, new { @class = "form-control bg-secondary text-light" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Description, "Mô tả", new { @class = "form-label" })
+            @Html.TextAreaFor(m => m.Description, 4, 50, new { @class = "form-control bg-secondary text-light" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReleaseYear, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReleaseYear, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReleaseYear, "", new { @class = "text-danger" })
-            </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.ReleaseYear, "Năm phát hành", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.ReleaseYear, new { @class = "form-control bg-secondary text-light" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsMovie, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsMovie)
-                    @Html.ValidationMessageFor(model => model.IsMovie, "", new { @class = "text-danger" })
-                </div>
-            </div>
+        <div class="mb-3">
+            <label class="form-label">Thể loại</label>
+            @Html.ListBox("SelectedGenreIds", ViewBag.SelectedGenreIds as MultiSelectList, new { @class = "form-control bg-secondary text-light", style = "height:150px;" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsCompleted, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsCompleted)
-                    @Html.ValidationMessageFor(model => model.IsCompleted, "", new { @class = "text-danger" })
-                </div>
-            </div>
+        <div class="mb-3 form-check">
+            @Html.CheckBoxFor(m => m.IsMovie, new { @class = "form-check-input" })
+            @Html.LabelFor(m => m.IsMovie, "Phim bộ", new { @class = "form-check-label" })
+        </div>
+        <div class="mb-3 form-check">
+            @Html.CheckBoxFor(m => m.IsCompleted, new { @class = "form-check-input" })
+            @Html.LabelFor(m => m.IsCompleted, "Hoàn thành", new { @class = "form-check-label" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EpsisodeCount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EpsisodeCount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EpsisodeCount, "", new { @class = "text-danger" })
-            </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.EpsisodeCount, "Số tập (phim bộ)", new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.EpsisodeCount, new { @class = "form-control bg-secondary text-light" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ThumbnailUrl, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ThumbnailUrl, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ThumbnailUrl, "", new { @class = "text-danger" })
-            </div>
+        <div class="mb-3">
+            <label class="form-label">Ảnh nền phim</label>
+            <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept="image/*" />
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedAt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdateAt, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdateAt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdateAt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ViewCount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ViewCount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ViewCount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AverageRating, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AverageRating, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AverageRating, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+        <button type="submit" class="btn btn-light w-100 mt-3 fw-bold">Tạo phim</button>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

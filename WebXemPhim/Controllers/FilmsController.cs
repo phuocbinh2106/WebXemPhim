@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -38,6 +39,7 @@ namespace WebXemPhim.Controllers
         // GET: Films/Create
         public ActionResult Create()
         {
+            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View();
         }
 
@@ -46,15 +48,26 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FilmId,Title,OriginalTitle,Description,ReleaseYear,IsMovie,IsCompleted,EpsisodeCount,ThumbnailUrl,CreatedAt,UpdateAt,ViewCount,AverageRating")] Film film)
+        public ActionResult Create(Film film, HttpPostedFileBase Thumbnail)
         {
             if (ModelState.IsValid)
             {
+                if (Thumbnail != null && Thumbnail.ContentLength > 0)
+                {
+                    string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
+                    string path = Server.MapPath("~/Upload/Banner" + fileName);
+                    Thumbnail.SaveAs(path);
+                    film.ThumbnailUrl = "/Upload/Banner/" + fileName;
+                }
+
                 db.Films.Add(film);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            // Nếu có lỗi thì quay lại view với model hiện tại
+            // Đồng thời cần truyền lại MultiSelectList nếu có dùng chọn thể loại nhiều
+            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View(film);
         }
 
