@@ -248,6 +248,8 @@ footer {
 }
 
 .movie-card-trending {
+    width: 220px;
+    height: 340px;
     position: relative;
     border-radius: 10px;
     overflow: hidden;
@@ -279,7 +281,7 @@ footer {
 }
 
 .movie-trending-title {
-    color: #fff;
+    color: #FFFFFF;
     font-size: 1.19em;
     font-weight: 700;
     margin-bottom: 4px;
@@ -290,12 +292,15 @@ footer {
 }
 
 .movie-trending-sub {
-    color: #fff;
+    color: #FFFFFF;
     font-size: 0.93em;
     font-weight: 400;
     opacity: 0.85;
     letter-spacing: 0.08px;
     text-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .trending-title {
