@@ -39,12 +39,6 @@ namespace WebXemPhim.Controllers
             return View(episode); // View này để trình chiếu video
         }
 
-        public ActionResult Watch(int id)
-        {
-            var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);
-            if (episode == null) return HttpNotFound();
-            return View(episode);
-        }
         // GET: Episodes/Details/5
         public ActionResult Details(int? id)
         {
