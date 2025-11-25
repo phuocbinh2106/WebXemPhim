@@ -15,56 +15,59 @@
         }
         <!-- Poster -->
         <div class="col-md-3 col-12 d-flex flex-column align-items-center">
-            <img src="@Url.Content(Model.ThumbnailUrl)" alt="@Model.Title"
-                 class="film-details-poster rounded shadow mb-2" />
-            @if (firstEp != null)
-            {
-                <a href="@Url.Action("Watch", "Episodes", new { id = firstEp.EpisodeId })" class="btn btn-warning mt-2">
-                    <i class="fa fa-play"></i> Xem Phim
-                </a>
-            }
-            else
-            {
-                <button class="btn btn-warning mt-2" disabled>
-                    <i class="fa fa-play"></i> Không có tập để xem
-                </button>
-            }
-        </div>
-        <!-- Info -->
-        <div class="col-md-9 col-12">
-            <div class="film-details-block">
-                <span class="label-detail">Tên</span>
-                <span class="film-details-title ms-2">@Model.Title</span>
-            </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block">
-                <span class="label-detail">Tên Khác</span>
-                <span class="film-details-othertitle ms-2">@Model.OriginalTitle</span>
-            </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block d-flex align-items-center flex-wrap">
-                <span class="label-detail me-2">Thể Loại</span>
-                <div class="film-genre-list d-flex flex-wrap align-items-center">
-                    @foreach (var g in Model.Genres ?? Enumerable.Empty<WebXemPhim.Models.Genre>())
+            <div class="film-details-main">
+                <div class="film-details-poster-col">
+                    <img src="@Url.Content(Model.ThumbnailUrl)" class="film-details-poster rounded" alt="@Model.Title"
+                         style="width: 200.98px; height: 301.46px; object-fit: cover;" />
+                    @if (firstEp != null)
                     {
-                        <div class="film-genre-chip me-2 mb-1">@g.GenreName</div>
+                        <a href="@Url.Action("Watch", "Episodes", new { id = firstEp.EpisodeId })" class="btn btn-warning mt-2">
+                            <i class="fa fa-play"></i> Xem Phim
+                        </a>
+                    }
+                    else
+                    {
+                        <button class="btn btn-warning mt-2" disabled>
+                            <i class="fa fa-play"></i> Không có tập để xem
+                        </button>
                     }
                 </div>
             </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block">
-                <span class="label-detail">Tập mới nhất</span>
-                <span class="badge bg-info ms-2">@("Tập " + (Model.Episodes?.Max(e=>e.EpisodeNumber) ?? 1))</span>
+            <!-- Info -->
+            <div class="film-details-info-col flex-grow-1">
+                <div class="film-details-block">
+                    <span class="label-detail">Tên</span>
+                    <span class="film-details-title ms-2">@Model.Title</span>
+                </div>
+                <div class="divider-line"></div>
+                <div class="film-details-block">
+                    <span class="label-detail">Tên Khác</span>
+                    <span class="film-details-othertitle ms-2">@Model.OriginalTitle</span>
+                </div>
+                <div class="divider-line"></div>
+                <div class="film-details-block d-flex align-items-center flex-wrap">
+                    <span class="label-detail me-2">Thể Loại</span>
+                    <div class="film-genre-list d-flex flex-wrap align-items-center">
+                        @foreach (var g in Model.Genres ?? Enumerable.Empty<WebXemPhim.Models.Genre>())
+                        {
+                            <div class="film-genre-chip me-2 mb-1">@g.GenreName</div>
+                        }
+                    </div>
+                </div>
+                <div class="divider-line"></div>
+                <div class="film-details-block">
+                    <span class="label-detail">Tập mới nhất</span>
+                    <span class="badge bg-info ms-2">@("Tập " + (Model.Episodes?.Max(e=>e.EpisodeNumber) ?? 1))</span>
+                </div>
+                <div class="divider-line"></div>
+                <div class="film-details-block">
+                    <span class="label-detail">Thông Tin Khác</span>
+                    <span class="ms-2"><i class="fa fa-calendar-alt"></i> @Model.ReleaseYear</span>
+                    <span class="ms-4"><i class="fa fa-film"></i> @((Model.EpsisodeCount ?? Model.Episodes?.Count) ?? 1) Tập</span>
+                </div>
+                <div class="divider-line"></div>
             </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block">
-                <span class="label-detail">Thông Tin Khác</span>
-                <span class="ms-2"><i class="fa fa-calendar-alt"></i> @Model.ReleaseYear</span>
-                <span class="ms-4"><i class="fa fa-film"></i> @((Model.EpsisodeCount ?? Model.Episodes?.Count) ?? 1) Tập</span>
-            </div>
-            <div class="divider-line"></div>
         </div>
-    </div>
 
     <!-- Phần chọn tập -->
     <div class="card mt-4" style="background:#3333334A;">

@@ -528,3 +528,45 @@ footer {
 .btn-header:not(:first-child) {
     margin-left: 12px;
 }
+
+.film-details-main {
+    margin-top: 14px; /* Ít margin phía trên, sát menu hơn */
+    margin-left: 0 !important; /* Gần sát viền trái của container */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    display: flex;
+}
+
+.film-details-poster-col {
+    min-width: 240px;
+    max-width: 260px;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.film-details-poster {
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    box-shadow: 0 4px 16px #0008;
+}
+
+.film-details-info-col {
+    padding-left: 36px;
+    padding-top: 6px;
+    margin-top: 0 !important;
+}
+
+@media (max-width: 900px) {
+    .film-details-main {
+        flex-direction: column;
+    }
+
+    .film-details-info-col {
+        padding-left: 0 !important;
+        padding-top: 18px;
+    }
+}
+
