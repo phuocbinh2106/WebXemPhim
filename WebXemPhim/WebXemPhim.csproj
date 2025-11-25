@@ -132,6 +132,7 @@
     <Compile Include="Models\Episode.cs" />
     <Compile Include="Models\Favourite.cs" />
     <Compile Include="Models\Film.cs" />
+    <Compile Include="Models\FilmDetailsViewModel.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Schedule.cs" />
@@ -208,7 +209,6 @@
     <Content Include="Views\Genres\Details.cshtml" />
     <Content Include="Views\Genres\Edit.cshtml" />
     <Content Include="Views\Genres\Index.cshtml" />
-    <Content Include="Views\Home\MoreFilms.cshtml" />
     <Content Include="Views\Genres\_GenreDropdown.cshtml" />
     <Content Include="Views\Episodes\Create.cshtml" />
     <Content Include="Views\Episodes\Delete.cshtml" />

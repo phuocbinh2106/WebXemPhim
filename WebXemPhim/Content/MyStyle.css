@@ -402,3 +402,23 @@ body {
     font-weight: 600;
     margin-top: 20px;
 }
+
+/* Index Films */
+body {
+    background: #0a0e21;
+}
+
+.film-card {
+    transition: transform .15s, box-shadow .15s;
+    border-radius: 0.7rem;
+}
+
+    .film-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px #0005;
+    }
+
+.card-title {
+    font-weight: 500;
+    color: #fff;
+}
