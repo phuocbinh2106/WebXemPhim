@@ -6,7 +6,9 @@
 }
 
 <div class="container py-3">
-    <h2 class="mt-5 mb-3 trending-title">@ViewBag.PageTitle</h2>
+    <div class="d-flex justify-content-between mb-3 align-items-center">
+        <h2 class="text-light fw-bold">📽 Phim Mới Cập Nhật</h2>
+    </div>
     <div class="row gx-4 gy-4">
         @foreach (var item in Model)
         {
