@@ -31,6 +31,13 @@ namespace WebXemPhim.Controllers
             }
             // ...
         }
+        public ActionResult Watch(int id)
+        {
+            // id là EpisodeId
+            var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);
+            if (episode == null) return HttpNotFound();
+            return View(episode); // View này để trình chiếu video
+        }
 
         public ActionResult Watch(int id)
         {
@@ -86,15 +93,23 @@ namespace WebXemPhim.Controllers
         // GET: Episodes/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Episode episode = db.Episodes.Find(id);
-            if (episode == null)
-            {
-                return HttpNotFound();
-            }
+            if (episode == null) return HttpNotFound();
+
+            // Lấy danh sách file video trong thư mục Upload/Videos
+            string videoDirPath = Server.MapPath("~/Upload/Videos/");
+            var videoFileList = Directory.Exists(videoDirPath)
+                ? Directory.GetFiles(videoDirPath)
+                    .Select(f => new SelectListItem
+                    {
+                        Text = Path.GetFileName(f),
+                        Value = "/Upload/Videos/" + Path.GetFileName(f)
+                    }).ToList()
+                : new List<SelectListItem>();
+
+            ViewBag.VideoFiles = videoFileList;
+
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title", episode.FilmId);
             return View(episode);
         }
