@@ -207,13 +207,13 @@
     <Content Include="Views\Genres\Details.cshtml" />
     <Content Include="Views\Genres\Edit.cshtml" />
     <Content Include="Views\Genres\Index.cshtml" />
-    <Content Include="Views\Home\MoreFilms.cshtml" />
     <Content Include="Views\Genres\_GenreDropdown.cshtml" />
     <Content Include="Views\Episodes\Create.cshtml" />
     <Content Include="Views\Episodes\Delete.cshtml" />
     <Content Include="Views\Episodes\Details.cshtml" />
     <Content Include="Views\Episodes\Edit.cshtml" />
     <Content Include="Views\Episodes\Index.cshtml" />
+    <Content Include="Views\Episodes\Watch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,86 +6,59 @@
 }
 
 <div class="container py-4">
-    <div class="row g-4 text-light">
-        <!-- Poster -->
-        <div class="col-md-3 d-flex justify-content-center align-items-start">
-            <img src="@Model.ThumbnailUrl"
-                 alt="@Model.Title"
-                 class="img-fluid rounded shadow"
-                 style="max-width:260px; max-height:370px; object-fit:cover;" />
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <img src="@Model.ThumbnailUrl" alt="@Model.Title"
+                 class="img-fluid rounded shadow" style="object-fit:cover;max-width:360px;max-height:550px;" />
         </div>
-        <!-- Info -->
-        <div class="col-md-9">
-            <h2 class="fw-bold" style="color:#FFB930; font-size:1.7em;">@Model.Title</h2>
+        <div class="col-md-8 text-light">
+            <h2 class="fw-bold" style="color:#FFB930">@Model.Title</h2>
             @if (!string.IsNullOrEmpty(Model.OriginalTitle))
             {
                 <div class="mb-2 text-info">Tên gốc: @Model.OriginalTitle</div>
             }
-            <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
-                <span class="badge bg-secondary fs-6">@Model.ReleaseYear</span>
-                @foreach (var genre in ViewBag.GenreList as List<WebXemPhim.Models.Genre>)
+            <!-- Thể loại -->
+            <div class="mb-2">
+                <b>Thể loại:</b>
+                @if (Model.Genres != null)
                 {
-                    <span class="badge bg-dark border border-light fw-normal" style="font-size:1em;">@genre.GenreName</span>
-                }
-                @if (Model.IsMovie)
-                {
-                    <span class="badge bg-danger">Phim lẻ</span>
-                }
-                else
-                {
-                    <span class="badge bg-primary">Phim bộ</span>
-                }
-                @if (Model.IsCompleted)
-                {
-                    <span class="badge bg-success">Hoàn thành</span>
-                }
-                else
-                {
-                    <span class="badge bg-warning text-dark">Đang chiếu</span>
-                }
-            </div>
-            <div class="mb-2 small">
-                <span class="me-3"><i class="fa fa-clone"></i> @Model.EpsisodeCount tập</span>
-                <span class="me-3"><i class="fa fa-eye"></i> @Model.ViewCount lượt xem</span>
-                <span class="me-3"><i class="fa fa-calendar"></i> @Model.CreatedAt.ToString("dd/MM/yyyy")</span>
-                <span class="text-warning fw-bold"><i class="fa fa-star"></i> @Model.AverageRating / 10</span>
-            </div>
-            <div class="mb-3 mt-3">
-                <a href="#" class="btn btn-warning fw-bold me-2">Xem Phim</a>
-                <a href="#" class="btn btn-outline-warning me-2">Đánh Giá</a>
-                <a href="#" class="btn btn-outline-light">Theo Dõi <i class="fa fa-heart"></i></a>
-            </div>
-            <div class="mb-4">
-                <span class="badge bg-info text-dark fs-6">
-                    Tập mới nhất:
-                    <b>@(ViewBag.LatestEp ?? "-")</b>
-                </span>
-            </div>
-            <div>
-                <h6 class="mt-3 fw-bold" style="color:#FFB930;">NỘI DUNG</h6>
-                <div class="text-muted bg-dark bg-opacity-50 rounded p-3 mb-3" style="white-space:pre-line;">
-                    @Model.Description
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col text-light">
-            <h6 class="text-info mb-2">Danh sách tập:</h6>
-            <div class="d-flex flex-wrap gap-2 p-2" style="background:#23272b;border-radius:10px;">
-                @if (Model.Episodes != null)
-                {
-                    @foreach (var ep in Model.Episodes.OrderByDescending(e => e.EpisodeNumber))
+                    foreach (var genre in Model.Genres)
                     {
-                        <a class="btn btn-outline-secondary btn-sm rounded-pill mb-1"
-                           href="@Url.Action("Watch", "Films", new { id = Model.FilmId, ep = ep.EpisodeNumber })">@ep.EpisodeNumber</a>
+                        <span class="badge bg-secondary me-1">@genre.GenreName</span>
                     }
                 }
             </div>
+            <!-- Tập mới nhất -->
+            <div class="mb-2">
+                <span class="badge bg-info text-dark fs-6">
+                    Tập mới nhất: <b>
+                        @(Model.Episodes != null && Model.Episodes.Any()
+                            ? Model.Episodes.Max(e => e.EpisodeNumber).ToString()
+                            : "-")
+                    </b>
+                </span>
+            </div>
+            <!-- Thông tin khác -->
+            <div class="mb-2 small">
+                <span class="me-3"><i class="fa fa-calendar"></i> @Model.ReleaseYear</span>
+                <span class="me-3"><i class="fa fa-list-ol"></i> Tổng số tập: @(Model.Episodes != null ? Model.Episodes.Count : 0)</span>
+            </div>
         </div>
     </div>
-    <div class="mt-4 mb-2 text-muted small">
-        Tạo lúc: @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm") |
-        Cập nhật: @(Model.UpdateAt?.ToString("dd/MM/yyyy HH:mm") ?? "Không rõ")
+    <!-- Danh sách tập -->
+    <div class="bg-dark rounded mb-3 p-3">
+        <h5 class="text-info mb-3 fw-bold">Danh sách tập</h5>
+        <div class="d-flex flex-wrap gap-2">
+            @if (Model.Episodes != null)
+            {
+                @foreach (var ep in Model.Episodes.OrderBy(e => e.EpisodeNumber))
+                {
+                    <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })"
+                       class="btn btn-outline-warning btn-sm rounded-pill mb-2">
+                        @ep.EpisodeNumber
+                    </a>
+                }
+            }
+        </div>
     </div>
 </div>

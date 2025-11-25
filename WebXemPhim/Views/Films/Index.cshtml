@@ -1,62 +1,45 @@
 ﻿@model IEnumerable<WebXemPhim.Models.Film>
-
 @{
     ViewBag.Title = "Danh Sách Phim";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="container py-4">
-    <div class="d-flex justify-content-between mb-3 align-items-center">
-        <h2 class="text-light">Phim Mới</h2>
-        @Html.ActionLink("Thêm phim", "Create", null, new { @class = "btn btn-success" })
-    </div>
-
-    <div class="row g-4">
-        @foreach (var item in Model)
-        {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                <div class="card h-100 bg-dark text-light shadow-sm film-card">
-                    <div class="position-relative">
-                        <a href="@Url.Action("Details", "Films", new { id = item.FilmId })">
-                            <img src="@item.ThumbnailUrl" alt="@item.Title" class="card-img-top img-fluid" style="height:260px; object-fit:cover;">
-                            @if ((bool)item.IsMovie)
-                            {
-                                <span class="badge bg-danger position-absolute top-0 start-0 m-1">Phim lẻ</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-primary position-absolute top-0 start-0 m-1">Phim bộ</span>
-                            }
-                            @if ((bool)item.IsCompleted)
-                            {
-                                <span class="badge bg-success position-absolute top-0 end-0 m-1">Trọn bộ</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-1">Đang chiếu</span>
-                            }
-                        </a>
+<h2 class="mb-3">Danh Sách Phim</h2>
+<a class="btn btn-success mb-3" href="@Url.Action("Create")">Thêm phim</a>
+<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+    @foreach (var film in Model)
+    {
+        <div class="col">
+            <div class="card bg-dark text-light border-0 h-100 shadow">
+                <a href="@Url.Action("Details", "Films", new { id = film.FilmId })">
+                    <img src="@film.ThumbnailUrl" class="card-img-top rounded" alt="@film.Title"
+                         style="object-fit:cover;aspect-ratio:3/4;max-height:250px;">
+                </a>
+                <div class="card-body p-2">
+                    <h6 class="fw-bold mb-1">@film.Title</h6>
+                    <div class="text-secondary small mb-1">@film.ReleaseYear</div>
+                    <div>
+                        @if (film.IsMovie)
+                        {
+                            <span class="badge bg-danger">Phim lẻ</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary">Phim bộ</span>
+                        }
+                        @if (film.IsCompleted)
+                        {
+                            <span class="badge bg-success">Hoàn thành</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Đang chiếu</span>
+                        }
                     </div>
-                    <div class="card-body p-2">
-                        <h6 class="card-title mb-1 text-truncate" title="@item.Title">@item.Title</h6>
-                        <div class="small text-muted">
-                            @item.ReleaseYear @if (item.EpsisodeCount > 1)
-                            {<span>- @item.EpsisodeCount tập</span>}
-                        </div>
-                        <div class="mt-1">
-                            <span class="me-2"><i class="bi bi-eye"></i> @item.ViewCount</span>
-                            <span class="text-warning"><i class="bi bi-star-fill"></i> @item.AverageRating</span>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent border-0 p-2">
-                        <a href="@Url.Action("Edit", "Films", new { id = item.FilmId })" class="btn btn-sm btn-light me-1">Sửa</a>
-                        <a href="@Url.Action("Details", "Films", new { id = item.FilmId })" class="btn btn-sm btn-primary me-1">Chi tiết</a>
-                        <a href="@Url.Action("Delete", "Films", new { id = item.FilmId })" class="btn btn-sm btn-danger">Xoá</a>
-                    </div>
+                    <a href="@Url.Action("Details", "Films", new { id = film.FilmId })" class="btn btn-outline-light btn-sm mt-2">Chi tiết</a>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
 
 <style>
