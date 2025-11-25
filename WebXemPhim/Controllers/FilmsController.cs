@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 using WebXemPhim.Models;
+using System.Collections.Generic;
+using System.IO;
 
 namespace WebXemPhim.Controllers
 {
@@ -15,21 +14,61 @@ namespace WebXemPhim.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
-        // GET: Films
-        public ActionResult Index()
+        public ActionResult Filter(int? genreId, bool? isMovie, bool? isOngoing)
         {
-            var films = db.Films
-                .OrderByDescending(f => f.CreatedAt) // hoặc FilmId nếu không có ngày tạo
-                .ToList();
-            return View(films);
+            var films = db.Films.Include(f => f.Genres).AsQueryable();
+
+            // Lọc phim lẻ / phim bộ
+            if (isMovie.HasValue)
+            {
+                films = films.Where(f => f.IsMovie == isMovie.Value);
+                ViewBag.PageTitle = isMovie.Value ? "🎬 Phim Lẻ" : "📺 Phim Bộ";
+            }
+
+            // Lọc phim đang chiếu
+            if (isOngoing.HasValue)
+            {
+                films = films.Where(f => f.IsCompleted == !isOngoing.Value);
+                ViewBag.PageTitle = isOngoing.Value ? "🔥 Đang Chiếu" : "✔ Trọn Bộ";
+            }
+
+            // Lọc theo thể loại (sửa lỗi GenreId)
+            if (genreId.HasValue)
+            {
+                films = films.Where(f => f.Genres.Any(g => g.GenreId == genreId.Value));
+
+                var genre = db.Genres.Find(genreId.Value);
+                if (genre != null)
+                    ViewBag.PageTitle = "🎭 Thể Loại: " + genre.GenreName;
+            }
+
+            return View("Index", films.ToList());
         }
 
-        // GET: Films/Create
-        public ActionResult Create()
+        // GET: Films
+        public ActionResult Index(string type)
         {
-            // Nếu muốn chọn thể loại khi tạo phim
-            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
-            return View();
+            var films = db.Films.AsQueryable();
+
+            // Gán tiêu đề mặc định
+            ViewBag.PageTitle = "📽 Phim Mới Cập Nhật";
+
+            if (type == "movie")        // Phim lẻ
+            {
+                films = films.Where(f => f.IsMovie == true);
+                ViewBag.PageTitle = "🎬 Phim Lẻ";
+            }
+            else if (type == "series")  // Phim bộ
+            {
+                films = films.Where(f => f.IsMovie == false);
+                ViewBag.PageTitle = "📺 Phim Bộ";
+            }
+            else
+            {
+                films = films.OrderByDescending(f => f.CreatedAt).Take(10);
+            }
+
+            return View(films.ToList());
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -37,112 +76,142 @@ namespace WebXemPhim.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Xử lý upload thumbnail như bạn đã có
+                // Lưu ảnh
                 if (Thumbnail != null && Thumbnail.ContentLength > 0)
                 {
                     string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
                     string path = Server.MapPath("~/Upload/Banner/" + fileName);
                     Thumbnail.SaveAs(path);
+
                     film.ThumbnailUrl = "/Upload/Banner/" + fileName;
                 }
 
-                // Gán thể loại (nếu có)
+                // >>> LƯU THỂ LOẠI <<<
                 if (SelectedGenreIds != null)
                 {
-                    film.Genres = new List<Genre>();
-                    foreach (var genreId in SelectedGenreIds)
-                    {
-                        var genre = db.Genres.Find(genreId);
-                        if (genre != null) film.Genres.Add(genre);
-                    }
+                    film.Genres = db.Genres
+                                    .Where(g => SelectedGenreIds.Contains(g.GenreId))
+                                    .ToList();
                 }
 
                 db.Films.Add(film);
-                db.SaveChanges(); // FilmId được sinh ra ở đây
-
-                // TỰ ĐỘNG TẠO EPISODE nếu nhập số tập > 0
-                if (film.EpsisodeCount > 0)
-                {
-                    for (int i = 1; i <= film.EpsisodeCount; i++)
-                    {
-                        var episode = new Episode
-                        {
-                            FilmId = film.FilmId,
-                            EpisodeNumber = i,
-                            Title = $"Tập {i}",
-                            // Nếu cần có trường VideoUrl/ReleaseDate... chỉnh thêm tại đây
-                        };
-                        db.Episodes.Add(episode);
-                    }
-                    db.SaveChanges();
-                }
-
-                return RedirectToAction("Details", new { id = film.FilmId });
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
-            // Nếu có lỗi, quay lại View, truyền lại các giá trị MultiSelectList
             ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View(film);
         }
 
-        // GET: Films/Details/5
+
+
+
+        // GET: Films/Create
+        public ActionResult Create()
+        {
+            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
+            return View();
+        }
+
+        // POST: Films/Create
+        
+
+        // GET: Films/Details
         public ActionResult Details(int? id)
         {
-            var film = db.Films
-                .Include("Genres")
-                .Include("Episodes")
-                .FirstOrDefault(f => f.FilmId == id);
-            if (film == null) return HttpNotFound();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Film film = db.Films.Find(id);
+            if (film == null)
+            {
+                return HttpNotFound();
+            }
             return View(film);
         }
-        
-        // GET: Films/Edit/5
+
+        // GET: Films/Edit
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Film film = db.Films.Find(id);
+
+            var film = db.Films.Include("Genres").FirstOrDefault(f => f.FilmId == id);
             if (film == null)
-            {
                 return HttpNotFound();
-            }
+
+            ViewBag.GenreList = db.Genres.ToList();
             return View(film);
         }
 
-        // POST: Films/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // POST: Films/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FilmId,Title,OriginalTitle,Description,ReleaseYear,IsMovie,IsCompleted,EpsisodeCount,ThumbnailUrl,CreatedAt,UpdateAt,ViewCount,AverageRating")] Film film)
+        public ActionResult Edit(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(film).State = EntityState.Modified;
+                // Lấy bản film cũ + Genres
+                var existingFilm = db.Films.Include("Genres")
+                                           .FirstOrDefault(f => f.FilmId == film.FilmId);
+
+                if (existingFilm == null)
+                    return HttpNotFound();
+
+                // Cập nhật thông tin cơ bản
+                db.Entry(existingFilm).CurrentValues.SetValues(film);
+
+                // Xử lý ảnh
+                if (Thumbnail != null && Thumbnail.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(Thumbnail.FileName);
+                    string path = Server.MapPath("~/Upload/Banner/" + fileName);
+                    Thumbnail.SaveAs(path);
+
+                    existingFilm.ThumbnailUrl = "/Upload/Banner/" + fileName;
+                }
+
+                existingFilm.UpdateAt = DateTime.Now;
+
+                // RESET GENRES
+                existingFilm.Genres.Clear();
+
+                // ADD GENRES LẠI
+                if (SelectedGenreIds != null)
+                {
+                    foreach (int gid in SelectedGenreIds)
+                    {
+                        var genre = db.Genres.Find(gid);
+                        if (genre != null)
+                            existingFilm.Genres.Add(genre);
+                    }
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.GenreList = db.Genres.ToList();
             return View(film);
         }
 
-        // GET: Films/Delete/5
+
+        // GET: Films/Delete
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             Film film = db.Films.Find(id);
             if (film == null)
-            {
                 return HttpNotFound();
-            }
+
             return View(film);
         }
 
-        // POST: Films/Delete/5
+        // POST: Films/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -156,11 +225,8 @@ namespace WebXemPhim.Controllers
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 db.Dispose();
-            }
             base.Dispose(disposing);
         }
-
     }
 }
