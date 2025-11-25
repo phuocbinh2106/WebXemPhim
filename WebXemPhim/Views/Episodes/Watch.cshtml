@@ -1,4 +1,6 @@
 ﻿@model WebXemPhim.Models.Episode
+@using System.Linq
+
 
 @{
     ViewBag.Title = Model.Film.Title + " - Tập " + Model.EpisodeNumber;
@@ -73,7 +75,7 @@
             <div class="input-group mb-4">
                 <textarea name="Content" class="form-control rounded-start-4 border-0 shadow-sm "
                           placeholder="Nhập bình luận..." required rows="2" style="resize:none; font-size:1rem;"></textarea>
-                <button type="submit" class="btn btn-info rounded-end-4 fw-bold px-4" style="height:auto; ;">
+                <button type="submit" class="btn btn-info rounded-end-4 fw-bold px-4" style="height:auto;">
                     Gửi bình luận
                 </button>
             </div>
@@ -86,10 +88,10 @@
         {
             <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
                 <img src="@(string.IsNullOrEmpty(cmt.User?.Avatar) ? "/images/avatar-default.png" : cmt.User.Avatar)"
-                      width="36" height="36"
-                      class="rounded-circle border border-warning me-3"
-                      alt="avatar"
-                      style="object-fit:cover;" />
+                     width="36" height="36"
+                     class="rounded-circle border border-warning me-3"
+                     alt="avatar"
+                     style="object-fit:cover;" />
                 <div class="flex-grow-1">
                     <div class="fw-semibold text-light" style="font-size:1rem;">
                         @(string.IsNullOrWhiteSpace(cmt.User?.Nickname) ? cmt.User.Username : cmt.User.Nickname)
