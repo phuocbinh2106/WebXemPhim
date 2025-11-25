@@ -33,10 +33,12 @@
         </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Video tập phim</label>
-        <input type="file" name="VideoFile" class="form-control bg-secondary text-light" accept="video/*" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.VideoUrl)
+        @Html.DropDownListFor(model => model.VideoUrl, (IEnumerable<SelectListItem>)ViewBag.VideoFiles, "— Chọn file video —", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.VideoUrl)
     </div>
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.PublishedAt, htmlAttributes: new { @class = "control-label col-md-2" })

@@ -126,6 +126,10 @@
     <Compile Include="Migrations\202511230928201_InitialCreate.Designer.cs">
       <DependentUpon>202511230928201_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202511251226566_AddAdmin.cs" />
+    <Compile Include="Migrations\202511251226566_AddAdmin.Designer.cs">
+      <DependentUpon>202511251226566_AddAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -216,6 +220,7 @@
     <Content Include="Views\Episodes\Edit.cshtml" />
     <Content Include="Views\Episodes\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Episodes\Watch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -225,6 +230,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202511230928201_InitialCreate.resx">
       <DependentUpon>202511230928201_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202511251226566_AddAdmin.resx">
+      <DependentUpon>202511251226566_AddAdmin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

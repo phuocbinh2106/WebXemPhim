@@ -40,7 +40,7 @@
     <div class="d-flex flex-wrap gap-2">
         @foreach (var ep in Model.Episodes.OrderByDescending(e => e.EpisodeNumber))
         {
-            <a class="btn btn-outline-secondary" href="@Url.Action("Details", "Episodes", new { id = Model.FilmId, ep = ep.EpisodeNumber })">@ep.EpisodeNumber</a>
+            <a class="btn btn-outline-secondary" href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })">Tập @ep.EpisodeNumber</a>
         }
     </div>
 </div>
