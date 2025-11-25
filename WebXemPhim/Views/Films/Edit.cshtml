@@ -24,23 +24,23 @@
                             @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.OriginalTitle,"Tên gốc", new { @class = "form-label" })
+                            @Html.LabelFor(m => m.OriginalTitle, "Tên gốc", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.OriginalTitle, new { @class = "form-control bg-secondary text-light" })
                             @Html.ValidationMessageFor(m => m.OriginalTitle, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Description,"Mô tả", new { @class = "form-label" })
+                            @Html.LabelFor(m => m.Description, "Mô tả", new { @class = "form-label" })
                             @Html.TextAreaFor(m => m.Description, 4, 0, new { @class = "form-control bg-secondary text-light", @style = "resize:vertical" })
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.ReleaseYear,"Năm phát hành", new { @class = "form-label" })
+                            @Html.LabelFor(m => m.ReleaseYear, "Năm phát hành", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.ReleaseYear, new { @class = "form-control bg-secondary text-light", type = "number" })
                             @Html.ValidationMessageFor(m => m.ReleaseYear, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-3">
-                            @Html.Label("Thể loại", htmlAttributes: new { @class = "form-label" })
-                            @Html.TextArea("Genre", ViewBag.Genre as string, 2, 0, new { @class = "form-control bg-secondary text-light" })
+                            <label class="form-label">Thể loại</label>
+                            @Html.ListBox("SelectedGenreIds", ViewBag.SelectedGenreIds as MultiSelectList, new { @class = "form-control bg-secondary text-light", style = "height:150px;" })
                         </div>
                         <div class="mb-3">
                             <div class="form-check d-inline-block me-3">
