@@ -70,41 +70,6 @@ namespace WebXemPhim.Controllers
 
             return View(films.ToList());
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
-        {
-            if (ModelState.IsValid)
-            {
-                // Lưu ảnh
-                if (Thumbnail != null && Thumbnail.ContentLength > 0)
-                {
-                    string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
-                    string path = Server.MapPath("~/Upload/Banner/" + fileName);
-                    Thumbnail.SaveAs(path);
-
-                    film.ThumbnailUrl = "/Upload/Banner/" + fileName;
-                }
-
-                // >>> LƯU THỂ LOẠI <<<
-                if (SelectedGenreIds != null)
-                {
-                    film.Genres = db.Genres
-                                    .Where(g => SelectedGenreIds.Contains(g.GenreId))
-                                    .ToList();
-                }
-
-                db.Films.Add(film);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
-            return View(film);
-        }
-
-
-
 
         // GET: Films/Create
         public ActionResult Create()
@@ -114,7 +79,59 @@ namespace WebXemPhim.Controllers
         }
 
         // POST: Films/Create
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
+        {
+            if (ModelState.IsValid)
+            {
+                // Xử lý upload thumbnail như bạn đã có
+                if (Thumbnail != null && Thumbnail.ContentLength > 0)
+                {
+                    string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
+                    string path = Server.MapPath("~/Upload/Banner/" + fileName);
+                    Thumbnail.SaveAs(path);
+                    film.ThumbnailUrl = "/Upload/Banner/" + fileName;
+                }
+
+                // Gán thể loại (nếu có)
+                if (SelectedGenreIds != null)
+                {
+                    film.Genres = new List<Genre>();
+                    foreach (var genreId in SelectedGenreIds)
+                    {
+                        var genre = db.Genres.Find(genreId);
+                        if (genre != null) film.Genres.Add(genre);
+                    }
+                }
+
+                db.Films.Add(film);
+                db.SaveChanges(); // FilmId được sinh ra ở đây
+
+                // TỰ ĐỘNG TẠO EPISODE nếu nhập số tập > 0
+                if (film.EpsisodeCount > 0)
+                {
+                    for (int i = 1; i <= film.EpsisodeCount; i++)
+                    {
+                        var episode = new Episode
+                        {
+                            FilmId = film.FilmId,
+                            EpisodeNumber = i,
+                            Title = $"Tập {i}",
+                            // Nếu cần có trường VideoUrl/ReleaseDate... chỉnh thêm tại đây
+                        };
+                        db.Episodes.Add(episode);
+                    }
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Details", new { id = film.FilmId });
+            }
+
+            // Nếu có lỗi, quay lại View, truyền lại các giá trị MultiSelectList
+            ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
+            return View(film);
+        }
 
         // GET: Films/Details
         public ActionResult Details(int? id)
