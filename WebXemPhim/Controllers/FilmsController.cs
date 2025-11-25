@@ -219,7 +219,7 @@ namespace WebXemPhim.Controllers
             Film film = db.Films.Find(id);
             db.Films.Remove(film);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Admin");
         }
 
         protected override void Dispose(bool disposing)

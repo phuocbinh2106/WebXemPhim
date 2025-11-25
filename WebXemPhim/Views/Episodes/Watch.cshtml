@@ -1,27 +1,18 @@
 ﻿@model WebXemPhim.Models.Episode
 
 @{
-    ViewBag.Title = $"{Model.Film.Title} - Tập {Model.EpisodeNumber}";
+    ViewBag.Title = Model.Film.Title + " - Tập " + Model.EpisodeNumber;
 }
-
-<div class="container py-5">
-    <h3 class="fw-bold text-warning">@Model.Film.Title - Tập @Model.EpisodeNumber</h3>
-    <div class="mb-2">
-        <span class="small text-info">@Model.Title</span>
-    </div>
-    <div class="mb-4">
-        @if (!string.IsNullOrEmpty(Model.VideoUrl))
-        {
-            <video controls width="100%" poster="@Model.Film.ThumbnailUrl">
-                <source src="@Model.VideoUrl" type="video/mp4" />
-                Trình duyệt của bạn không hỗ trợ video.
-            </video>
-        }
-        else
-        {
-            <div class="alert alert-warning">Chưa có video cho tập này.</div>
-        }
-    </div>
-    <a href="@Url.Action("Details", "Films", new { id = Model.FilmId })" class="btn btn-outline-light">Quay lại trang phim</a>
-</div>
+<h3>@Model.Film.Title - Tập @Model.EpisodeNumber</h3>
+@if (!string.IsNullOrEmpty(Model.VideoUrl))
+{
+    <video controls style="width: 100%">
+        <source src="@Model.VideoUrl" type="video/mp4" />
+    </video>
+}
+else
+{
+    <div class="alert alert-warning">Chưa có video cho tập này.</div>
+}
+<a href="@Url.Action("Details", "Films", new { id = Model.FilmId })" class="btn btn-outline-light mt-2">Quay lại trang phim</a>
 

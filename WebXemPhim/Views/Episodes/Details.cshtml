@@ -1,66 +1,41 @@
 ﻿@model WebXemPhim.Models.Episode
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Xem tập phim";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // nếu bạn dùng layout chung
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Episode</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Film.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Film.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EpisodeNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EpisodeNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VideoUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VideoUrl)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PublishedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PublishedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ViewCount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ViewCount)
-        </dd>
-
-    </dl>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <!-- Video player -->
+            <div class="bg-dark shadow rounded p-3 mb-3 text-center">
+                <video controls style="width:100%;max-height:500px;">
+                    <source src="@Model.VideoUrl" type="video/mp4" />
+                    Trình duyệt của bạn không hỗ trợ video.
+                </video>
+            </div>
+            <!-- Chọn server -->
+            <div class="text-center mb-3">
+                <button class="btn btn-secondary btn-sm disabled">SERVER 1</button>
+            </div>
+            <!-- Danh sách tập -->
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                @if (ViewBag.Episodes != null)
+                {
+                    foreach (var ep in ViewBag.Episodes as List<WebXemPhim.Models.Episode>)
+                    {
+                        var isActive = (ep.EpisodeId == Model.EpisodeId) ? "fw-bold bg-success text-light" : "bg-success text-light";
+                        <a href="@Url.Action("Details", "Episode", new { id = ep.EpisodeId })" class="btn @isActive" style="margin-bottom:8px;">
+                            Tập @ep.EpisodeNumber
+                        </a>
+                    }
+                }
+                else
+                {
+                    <span>Không có dữ liệu các tập phim.</span>
+                }
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EpisodeId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

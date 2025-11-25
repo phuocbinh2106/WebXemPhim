@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebXemPhim.Models;
+using System.IO;
 
 namespace WebXemPhim.Controllers
 {
@@ -15,10 +16,27 @@ namespace WebXemPhim.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: Episodes
-        public ActionResult Index()
+        public ActionResult Index(int? filmId)
         {
-            var episodes = db.Episodes.Include(e => e.Film);
-            return View(episodes.ToList());
+            if (filmId.HasValue)
+            {
+                var episodes = db.Episodes.Where(e => e.FilmId == filmId).ToList();
+                ViewBag.Film = db.Films.Find(filmId);
+                return View(episodes);
+            }
+            else
+            {
+                var episodes = db.Episodes.Include(e => e.Film).ToList();
+                return View(episodes);
+            }
+            // ...
+        }
+        public ActionResult Watch(int id)
+        {
+            // id là EpisodeId
+            var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);
+            if (episode == null) return HttpNotFound();
+            return View(episode); // View này để trình chiếu video
         }
 
         public ActionResult Watch(int id)
@@ -30,15 +48,9 @@ namespace WebXemPhim.Controllers
         // GET: Episodes/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Episode episode = db.Episodes.Find(id);
-            if (episode == null)
-            {
-                return HttpNotFound();
-            }
+            if (episode == null) return HttpNotFound();
             return View(episode);
         }
 
@@ -54,8 +66,19 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode)
+        public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
+            if (VideoFile != null && VideoFile.ContentLength > 0)
+            {
+                // Đường dẫn lưu video
+                var fileName = Path.GetFileName(VideoFile.FileName);
+                var path = Path.Combine(Server.MapPath("~/Upload/Videos/"), fileName);
+                VideoFile.SaveAs(path);
+
+                // Lưu đường dẫn vào Episode
+                episode.VideoUrl = "/Upload/Videos/" + fileName;
+            }
+
             if (ModelState.IsValid)
             {
                 db.Episodes.Add(episode);
@@ -70,15 +93,23 @@ namespace WebXemPhim.Controllers
         // GET: Episodes/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Episode episode = db.Episodes.Find(id);
-            if (episode == null)
-            {
-                return HttpNotFound();
-            }
+            if (episode == null) return HttpNotFound();
+
+            // Lấy danh sách file video trong thư mục Upload/Videos
+            string videoDirPath = Server.MapPath("~/Upload/Videos/");
+            var videoFileList = Directory.Exists(videoDirPath)
+                ? Directory.GetFiles(videoDirPath)
+                    .Select(f => new SelectListItem
+                    {
+                        Text = Path.GetFileName(f),
+                        Value = "/Upload/Videos/" + Path.GetFileName(f)
+                    }).ToList()
+                : new List<SelectListItem>();
+
+            ViewBag.VideoFiles = videoFileList;
+
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title", episode.FilmId);
             return View(episode);
         }
