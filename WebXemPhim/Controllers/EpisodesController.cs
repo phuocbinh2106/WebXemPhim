@@ -32,7 +32,6 @@ namespace WebXemPhim.Controllers
             // ...
         }
 
-
         public ActionResult Watch(int id)
         {
             var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);

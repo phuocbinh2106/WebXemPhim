@@ -38,7 +38,7 @@
 
         <div class="mb-3 form-check">
             @Html.CheckBoxFor(m => m.IsMovie, new { @class = "form-check-input" })
-            @Html.LabelFor(m => m.IsMovie, "Phim bộ", new { @class = "form-check-label" })
+            @Html.LabelFor(m => m.IsMovie, "Phim lẻ", new { @class = "form-check-label" })
         </div>
         <div class="mb-3 form-check">
             @Html.CheckBoxFor(m => m.IsCompleted, new { @class = "form-check-input" })
@@ -48,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.EpsisodeCount)
             @Html.EditorFor(m => m.EpsisodeCount, new { htmlAttributes = new { @class = "form-control" } })
-        </div>>
+        </div>
 
         <div class="mb-3">
             <label class="form-label">Ảnh nền phim</label>
