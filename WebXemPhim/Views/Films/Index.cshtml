@@ -5,23 +5,22 @@
 }
 
 <div class="d-flex justify-content-between mb-3 align-items-center">
-    <h2 class="text-light fw-bold">@ViewBag.PageTitle</h2>
+    <h2 class="films-title">@ViewBag.PageTitle</h2>
 </div>
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-4 movie-grid mb-4">
+
+<div class="films-grid">
     @foreach (var film in Model)
     {
-        <div class="col">
-            <div class="movie-card-trending">
-                <a href="@Url.Action("Details", "Films", new { id = film.FilmId })">
-                    <img src="@film.ThumbnailUrl" alt="@film.Title" style="width:217.2px;height:260px;object-fit:cover;border-radius:10px;" />
-                    <div class="episode-badge">
-                        Tập @(film.EpsisodeCount ?? 1)
-                    </div>
-                </a>
-                <div class="movie-trending-info">
-                    <div class="movie-trending-title">@film.Title</div>
-                    <div class="movie-trending-sub">@film.OriginalTitle</div>
+        <div class="films-card">
+            <a href="@Url.Action("Details", "Films", new { id = film.FilmId })">
+                <img src="@film.ThumbnailUrl" alt="@film.Title" class="films-poster" />
+                <div class="episode-badge">
+                    Tập @(film.EpsisodeCount ?? 1)
                 </div>
+            </a>
+            <div class="films-card-info">
+                <div class="films-card-title">@film.Title</div>
+                <div class="films-card-sub">@film.OriginalTitle</div>
             </div>
         </div>
     }
@@ -50,18 +49,3 @@
         </ul>
     </nav>
 }
-
-<style>
-    .movie-film-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-        display: block;
-    }
-
-    .small-text {
-        --bs-text-opacity: 1;
-        color: #FFFFFF
-    }
-</style>
