@@ -17,24 +17,24 @@
                     <input type="file" name="Avatar" id="Avatar" class="d-none" accept="image/*" />
                 </div>
                 <div class="profile-field">
-                    <label class="form-label,">Biệt danh</label>
-                    @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control", style = "background:#242526; color:#222;" })
+                    <label class="form-label">Biệt danh</label>
+                    @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control", style = "background:#242526; color:#FFFFFF;" })
                     <button type="submit" name="EditField" value="Nickname" class="btn btn-outline-info">Chỉnh Sửa</button>
                 </div>
                 <div class="profile-field">
                     <label class="form-label">Giới thiệu</label>
-                    @Html.TextAreaFor(m => m.AboutMe, 2, 40, new { @class = "form-control", style = "background:#242526; color:#222;" })
+                    @Html.TextAreaFor(m => m.AboutMe, 2, 40, new { @class = "form-control", style = "background:#242526; color:#FFFFFF;" })
                     <button type="submit" name="EditField" value="GioiThieu" class="btn btn-outline-info">Chỉnh Sửa</button>
                 </div>
                 <div class="profile-field">
                     <label class="form-label">Tên đăng nhập</label>
-                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", style = "background:#242526; color:#222;" })
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", style = "background:#242526; color:#FFFFFF;" })
                     <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
 
                 </div>
                 <div class="profile-field">
                     <label class="form-label">Email</label>
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "background:#242526; color:#222;" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "background:#242526; color:#FFFFFF;" })
                     <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
 
                 </div>

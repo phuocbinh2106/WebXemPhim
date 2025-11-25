@@ -67,8 +67,10 @@ namespace WebXemPhim.Controllers
             {
                 films = films.OrderByDescending(f => f.CreatedAt).Take(10);
             }
+            
+            var filmList = films.OrderByDescending(f => f.CreatedAt).Take(10).ToList();
 
-            return View(films.ToList());
+            return View(filmList);
         }
 
         // GET: Films/Create
