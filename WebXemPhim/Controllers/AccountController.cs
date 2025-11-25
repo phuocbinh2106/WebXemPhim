@@ -53,7 +53,7 @@ namespace WebXemPhim.Controllers
             Session.Clear();
             return RedirectToAction("Login");
         }
-        public ActionResult Profile()
+        public new ActionResult Profile()
         {
             if (Session["UserId"] == null) return RedirectToAction("Login");
             int userId = (int)Session["UserId"];
@@ -63,7 +63,7 @@ namespace WebXemPhim.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Profile(User model, HttpPostedFileBase Avatar)
+        public new ActionResult Profile(User model, HttpPostedFileBase Avatar)
         {
             int userId = (int)Session["UserId"];
             var user = db.Users.Find(userId);

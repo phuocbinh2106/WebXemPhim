@@ -102,21 +102,26 @@
     <nav class="navbar navbar-expand-lg" style="background:#1F2021;">
         <div class="container">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+
                 <li class="nav-item">
                     <a class="nav-link" href="/"><i class="fas fa-home"></i> Trang chủ</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="genreDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Thể Loại <i class="fas fa-chevron-down"></i>
+                        Thể Loại
                     </a>
                     @Html.Action("GenreDropdown", "Genres")
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Phim Lẻ</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Đang Chiếu <i class="fas fa-sync-alt"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Lịch Chiếu <i class="fas fa-calendar-alt"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Hoàn Thành</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-trophy"></i> Top 10 HH3D</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-thumbs-up"></i> Đánh Giá Cao</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Films/Filter?isMovie=true">Phim Lẻ</a>
+                </li>
+
+                <li class="nav-item"><a class="nav-link" href="/Films?type=series">Phim Bộ</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Films/Filter?isOngoing=true">Đang Chiếu</a>
+                </li>
+
             </ul>
         </div>
     </nav>
