@@ -76,12 +76,14 @@
                 <i class="fa fa-play"></i> Không có tập để xem
             </button>
         }
-        <form action="@Url.Action("AddFavourite", "Films", new { id = Model.FilmId })" method="post" style="margin:0;">
+        <form action="@Url.Action("Add", "Favourites")" method="post">
             @Html.AntiForgeryToken()
+            <input type="hidden" name="filmId" value="@Model.FilmId" />
             <button type="submit" class="btn btn-outline-info btn-lg fw-bold px-4 py-2 fav-btn">
                 <i class="fa fa-heart"></i> Yêu Thích
             </button>
         </form>
+
     </div>
 </div>
 

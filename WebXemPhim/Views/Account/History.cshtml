@@ -11,6 +11,7 @@
                     <th>Phim</th>
                     <th>Tập</th>
                     <th>Thời gian xem</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +21,13 @@
                         <td>@h.Episode.Film.Title</td>
                         <td>@h.Episode.EpisodeNumber</td>
                         <td>@h.WatchedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            @if (h.WatchHistoryId > 0)
+                            {
+                                <a href="@Url.Action("Details", "Films", new { id = h.Episode.FilmId })"
+                                   class="btn btn-warning btn-sm px-3 fw-bold">Chi tiết</a>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
