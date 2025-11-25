@@ -25,6 +25,7 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Films/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             // Nếu muốn chọn thể loại khi tạo phim
@@ -33,6 +34,7 @@ namespace WebXemPhim.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
         {
             if (ModelState.IsValid)
@@ -95,8 +97,9 @@ namespace WebXemPhim.Controllers
             if (film == null) return HttpNotFound();
             return View(film);
         }
-        
+
         // GET: Films/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -116,6 +119,7 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "FilmId,Title,OriginalTitle,Description,ReleaseYear,IsMovie,IsCompleted,EpsisodeCount,ThumbnailUrl,CreatedAt,UpdateAt,ViewCount,AverageRating")] Film film)
         {
             if (ModelState.IsValid)
@@ -128,6 +132,7 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Films/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -143,6 +148,7 @@ namespace WebXemPhim.Controllers
         }
 
         // POST: Films/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
