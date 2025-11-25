@@ -152,20 +152,20 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Films/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
             if (Session["Role"]?.ToString().ToLower() != "admin")
                 return RedirectToAction("Index", "Home");
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Film film = db.Films.Find(id);
+            var film = db.Films.Include("Genres").FirstOrDefault(f => f.FilmId == id);
             if (film == null)
-            {
                 return HttpNotFound();
-            }
+
+            // Truyền đa chọn thể loại cho view
+            var allGenres = db.Genres.ToList();
+            var selectedIds = film.Genres.Select(g => g.GenreId).ToList();
+            ViewBag.SelectedGenreIds = new MultiSelectList(allGenres, "GenreId", "GenreName", selectedIds);
+
             return View(film);
         }
         // POST: Films/Edit
@@ -178,17 +178,12 @@ namespace WebXemPhim.Controllers
 
             if (ModelState.IsValid)
             {
-                // Lấy bản film cũ + Genres
-                var existingFilm = db.Films.Include("Genres")
-                                           .FirstOrDefault(f => f.FilmId == film.FilmId);
-
+                var existingFilm = db.Films.Include("Genres").FirstOrDefault(f => f.FilmId == film.FilmId);
                 if (existingFilm == null)
                     return HttpNotFound();
 
-                // Cập nhật thông tin cơ bản
                 db.Entry(existingFilm).CurrentValues.SetValues(film);
 
-                // Xử lý ảnh
                 if (Thumbnail != null && Thumbnail.ContentLength > 0)
                 {
                     string fileName = Path.GetFileName(Thumbnail.FileName);
@@ -200,10 +195,8 @@ namespace WebXemPhim.Controllers
 
                 existingFilm.UpdateAt = DateTime.Now;
 
-                // RESET GENRES
+                // Reset và cập nhật lại genres
                 existingFilm.Genres.Clear();
-
-                // ADD GENRES LẠI
                 if (SelectedGenreIds != null)
                 {
                     foreach (int gid in SelectedGenreIds)
@@ -218,7 +211,11 @@ namespace WebXemPhim.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GenreList = db.Genres.ToList();
+            // Truyền lại select list khi ModelState không hợp lệ
+            var allGenres = db.Genres.ToList();
+            var selectedIds = SelectedGenreIds ?? new int[] { };
+            ViewBag.SelectedGenreIds = new MultiSelectList(allGenres, "GenreId", "GenreName", selectedIds);
+
             return View(film);
         }
 
