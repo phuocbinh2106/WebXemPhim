@@ -161,22 +161,6 @@ namespace WebXemPhim.Controllers
             }
             return View(film);
         }
-
-        // GET: Films/Edit
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var film = db.Films.Include("Genres").FirstOrDefault(f => f.FilmId == id);
-            if (film == null)
-                return HttpNotFound();
-
-            ViewBag.GenreList = db.Genres.ToList();
-            return View(film);
-        }
-
-
         // POST: Films/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
