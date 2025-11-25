@@ -54,8 +54,19 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode)
+        public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
+            if (VideoFile != null && VideoFile.ContentLength > 0)
+            {
+                // Đường dẫn lưu video
+                var fileName = Path.GetFileName(VideoFile.FileName);
+                var path = Path.Combine(Server.MapPath("~/Upload/Videos/"), fileName);
+                VideoFile.SaveAs(path);
+
+                // Lưu đường dẫn vào Episode
+                episode.VideoUrl = "/Upload/Videos/" + fileName;
+            }
+
             if (ModelState.IsValid)
             {
                 db.Episodes.Add(episode);
