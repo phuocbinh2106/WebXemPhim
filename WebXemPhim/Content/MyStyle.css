@@ -515,3 +515,8 @@ footer {
     box-shadow: 0 2px 12px #0007;
 }
 
+
+/* icon */
+.btn-header:not(:first-child) {
+    margin-left: 12px;
+}

@@ -6,7 +6,7 @@
 <h3>@Model.Film.Title - Tập @Model.EpisodeNumber</h3>
 @if (!string.IsNullOrEmpty(Model.VideoUrl))
 {
-    <video controls width="100%">
+    <video controls style="width: 100%">
         <source src="@Model.VideoUrl" type="video/mp4" />
     </video>
 }
