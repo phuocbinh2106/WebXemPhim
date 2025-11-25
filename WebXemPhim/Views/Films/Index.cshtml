@@ -42,15 +42,51 @@
     }
 </div>
 
-<style>
-    body {
-        background: #0a0e21;
-    }
+<h2>Index</h2>
 
-    .film-card {
-        transition: transform .15s, box-shadow .15s;
-        border-radius: 0.7rem;
-    }
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OriginalTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsMovie)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EpsisodeCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ThumbnailUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdateAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ViewCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AverageRating)
+        </th>
+        <th></th>
+    </tr>
 
         .film-card:hover {
             transform: translateY(-4px);

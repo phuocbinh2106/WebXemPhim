@@ -5,60 +5,51 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-4">
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <img src="@Model.ThumbnailUrl" alt="@Model.Title"
-                 class="img-fluid rounded shadow" style="object-fit:cover;max-width:360px;max-height:550px;" />
-        </div>
-        <div class="col-md-8 text-light">
-            <h2 class="fw-bold" style="color:#FFB930">@Model.Title</h2>
-            @if (!string.IsNullOrEmpty(Model.OriginalTitle))
-            {
-                <div class="mb-2 text-info">Tên gốc: @Model.OriginalTitle</div>
-            }
-            <!-- Thể loại -->
-            <div class="mb-2">
-                <b>Thể loại:</b>
-                @if (Model.Genres != null)
-                {
-                    foreach (var genre in Model.Genres)
-                    {
-                        <span class="badge bg-secondary me-1">@genre.GenreName</span>
-                    }
-                }
-            </div>
-            <!-- Tập mới nhất -->
-            <div class="mb-2">
-                <span class="badge bg-info text-dark fs-6">
-                    Tập mới nhất: <b>
-                        @(Model.Episodes != null && Model.Episodes.Any()
-                            ? Model.Episodes.Max(e => e.EpisodeNumber).ToString()
-                            : "-")
-                    </b>
-                </span>
-            </div>
-            <!-- Thông tin khác -->
-            <div class="mb-2 small">
-                <span class="me-3"><i class="fa fa-calendar"></i> @Model.ReleaseYear</span>
-                <span class="me-3"><i class="fa fa-list-ol"></i> Tổng số tập: @(Model.Episodes != null ? Model.Episodes.Count : 0)</span>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-md-3">
+        <img src="@Url.Content(Model.Film.ThumbnailUrl)" class="img-fluid rounded" alt="@Model.Film.Title" />
     </div>
-    <!-- Danh sách tập -->
-    <div class="bg-dark rounded mb-3 p-3">
-        <h5 class="text-info mb-3 fw-bold">Danh sách tập</h5>
-        <div class="d-flex flex-wrap gap-2">
-            @if (Model.Episodes != null)
+    <div class="col-md-9">
+        <h2 class="fw-bold text-warning">@Model.Film.Title</h2>
+        <div><b>Tên khác:</b> @Model.Film.OriginalTitle</div>
+        <div>
+            <b>Thể loại:</b>
+            @foreach (var genre in Model.Film.Genres)
             {
-                @foreach (var ep in Model.Episodes.OrderBy(e => e.EpisodeNumber))
-                {
-                    <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })"
-                       class="btn btn-outline-warning btn-sm rounded-pill mb-2">
-                        @ep.EpisodeNumber
-                    </a>
-                }
+                <span class="badge bg-secondary">@genre.GenreName</span>
             }
         </div>
+        <div><b>Tập mới nhất:</b> </div>
+        <div>
+            <b>Thông tin khác:</b>
+            <span><i class="fa fa-calendar"></i> @Model.Film.ReleaseYear</span>
+            <span><i class="fa fa-list-ol"></i> @Model.Episodes.Count tập</span>
+        </div>
+        <div>
+            <b>Đánh giá:</b> <span class="text-warning fw-bold">@string.Format("{0:0.00}", Model.Film.AverageRating)/5</span>
+            <small> (@Model.Film.Ratings.Count lượt)</small>
+        </div>
+        <a href="#" class="btn btn-warning mt-2">Xem Phim</a>
     </div>
 </div>
+
+<hr />
+
+<div>
+    <h5 class="text-info">Danh sách tập:</h5>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach (var ep in Model.Episodes.OrderByDescending(e => e.EpisodeNumber))
+        {
+            <a class="btn btn-outline-secondary" href="@Url.Action("Watch", "Films", new { id = Model.Film.FilmId, ep = ep.EpisodeNumber })">@ep.EpisodeNumber</a>
+        }
+    </div>
+</div>
+
+<hr />
+
+<div>
+    <h5>Nội dung</h5>
+    <div>@Model.Film.Description</div>
+</div>
+
+<!-- Nếu có khu vực lịch chiếu, bình luận, đánh giá... bổ sung thêm tương tự -->
