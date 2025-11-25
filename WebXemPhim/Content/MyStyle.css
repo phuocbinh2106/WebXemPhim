@@ -419,11 +419,11 @@ footer {
 /* Details Film */
 
 .episode-btn {
-    min-width: 52px;
+    min-width: 81.21px;
     font-weight: 600;
     border-radius: 6px;
-    background: #232830;
-    color: #FFD800;
+    background: #333333;
+    color: #FFFFFF;
     border: none;
     transition: all .15s;
 }
@@ -493,15 +493,17 @@ footer {
 }
 
 .film-genre-chip {
-    background: #232830;
-    color: #FFD800;
+    background: #FFFFFF26;
+    color: #EFEFEF;
     font-weight: 600;
     font-size: 1em;
     border-radius: 11px;
     padding: 6px 18px;
     box-shadow: 0 1px 8px #0002;
     transition: all 0.15s;
+    height: 30.8px;
 }
+
 
     .film-genre-chip:hover {
         background: #FFD800;
