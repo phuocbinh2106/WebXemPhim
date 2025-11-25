@@ -26,9 +26,11 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Genres/Details/5
-        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -42,9 +44,10 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Genres/Create
-        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -53,9 +56,10 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "GenreId,GenreName")] Genre genre)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
                 db.Genres.Add(genre);
@@ -67,9 +71,10 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Genres/Edit/5
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -87,9 +92,10 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "GenreId,GenreName")] Genre genre)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
                 db.Entry(genre).State = EntityState.Modified;
@@ -100,9 +106,10 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Genres/Delete/5
-        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -116,11 +123,12 @@ namespace WebXemPhim.Controllers
         }
 
         // POST: Genres/Delete/5
-        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             Genre genre = db.Genres.Find(id);
             db.Genres.Remove(genre);
             db.SaveChanges();

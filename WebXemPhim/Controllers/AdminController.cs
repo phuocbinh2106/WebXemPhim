@@ -14,9 +14,10 @@ namespace WebXemPhim.Controllers
 
         // GET: Admin
         // Hiển thị danh sách phim
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
             {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
                 var films = db.Films.ToList(); // Lấy danh sách phim
                 var episodes = db.Episodes.ToList(); // Lấy danh sách tập phim
                 var genres = db.Genres.ToList(); // Lấy danh sách thể loại

@@ -72,9 +72,10 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Films/Create
-        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View();
         }
@@ -82,9 +83,11 @@ namespace WebXemPhim.Controllers
         // POST: Films/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (ModelState.IsValid)
             {
                 // Xử lý upload thumbnail như bạn đã có
@@ -147,9 +150,11 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Films/Edit/5
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -164,9 +169,11 @@ namespace WebXemPhim.Controllers
         // POST: Films/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (ModelState.IsValid)
             {
                 // Lấy bản film cũ + Genres
@@ -214,9 +221,11 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Films/Delete/5
-        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -228,11 +237,13 @@ namespace WebXemPhim.Controllers
         }
 
         // POST: Films/Delete/5
-        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             Film film = db.Films.Find(id);
             db.Films.Remove(film);
             db.SaveChanges();

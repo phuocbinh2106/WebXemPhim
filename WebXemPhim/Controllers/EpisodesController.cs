@@ -16,9 +16,12 @@ namespace WebXemPhim.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: Episodes
-        [Authorize(Roles = "Admin")]
+        
         public ActionResult Index(int? filmId)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (filmId.HasValue)
             {
                 var episodes = db.Episodes.Where(e => e.FilmId == filmId).ToList();
@@ -37,6 +40,7 @@ namespace WebXemPhim.Controllers
             var episode = db.Episodes.Include(e => e.Film).FirstOrDefault(e => e.EpisodeId == id);
             if (episode == null) return HttpNotFound();
 
+
             // Truy vấn tất cả comment vừa lưu (bao gồm info user, không cache cũ)
             var comments = db.Comments
                 .Include(c => c.User)
@@ -44,14 +48,39 @@ namespace WebXemPhim.Controllers
                 .OrderByDescending(c => c.CreatedAt)
                 .ToList();
 
+            int userId = 0;
+            if (Session["UserId"] != null && int.TryParse(Session["UserId"].ToString(), out userId) && userId > 0)
+            {
+                // Kiểm tra đã có record chưa
+                var history = db.WatchHistories.FirstOrDefault(h => h.UserId == userId && h.EpisodeId == id);
+                if (history == null)
+                {
+                    history = new WatchHistory
+                    {
+                        UserId = userId,
+                        EpisodeId = id,
+                        WatchedAt = DateTime.Now
+                    };
+                    db.WatchHistories.Add(history);
+                }
+                else
+                {
+                    // Nếu đã có, cập nhật thời gian xem mới nhất
+                    history.WatchedAt = DateTime.Now;
+                }
+                db.SaveChanges();
+            }
+            // --- KẾT THÚC phần lịch sử xem ---
             ViewBag.Comments = comments;
 
             return View(episode);
-        }
-        [Authorize(Roles = "Admin")]
-        // GET: Episodes/Details/5
+
+        }        // GET: Episodes/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Episode episode = db.Episodes.Find(id);
             if (episode == null) return HttpNotFound();
@@ -59,9 +88,12 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Episodes/Create
-        [Authorize(Roles = "Admin")]
+
         public ActionResult Create()
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title");
             return View();
         }
@@ -71,9 +103,12 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+
         public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (VideoFile != null && VideoFile.ContentLength > 0)
             {
                 // Đường dẫn lưu video
@@ -97,9 +132,11 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Episodes/Edit/5
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Episode episode = db.Episodes.Find(id);
             if (episode == null) return HttpNotFound();
@@ -126,9 +163,11 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             if (ModelState.IsValid)
             {
                 db.Entry(episode).State = EntityState.Modified;
@@ -138,10 +177,11 @@ namespace WebXemPhim.Controllers
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title", episode.FilmId);
             return View(episode);
         }
-        [Authorize(Roles = "Admin")]
         // GET: Episodes/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -155,11 +195,13 @@ namespace WebXemPhim.Controllers
         }
 
         // POST: Episodes/Delete/5
-        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
+
             Episode episode = db.Episodes.Find(id);
             db.Episodes.Remove(episode);
             db.SaveChanges();
