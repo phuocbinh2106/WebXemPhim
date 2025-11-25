@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebXemPhim.Models;
+using System.IO;
 
 namespace WebXemPhim.Controllers
 {
@@ -24,16 +25,16 @@ namespace WebXemPhim.Controllers
         // GET: Episodes/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Episode episode = db.Episodes.Find(id);
-            if (episode == null)
-            {
-                return HttpNotFound();
-            }
+ 
+            var episode = db.Episodes.Include(e => e.Film).FirstOrDefault(e => e.EpisodeId == id);
+            if (episode == null) return HttpNotFound();
+
+            // Lấy danh sách tập theo phim
+            var episodes = db.Episodes.Where(e => e.FilmId == episode.FilmId).OrderBy(e => e.EpisodeNumber).ToList();
+            ViewBag.Episodes = episodes;
+
             return View(episode);
+
         }
 
         // GET: Episodes/Create
@@ -48,8 +49,19 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode)
+        public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
+            if (VideoFile != null && VideoFile.ContentLength > 0)
+            {
+                // Đường dẫn lưu video
+                var fileName = Path.GetFileName(VideoFile.FileName);
+                var path = Path.Combine(Server.MapPath("~/Upload/Videos/"), fileName);
+                VideoFile.SaveAs(path);
+
+                // Lưu đường dẫn vào Episode
+                episode.VideoUrl = "/Upload/Videos/" + fileName;
+            }
+
             if (ModelState.IsValid)
             {
                 db.Episodes.Add(episode);
