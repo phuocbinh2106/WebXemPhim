@@ -11,26 +11,17 @@
 
     <div class="swiper trending-slider">
         <div class="swiper-wrapper">
-            @foreach (var banner in new[]{
-                new { Img="~/Upload/Banner/giathien.jpg", Title="Già Thiên", Sub="Zhe Tian"},
-                new { Img="~/Upload/Banner/thonphetinhkhong.jpg", Title="Thôn Phệ Tinh Không", Sub="Swallowed Star"},
-                new { Img="~/Upload/Banner/dauladailuc2.jpg", Title="Đấu La Đại Lục 2: Tuyệt Thế Đường Môn", Sub="Douluo Dalu II: Jue Shi Tang Men"},
-                new { Img="~/Upload/Banner/thananvuongtoa.jpg", Title="Thần Ấn Vương Tọa", Sub="Throne Of Seal"},
-                new { Img="~/Upload/Banner/dauphathuongkhung.jpg", Title="Đấu Phá Thương Khung", Sub="Fights Break Sphere S"},
-                new { Img="~/Upload/Banner/phamnhan.jpg", Title="Phàm Nhân Tu Tiên", Sub="Fanren Xiu Xian Chuan S3"},
-                new { Img="~/Upload/Banner/tiennghich.png", Title="Tiên Nghịch", Sub="Xian Ni"},
-                new { Img="~/Upload/Banner/mucthanky.jpg", Title="Mục Thần Ký", Sub="Mu Shen Ji"},
-                new { Img="~/Upload/Banner/vudongcankhon.webp", Title="Vũ Động Càn Khôn", Sub="Wu Dong Qian Kun"},
-                new { Img="~/Upload/Banner/thegioihoanmy.jpg", Title="Thế Giới Hoàn Mỹ", Sub="Perfect World"}
-            })
+            @foreach (var film in Model)
             {
                 <div class="swiper-slide">
-                    <div class="movie-card-trending">
-                        <img src="@Url.Content(banner.Img)" alt="@banner.Title" class="movie-trending-img" />
-                        <div class="movie-trending-info">
-                            <div class="movie-trending-title">@banner.Title</div>
-                            <div class="movie-trending-sub">@banner.Sub</div>
-                        </div>
+                    <div class="card bg-dark text-light h-100 shadow border-0 position-relative" style="overflow:hidden">
+                        
+                        <a href="@Url.Action("Details", "Films", new { id = film.FilmId })">
+                            <img src="@film.ThumbnailUrl" alt="@film.Title" class="card-img-top" />
+                        </a>
+                         <div class="card-body px-3 pb-2 pt-3" style="background:linear-gradient(180deg,transparent 60%,rgba(15,15,15,.9) 100%);margin-top:-70px;">
+                                <div class="card-title film-title">@film.Title</div>
+                         </div>
                     </div>
                 </div>
             }

@@ -590,3 +590,16 @@ footer {
     color: #18191a;
     font-weight: bold;
 }
+.film-title {
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 700;
+    border-radius: 0; 
+    padding: 0;
+    margin-bottom: 8px;
+    box-shadow: none;
+    background: none;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.80), 0 0px 2px #333;
+    letter-spacing: 0.5px;
+}
+
