@@ -1,99 +1,128 @@
 ﻿@model IEnumerable<WebXemPhim.Models.Film>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh Sách Phim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between mb-3 align-items-center">
+        <h2 class="text-light fw-bold">📽 Phim Mới Cập Nhật</h2>
+        @Html.ActionLink("➕ Thêm phim", "Create", null, new { @class = "btn btn-success shadow" })
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OriginalTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReleaseYear)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsMovie)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsCompleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EpsisodeCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ThumbnailUrl)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdateAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ViewCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AverageRating)
-        </th>
-        <th></th>
-    </tr>
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="card h-100 bg-dark text-light shadow film-card border-0">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OriginalTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReleaseYear)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsMovie)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsCompleted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EpsisodeCount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ThumbnailUrl)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdateAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ViewCount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AverageRating)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.FilmId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.FilmId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.FilmId })
-        </td>
-    </tr>
-}
+                    <div class="position-relative poster-wrapper">
+                        <a href="@Url.Action("Details", "Films", new { id = item.FilmId })">
+                            <img src="@item.ThumbnailUrl"
+                                 alt="@item.Title"
+                                 class="card-img-top img-fluid poster-img">
 
-</table>
+                            <!-- Badge loại phim -->
+                            <span class="badge position-absolute top-0 start-0 m-1
+                                @(item.IsMovie ? "bg-danger" : "bg-primary")">
+                                @(item.IsMovie ? "Phim lẻ" : "Phim bộ")
+                            </span>
+
+                            <!-- Badge trạng thái -->
+                            <span class="badge position-absolute top-0 end-0 m-1
+                                @(item.IsCompleted ? "bg-success" : "bg-warning text-dark")">
+                                @(item.IsCompleted ? "Trọn bộ" : "Đang chiếu")
+                            </span>
+
+                            <!-- Hiệu ứng overlay khi hover -->
+                            <div class="hover-overlay">
+                                <i class="bi bi-play-circle-fill play-icon"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card-body p-2">
+                        <h6 class="card-title mb-1 text-truncate" title="@item.Title">@item.Title</h6>
+
+                        <div class="small text-muted">
+                            @item.ReleaseYear
+                            @if (item.EpsisodeCount > 1)
+                            {
+                                <span> • @item.EpsisodeCount tập</span>
+                            }
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-1 small">
+                            <span><i class="bi bi-eye"></i> @item.ViewCount</span>
+                            <span class="text-warning"><i class="bi bi-star-fill"></i> @item.AverageRating</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0 p-2">
+                        <a href="@Url.Action("Edit", "Films", new { id = item.FilmId })" class="btn btn-sm btn-light me-1">Sửa</a>
+                        <a href="@Url.Action("Details", "Films", new { id = item.FilmId })" class="btn btn-sm btn-primary me-1">Chi tiết</a>
+                        <a href="@Url.Action("Delete", "Films", new { id = item.FilmId })" class="btn btn-sm btn-danger">Xoá</a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<style>
+    body {
+        background: #0a0e21 !important;
+    }
+
+    .film-card {
+        border-radius: 0.8rem;
+        transition: .25s ease;
+    }
+
+        .film-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px #0007;
+        }
+
+    .poster-img {
+        height: 260px;
+        object-fit: cover;
+        border-radius: .8rem .8rem 0 0;
+    }
+
+    /* Overlay khi hover */
+    .poster-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: .8rem .8rem 0 0;
+    }
+
+    .hover-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: .25s ease;
+    }
+
+    .poster-wrapper:hover .hover-overlay {
+        opacity: 1;
+    }
+
+    .play-icon {
+        font-size: 48px;
+        color: white;
+        text-shadow: 0 0 10px #fff;
+    }
+
+    .card-title {
+        color: #fff;
+        font-weight: 600;
+    }
+</style>

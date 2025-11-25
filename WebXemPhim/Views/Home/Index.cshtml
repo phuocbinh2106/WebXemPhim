@@ -57,7 +57,6 @@
         });
     </script>
 
-    <!-- Grid Mới Cập Nhật: chuyển sang style trending -->
     <h2 class="mt-5 mb-3 trending-title">MỚI CẬP NHẬT</h2>
 
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 movie-grid mb-5">
@@ -88,7 +87,7 @@
         }
     </div>
     <div style="text-align: center; margin-top: 20px;">
-        <a href="new-movies.html" style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">Xem thêm</a>
+        <a href="Create" style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">Xem thêm</a>
     </div>
     @if (Model != null && Model.Any())
     {
@@ -101,11 +100,12 @@
                 </div>
             }
         </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="@Url.Action("Create", "Films")"
+               style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">
+                Xem thêm
+            </a>
+        </div>
 
-        <a class="btn btn-primary" href="@Url.Action("MoreFilms", "Films")">Xem thêm</a>
-    }
-    else
-    {
-        <p>Chưa có phim nào.</p>
     }
 </main>
