@@ -114,6 +114,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EpisodesController.cs" />
     <Compile Include="Controllers\FilmsController.cs" />
     <Compile Include="Controllers\GenresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Models\Episode.cs" />
     <Compile Include="Models\Favourite.cs" />
     <Compile Include="Models\Film.cs" />
+    <Compile Include="Models\FilmDetailsViewModel.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Schedule.cs" />
@@ -205,8 +207,13 @@
     <Content Include="Views\Genres\Details.cshtml" />
     <Content Include="Views\Genres\Edit.cshtml" />
     <Content Include="Views\Genres\Index.cshtml" />
-    <Content Include="Views\Home\MoreFilms.cshtml" />
     <Content Include="Views\Genres\_GenreDropdown.cshtml" />
+    <Content Include="Views\Episodes\Create.cshtml" />
+    <Content Include="Views\Episodes\Delete.cshtml" />
+    <Content Include="Views\Episodes\Details.cshtml" />
+    <Content Include="Views\Episodes\Edit.cshtml" />
+    <Content Include="Views\Episodes\Index.cshtml" />
+    <Content Include="Views\Episodes\Watch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

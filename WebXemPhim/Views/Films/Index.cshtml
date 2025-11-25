@@ -1,9 +1,46 @@
 ﻿@model IEnumerable<WebXemPhim.Models.Film>
-
 @{
     ViewBag.Title = "Danh Sách Phim";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<h2 class="mb-3">Danh Sách Phim</h2>
+<a class="btn btn-success mb-3" href="@Url.Action("Create")">Thêm phim</a>
+<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+    @foreach (var film in Model)
+    {
+        <div class="col">
+            <div class="card bg-dark text-light border-0 h-100 shadow">
+                <a href="@Url.Action("Details", "Films", new { id = film.FilmId })">
+                    <img src="@film.ThumbnailUrl" class="card-img-top rounded" alt="@film.Title"
+                         style="object-fit:cover;aspect-ratio:3/4;max-height:250px;">
+                </a>
+                <div class="card-body p-2">
+                    <h6 class="fw-bold mb-1">@film.Title</h6>
+                    <div class="text-secondary small mb-1">@film.ReleaseYear</div>
+                    <div>
+                        @if (film.IsMovie)
+                        {
+                            <span class="badge bg-danger">Phim lẻ</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary">Phim bộ</span>
+                        }
+                        @if (film.IsCompleted)
+                        {
+                            <span class="badge bg-success">Hoàn thành</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Đang chiếu</span>
+                        }
+                    </div>
+                    <a href="@Url.Action("Details", "Films", new { id = film.FilmId })" class="btn btn-outline-light btn-sm mt-2">Chi tiết</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 <div class="container py-4">
     <div class="d-flex justify-content-between mb-3 align-items-center">
@@ -115,14 +152,50 @@
         opacity: 1;
     }
 
-    .play-icon {
-        font-size: 48px;
-        color: white;
-        text-shadow: 0 0 10px #fff;
-    }
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OriginalTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleaseYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsMovie)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsCompleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EpsisodeCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ThumbnailUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedAt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateAt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ViewCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AverageRating)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.FilmId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.FilmId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.FilmId })
+        </td>
+    </tr>
+}
 
-    .card-title {
-        color: #fff;
-        font-weight: 600;
-    }
-</style>
+</table>

@@ -16,21 +16,17 @@ namespace WebXemPhim.Controllers
         public ActionResult Index()
         {
             var latestFilms = db.Films
-                                .OrderByDescending(f => f.UpdateAt ?? f.CreatedAt)   // lấy phim tạo mới nhất
-                                .Take(8)                                // muốn lấy bao nhiêu phim thì sửa số này
-                                .ToList();
-
+                    .OrderByDescending(f => f.CreatedAt) // sắp xếp theo ngày tạo
+                    .Take(4) // chỉ 4 phim
+                    .ToList();
             return View(latestFilms);
         }
-
-
-        // MORE FILMS (phân trang)
         public ActionResult MoreFilms(int page = 1, int pageSize = 8)
         {
             var films = db.Films
                           .OrderByDescending(f => f.CreatedAt)
-                          .Skip((page - 1) * pageSize)
-                          .Take(pageSize)
+                          .Skip((page - 1) * pageSize) // bỏ qua các phim cũ
+                          .Take(pageSize) // lấy số phim theo trang
                           .ToList();
 
             ViewBag.CurrentPage = page;
@@ -54,10 +50,6 @@ namespace WebXemPhim.Controllers
         {
             if (ModelState.IsValid)
             {
-                // NGÀY TẠO PHIM
-                film.CreatedAt = DateTime.Now;
-
-                // Upload ảnh
                 if (Thumbnail != null && Thumbnail.ContentLength > 0)
                 {
                     string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
@@ -66,14 +58,14 @@ namespace WebXemPhim.Controllers
 
                     film.ThumbnailUrl = "/Upload/Banner/" + fileName;
                 }
-                film.CreatedAt = DateTime.Now;
-                film.UpdateAt = DateTime.Now;
+
                 db.Films.Add(film);
                 db.SaveChanges();
-
                 return RedirectToAction("Index");
             }
 
+            // Nếu có lỗi thì quay lại view với model hiện tại
+            // Đồng thời cần truyền lại MultiSelectList nếu có dùng chọn thể loại nhiều
             ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View(film);
         }
@@ -82,12 +74,14 @@ namespace WebXemPhim.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
+            }
             Film film = db.Films.Find(id);
             if (film == null)
+            {
                 return HttpNotFound();
-
+            }
             return View(film);
         }
 
