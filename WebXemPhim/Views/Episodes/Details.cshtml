@@ -26,7 +26,7 @@
                     foreach (var ep in ViewBag.Episodes as List<WebXemPhim.Models.Episode>)
                     {
                         var isActive = (ep.EpisodeId == Model.EpisodeId) ? "fw-bold bg-success text-light" : "bg-success text-light";
-                        <a href="@Url.Action("Details", "Episodes", new { id = ep.EpisodeId })" class="btn @isActive" style="margin-bottom:8px;">
+                        <a href="@Url.Action("Details", "Episode", new { id = ep.EpisodeId })" class="btn @isActive" style="margin-bottom:8px;">
                             Tập @ep.EpisodeNumber
                         </a>
                     }

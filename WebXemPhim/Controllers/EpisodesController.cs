@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebXemPhim.Models;
+using System.IO;
 
 namespace WebXemPhim.Controllers
 {
@@ -15,11 +16,22 @@ namespace WebXemPhim.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: Episodes
-        public ActionResult Index()
+        public ActionResult Index(int? filmId)
         {
-            var episodes = db.Episodes.Include(e => e.Film);
-            return View(episodes.ToList());
+            if (filmId.HasValue)
+            {
+                var episodes = db.Episodes.Where(e => e.FilmId == filmId).ToList();
+                ViewBag.Film = db.Films.Find(filmId);
+                return View(episodes);
+            }
+            else
+            {
+                var episodes = db.Episodes.Include(e => e.Film).ToList();
+                return View(episodes);
+            }
+            // ...
         }
+
 
         public ActionResult Watch(int id)
         {
@@ -30,15 +42,9 @@ namespace WebXemPhim.Controllers
         // GET: Episodes/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Episode episode = db.Episodes.Find(id);
-            if (episode == null)
-            {
-                return HttpNotFound();
-            }
+            if (episode == null) return HttpNotFound();
             return View(episode);
         }
 
