@@ -33,16 +33,18 @@ namespace WebXemPhim.Controllers
         }
         public ActionResult Watch(int id)
         {
-            // id là EpisodeId
-            var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);
+            var episode = db.Episodes.Include(e => e.Film).FirstOrDefault(e => e.EpisodeId == id);
             if (episode == null) return HttpNotFound();
-            return View(episode); // View này để trình chiếu video
-        }
 
-        public ActionResult Watch(int id)
-        {
-            var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);
-            if (episode == null) return HttpNotFound();
+            // Truy vấn tất cả comment vừa lưu (bao gồm info user, không cache cũ)
+            var comments = db.Comments
+                .Include(c => c.User)
+                .Where(c => c.EpisodeId == id)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToList();
+
+            ViewBag.Comments = comments;
+
             return View(episode);
         }
         // GET: Episodes/Details/5
@@ -165,5 +167,39 @@ namespace WebXemPhim.Controllers
             }
             base.Dispose(disposing);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddComment(int EpisodeId, string Content)
+{
+    // Kiểm tra xác thực và nội dung
+    if (Session["UserId"] == null || string.IsNullOrWhiteSpace(Content))
+        return RedirectToAction("Watch", new { id = EpisodeId });
+ 
+    int userId;
+    if (int.TryParse(Session["UserId"].ToString(), out userId) && userId > 0)
+    {
+        var comment = new Comment
+        {
+            EpisodeId = EpisodeId,
+            UserId = userId,
+            Content = Content,
+            CreatedAt = DateTime.Now
+        };
+
+        try
+        {
+            db.Comments.Add(comment);
+            db.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine("Lỗi lưu comment: " + ex.Message);
+        }
+    }
+    return RedirectToAction("Watch", new { id = EpisodeId });
+}
+
+
+
     }
 }

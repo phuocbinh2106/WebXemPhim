@@ -3,16 +3,111 @@
 @{
     ViewBag.Title = Model.Film.Title + " - Tập " + Model.EpisodeNumber;
 }
-<h3>@Model.Film.Title - Tập @Model.EpisodeNumber</h3>
-@if (!string.IsNullOrEmpty(Model.VideoUrl))
-{
-    <video controls width="100%">
-        <source src="@Model.VideoUrl" type="video/mp4" />
-    </video>
-}
-else
-{
-    <div class="alert alert-warning">Chưa có video cho tập này.</div>
-}
-<a href="@Url.Action("Details", "Films", new { id = Model.FilmId })" class="btn btn-outline-light mt-2">Quay lại trang phim</a>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+
+            <!-- Tiêu đề phim và tập căn giữa -->
+            <h3 class="text-center mb-4">@Model.Film.Title - Tập @Model.EpisodeNumber</h3>
+
+            <!-- Video căn giữa -->
+            <div class="d-flex justify-content-center mb-3">
+                @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                {
+                    <video controls width="900" class="rounded shadow">
+                        <source src="@Model.VideoUrl" type="video/mp4" />
+                    </video>
+                }
+                else
+                {
+                    <div class="alert alert-warning">Chưa có video cho tập này.</div>
+                }
+            </div>
+
+            <!-- Danh sách tập căn giữa -->
+            <div class="mb-4">
+                <h5 class="text-center">Danh sách tập</h5>
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    @foreach (var ep in Model.Film.Episodes.OrderBy(e => e.EpisodeNumber))
+                    {
+                        <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })"
+                           class="btn @(ep.EpisodeId == Model.EpisodeId ? "btn-primary" : "btn-outline-secondary") fw-bold">
+                            Tập @ep.EpisodeNumber
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="text-center mb-3">
+                <a href="@Url.Action("Details", "Films", new { id = Model.FilmId })" class="btn btn-outline-light">
+                    Quay lại trang phim
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bg-dark text-light rounded-4 shadow-lg mx-auto mt-5 p-4" style="max-width:700px;">
+    <div class="d-flex align-items-center mb-4">
+        <span class="fw-bold text-warning" style="font-size:1.1rem;">
+            🗨️ Bình luận
+            <span class="badge rounded-pill text-bg-warning ms-2">
+                @((ViewBag.Comments as List<WebXemPhim.Models.Comment>)?.Count ?? 0)
+            </span>
+        </span>
+        <div class="flex-grow-1"></div>
+        @if (Session["UserId"] == null)
+        {
+            <button class="btn btn-danger btn-sm px-4 fw-semibold rounded-3" disabled>
+                Đăng nhập để bình luận
+            </button>
+        }
+    </div>
+
+    @if (Session["UserId"] != null)
+    {
+        using (Html.BeginForm("AddComment", "Episodes", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("EpisodeId", Model.EpisodeId)
+            <div class="input-group mb-4">
+                <textarea name="Content" class="form-control rounded-start-4 border-0 shadow-sm "
+                          placeholder="Nhập bình luận..." required rows="2" style="resize:none; font-size:1rem;"></textarea>
+                <button type="submit" class="btn btn-info rounded-end-4 fw-bold px-4" style="height:auto; ;">
+                    Gửi bình luận
+                </button>
+            </div>
+        }
+    }
+
+    @if (ViewBag.Comments != null && (ViewBag.Comments as List<WebXemPhim.Models.Comment>)?.Count > 0)
+    {
+        foreach (var cmt in ViewBag.Comments as List<WebXemPhim.Models.Comment>)
+        {
+            <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                <img src="@(string.IsNullOrEmpty(cmt.User?.Avatar) ? "/images/avatar-default.png" : cmt.User.Avatar)"
+                      width="36" height="36"
+                      class="rounded-circle border border-warning me-3"
+                      alt="avatar"
+                      style="object-fit:cover;" />
+                <div class="flex-grow-1">
+                    <div class="fw-semibold text-light" style="font-size:1rem;">
+                        @(string.IsNullOrWhiteSpace(cmt.User?.Nickname) ? cmt.User.Username : cmt.User.Nickname)
+                    </div>
+                    <div class="text-light mb-1">@cmt.Content</div>
+                    <small class="text-secondary">@cmt.CreatedAt.ToString("HH:mm dd/MM/yyyy")</small>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="rounded text-secondary bg-light px-4 py-3 text-center" style="font-size:1.1rem;">
+            Chưa có bình luận nào cho tập này.
+        </div>
+    }
+</div>
+
+
+
 
