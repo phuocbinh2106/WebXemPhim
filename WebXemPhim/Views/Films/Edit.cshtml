@@ -19,22 +19,22 @@
                         @Html.HiddenFor(model => model.FilmId)
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+                            @Html.LabelFor(m => m.Title, "Tên", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.Title, new { @class = "form-control bg-secondary text-light" })
                             @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.OriginalTitle, new { @class = "form-label" })
+                            @Html.LabelFor(m => m.OriginalTitle,"Tên gốc", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.OriginalTitle, new { @class = "form-control bg-secondary text-light" })
                             @Html.ValidationMessageFor(m => m.OriginalTitle, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+                            @Html.LabelFor(m => m.Description,"Mô tả", new { @class = "form-label" })
                             @Html.TextAreaFor(m => m.Description, 4, 0, new { @class = "form-control bg-secondary text-light", @style = "resize:vertical" })
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.ReleaseYear, new { @class = "form-label" })
+                            @Html.LabelFor(m => m.ReleaseYear,"Năm phát hành", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.ReleaseYear, new { @class = "form-control bg-secondary text-light", type = "number" })
                             @Html.ValidationMessageFor(m => m.ReleaseYear, "", new { @class = "text-danger" })
                         </div>
@@ -45,15 +45,15 @@
                         <div class="mb-3">
                             <div class="form-check d-inline-block me-3">
                                 @Html.CheckBoxFor(m => m.IsMovie, new { @class = "form-check-input" })
-                                @Html.LabelFor(m => m.IsMovie, new { @class = "form-check-label" })
+                                @Html.LabelFor(m => m.IsMovie, "Phim Lẻ", new { @class = "form-check-label" })
                             </div>
                             <div class="form-check d-inline-block">
                                 @Html.CheckBoxFor(m => m.IsCompleted, new { @class = "form-check-input" })
-                                @Html.LabelFor(m => m.IsCompleted, new { @class = "form-check-label" })
+                                @Html.LabelFor(m => m.IsCompleted, "Hoàn thành", new { @class = "form-check-label" })
                             </div>
                         </div>
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.EpsisodeCount, new { @class = "form-label" })
+                            @Html.LabelFor(m => m.EpsisodeCount, "Tập", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.EpsisodeCount, new { @class = "form-control bg-secondary text-light", type = "number" })
                             @Html.ValidationMessageFor(m => m.EpsisodeCount, "", new { @class = "text-danger" })
                         </div>

@@ -72,6 +72,7 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Films/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
@@ -81,6 +82,7 @@ namespace WebXemPhim.Controllers
         // POST: Films/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
         {
             if (ModelState.IsValid)
@@ -136,6 +138,18 @@ namespace WebXemPhim.Controllers
         // GET: Films/Details
         public ActionResult Details(int? id)
         {
+            var film = db.Films
+                .Include("Genres")
+                .Include("Episodes")
+                .FirstOrDefault(f => f.FilmId == id);
+            if (film == null) return HttpNotFound();
+            return View(film);
+        }
+
+        // GET: Films/Edit/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit(int? id)
+        {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -166,7 +180,8 @@ namespace WebXemPhim.Controllers
         // POST: Films/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit([Bind(Include = "FilmId,Title,OriginalTitle,Description,ReleaseYear,IsMovie,IsCompleted,EpsisodeCount,ThumbnailUrl,CreatedAt,UpdateAt,ViewCount,AverageRating")] Film film)
         {
             if (ModelState.IsValid)
             {
@@ -214,8 +229,8 @@ namespace WebXemPhim.Controllers
             return View(film);
         }
 
-
-        // GET: Films/Delete
+        // GET: Films/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -228,7 +243,8 @@ namespace WebXemPhim.Controllers
             return View(film);
         }
 
-        // POST: Films/Delete
+        // POST: Films/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

@@ -16,6 +16,7 @@ namespace WebXemPhim.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: Episodes
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(int? filmId)
         {
             if (filmId.HasValue)
@@ -33,12 +34,21 @@ namespace WebXemPhim.Controllers
         }
         public ActionResult Watch(int id)
         {
-            // id là EpisodeId
-            var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);
+            var episode = db.Episodes.Include(e => e.Film).FirstOrDefault(e => e.EpisodeId == id);
             if (episode == null) return HttpNotFound();
-            return View(episode); // View này để trình chiếu video
-        }
 
+            // Truy vấn tất cả comment vừa lưu (bao gồm info user, không cache cũ)
+            var comments = db.Comments
+                .Include(c => c.User)
+                .Where(c => c.EpisodeId == id)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToList();
+
+            ViewBag.Comments = comments;
+
+            return View(episode);
+        }
+        [Authorize(Roles = "Admin")]
         // GET: Episodes/Details/5
         public ActionResult Details(int? id)
         {
@@ -49,6 +59,7 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Episodes/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title");
@@ -60,6 +71,7 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
             if (VideoFile != null && VideoFile.ContentLength > 0)
@@ -85,6 +97,7 @@ namespace WebXemPhim.Controllers
         }
 
         // GET: Episodes/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -113,6 +126,7 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode)
         {
             if (ModelState.IsValid)
@@ -124,7 +138,7 @@ namespace WebXemPhim.Controllers
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title", episode.FilmId);
             return View(episode);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Episodes/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -141,6 +155,7 @@ namespace WebXemPhim.Controllers
         }
 
         // POST: Episodes/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -159,5 +174,39 @@ namespace WebXemPhim.Controllers
             }
             base.Dispose(disposing);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddComment(int EpisodeId, string Content)
+{
+    // Kiểm tra xác thực và nội dung
+    if (Session["UserId"] == null || string.IsNullOrWhiteSpace(Content))
+        return RedirectToAction("Watch", new { id = EpisodeId });
+ 
+    int userId;
+    if (int.TryParse(Session["UserId"].ToString(), out userId) && userId > 0)
+    {
+        var comment = new Comment
+        {
+            EpisodeId = EpisodeId,
+            UserId = userId,
+            Content = Content,
+            CreatedAt = DateTime.Now
+        };
+
+        try
+        {
+            db.Comments.Add(comment);
+            db.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine("Lỗi lưu comment: " + ex.Message);
+        }
+    }
+    return RedirectToAction("Watch", new { id = EpisodeId });
+}
+
+
+
     }
 }
