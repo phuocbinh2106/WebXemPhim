@@ -309,7 +309,5 @@ namespace WebXemPhim.Controllers
             db.SaveChanges();
             return RedirectToAction("Details", new { id = filmId });
         }
-
-
     }
 }
