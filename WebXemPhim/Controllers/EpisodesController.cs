@@ -174,6 +174,19 @@ namespace WebXemPhim.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            // Đặt lại ViewBag.VideoFiles trước khi trả về View nếu ModelState không hợp lệ
+            string videoDirPath = Server.MapPath("~/Upload/Videos/");
+            var videoFileList = Directory.Exists(videoDirPath)
+                ? Directory.GetFiles(videoDirPath)
+                    .Select(f => new SelectListItem
+                    {
+                        Text = Path.GetFileName(f),
+                        Value = "/Upload/Videos/" + Path.GetFileName(f)
+                    }).ToList()
+                : new List<SelectListItem>();
+
+            ViewBag.VideoFiles = videoFileList;
+
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title", episode.FilmId);
             return View(episode);
         }
