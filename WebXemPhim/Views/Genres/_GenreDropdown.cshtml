@@ -2,10 +2,7 @@
 <ul class="dropdown-menu genre-dropdown-menu" aria-labelledby="genreDropdown">
     @foreach (var genre in Model)
     {
-        <li>
-            <a class="dropdown-item" href="@Url.Action("Index", "Films", new { genreId = genre.GenreId })">
-                @genre.GenreName
-            </a>
-        </li>
+        <li><a class="dropdown-item" href="/Films/Filter?genreId=@genre.GenreId">@genre.GenreName</a></li>
     }
+
 </ul>

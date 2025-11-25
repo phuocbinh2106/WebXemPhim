@@ -8,33 +8,28 @@
 @using (Html.BeginForm("Create", "Films", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <div class="bg-dark text-light rounded p-4 shadow-lg" style="max-width:700px; margin:auto">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="bg-dark text-light rounded p-4 shadow-lg" style="max-width:700px; margin:auto">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="mb-3">
-            @Html.LabelFor(m => m.Title, "Tên phim", new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.Title, new { @class = "form-control bg-secondary text-light" })
-        </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Title, "Tên phim", new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control bg-secondary text-light" })
+    </div>
 
-        <div class="mb-3">
-            @Html.LabelFor(m => m.OriginalTitle, "Tên gốc", new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.OriginalTitle, new { @class = "form-control bg-secondary text-light" })
-        </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.OriginalTitle, "Tên gốc", new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.OriginalTitle, new { @class = "form-control bg-secondary text-light" })
+    </div>
 
-        <div class="mb-3">
-            @Html.LabelFor(m => m.Description, "Mô tả", new { @class = "form-label" })
-            @Html.TextAreaFor(m => m.Description, 4, 50, new { @class = "form-control bg-secondary text-light" })
-        </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Description, "Mô tả", new { @class = "form-label" })
+        @Html.TextAreaFor(m => m.Description, 4, 50, new { @class = "form-control bg-secondary text-light" })
+    </div>
 
-        <div class="mb-3">
-            @Html.LabelFor(m => m.ReleaseYear, "Năm phát hành", new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.ReleaseYear, new { @class = "form-control bg-secondary text-light" })
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Thể loại</label>
-            @Html.ListBox("SelectedGenreIds", ViewBag.SelectedGenreIds as MultiSelectList, new { @class = "form-control bg-secondary text-light", style = "height:150px;" })
-        </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.ReleaseYear, "Năm phát hành", new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.ReleaseYear, new { @class = "form-control bg-secondary text-light" })
+    </div>
 
         <div class="mb-3 form-check">
             @Html.CheckBoxFor(m => m.IsMovie, new { @class = "form-check-input" })
@@ -50,13 +45,19 @@
             @Html.EditorFor(m => m.EpsisodeCount, new { htmlAttributes = new { @class = "form-control" } })
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Ảnh nền phim</label>
-            <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept="image/*" />
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EpsisodeCount)
+        @Html.EditorFor(m => m.EpsisodeCount, new { htmlAttributes = new { @class = "form-control" } })
+    </div>>
 
-        <button type="submit" class="btn btn-light w-100 mt-3 fw-bold">Tạo phim</button>
+    <div class="mb-3">
+        <label class="form-label">Ảnh nền phim</label>
+        <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept="image/*" />
     </div>
+
+    <button type="submit" class="btn btn-light w-100 mt-3 fw-bold">Tạo phim</button>
+</div>
+
 }
 
 @section Scripts {
