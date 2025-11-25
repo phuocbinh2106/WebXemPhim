@@ -18,9 +18,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="@Url.Action("Index", "Home")">🎬HoatHinh3D</a>
-            <form class="modern-search-bar">
-                <h3 class="search-icon"><i class="fa fa-search"></i></h3>
-                <input type="text" placeholder="Tìm Kiếm ..." />
+            <form class="modern-search-bar" method="get" action="@Url.Action("Search", "Films")">
+                <span class="search-icon"><i class="fa fa-search"></i></span>
+                <input type="text" name="query" placeholder="Tìm Kiếm ..." />
             </form>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <!-- Icon yêu thích -->
