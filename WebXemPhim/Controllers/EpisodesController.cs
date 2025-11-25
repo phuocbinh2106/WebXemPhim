@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebXemPhim.Models;
+using System.IO;
 
 namespace WebXemPhim.Controllers
 {
@@ -21,12 +22,6 @@ namespace WebXemPhim.Controllers
             return View(episodes.ToList());
         }
 
-        public ActionResult Watch(int id)
-        {
-            var episode = db.Episodes.Include("Film").FirstOrDefault(e => e.EpisodeId == id);
-            if (episode == null) return HttpNotFound();
-            return View(episode);
-        }
         // GET: Episodes/Details/5
         public ActionResult Details(int? id)
         {
