@@ -7,14 +7,14 @@
 
 <div class="row">
     <div class="col-md-3">
-        <img src="@Url.Content(Model.Film.ThumbnailUrl)" class="img-fluid rounded" alt="@Model.Film.Title" />
+        <img src="@Url.Content(Model.ThumbnailUrl)" class="img-fluid rounded" alt="@Model.Title" />
     </div>
     <div class="col-md-9">
-        <h2 class="fw-bold text-warning">@Model.Film.Title</h2>
-        <div><b>Tên khác:</b> @Model.Film.OriginalTitle</div>
+        <h2 class="fw-bold text-warning">@Model.Title</h2>
+        <div><b>Tên khác:</b> @Model.OriginalTitle</div>
         <div>
             <b>Thể loại:</b>
-            @foreach (var genre in Model.Film.Genres)
+            @foreach (var genre in Model.Genres)
             {
                 <span class="badge bg-secondary">@genre.GenreName</span>
             }
@@ -22,12 +22,12 @@
         <div><b>Tập mới nhất:</b> </div>
         <div>
             <b>Thông tin khác:</b>
-            <span><i class="fa fa-calendar"></i> @Model.Film.ReleaseYear</span>
+            <span><i class="fa fa-calendar"></i> @Model.ReleaseYear</span>
             <span><i class="fa fa-list-ol"></i> @Model.Episodes.Count tập</span>
         </div>
         <div>
-            <b>Đánh giá:</b> <span class="text-warning fw-bold">@string.Format("{0:0.00}", Model.Film.AverageRating)/5</span>
-            <small> (@Model.Film.Ratings.Count lượt)</small>
+            <b>Đánh giá:</b> <span class="text-warning fw-bold">@string.Format("{0:0.00}", Model.AverageRating)/5</span>
+            <small> (@Model.Ratings.Count lượt)</small>
         </div>
         <a href="#" class="btn btn-warning mt-2">Xem Phim</a>
     </div>
@@ -40,7 +40,7 @@
     <div class="d-flex flex-wrap gap-2">
         @foreach (var ep in Model.Episodes.OrderByDescending(e => e.EpisodeNumber))
         {
-            <a class="btn btn-outline-secondary" href="@Url.Action("Watch", "Films", new { id = Model.Film.FilmId, ep = ep.EpisodeNumber })">@ep.EpisodeNumber</a>
+            <a class="btn btn-outline-secondary" href="@Url.Action("Watch", "Films", new { id = Model.FilmId, ep = ep.EpisodeNumber })">@ep.EpisodeNumber</a>
         }
     </div>
 </div>
@@ -49,7 +49,7 @@
 
 <div>
     <h5>Nội dung</h5>
-    <div>@Model.Film.Description</div>
+    <div>@Model.Description</div>
 </div>
 
 <!-- Nếu có khu vực lịch chiếu, bình luận, đánh giá... bổ sung thêm tương tự -->
