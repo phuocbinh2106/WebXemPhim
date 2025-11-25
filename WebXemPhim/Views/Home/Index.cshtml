@@ -57,6 +57,9 @@
             }
         });
     </script>
+
+    <!-- Grid MỚI CẬP NHẬT kiểu trending -->
+
     <h2 class="mt-5 mb-3 trending-title">MỚI CẬP NHẬT</h2>
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 movie-grid mb-5">
         @foreach (var film in Model)
@@ -83,21 +86,14 @@
             </div>
         }
     </div>
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="MoreFilms.html" style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">Xem thêm</a>
-    </div>
-    @if (Model != null && Model.Any())
-    {
-        <div class="film-list">
-            @foreach (var film in Model)
-            {
-                <div class="film-item">
-                    <img src="@film.ThumbnailUrl" alt="@film.Title" style="width:150px;height:auto;" />
-                    <h4>@film.Title</h4>
-                </div>
-            }
-        </div>
 
-        <a class="btn btn-primary" href="@Url.Action("MoreFilms", "Home")">Xem thêm</a>
+    @if (Model.Count() >= 10)
+    {
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="@Url.Action("Index", "Films")"
+               style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">
+                Xem thêm
+            </a>
+        </div>
     }
 </main>
