@@ -1,55 +1,51 @@
 ﻿@model List<WebXemPhim.Models.Film>
-
 @{
-    ViewBag.Title = "Danh Sách Phim";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
 }
 
-<div class="container py-3">
-    <div class="d-flex justify-content-between mb-3 align-items-center">
-        <h2 class="text-light fw-bold">@ViewBag.PageTitle</h2>
-    </div>
-    <div class="row gx-4 gy-4">
-        @foreach (var item in Model)
-        {
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <div class="movie-card-trending">
-                    <!-- Badge số tập -->
-                    <span class="badge episode-badge position-absolute">
-                        Tập @(item.EpsisodeCount ?? 1)
-                    </span>
-                    <a href="@Url.Action("Details", "Films", new { id = item.FilmId })">
-                        <img src="@item.ThumbnailUrl"
-                             alt="@item.Title"
-                             class="movie-film-img" />
-                    </a>
-                    <div class="card-body p-2">
-                        <div class="movie-trending-info">
-                            <div class="movie-trending-title">@item.Title</div>
-                            <div class="small text-muted">
-                                @item.ReleaseYear
-                                @if (item.EpsisodeCount > 1)
-                                {
-                                    <span> • @item.EpsisodeCount tập</span>
-                                }
-                            </div>
-                            <div class="movie-trending-sub">
-                                @item.OriginalTitle
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+<div class="d-flex justify-content-between mb-3 align-items-center">
+    <h2 class="films-title">@ViewBag.PageTitle</h2>
 </div>
 
-<style>
-    .movie-film-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-        display: block;
+<div class="films-grid">
+    @foreach (var film in Model)
+    {
+        <div class="films-card">
+            <a href="@Url.Action("Details", "Films", new { id = film.FilmId })">
+                <img src="@film.ThumbnailUrl" alt="@film.Title" class="films-poster" />
+                <div class="episode-badge">
+                    Tập @(film.EpsisodeCount ?? 1)
+                </div>
+            </a>
+            <div class="films-card-info">
+                <div class="films-card-title">@film.Title</div>
+                <div class="films-card-sub">@film.OriginalTitle</div>
+            </div>
+        </div>
     }
-</style>
+</div>
+
+@if (totalPages > 1)
+{
+    <nav aria-label="Movie pagination">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1 })" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                </li>
+            }
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1 })" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

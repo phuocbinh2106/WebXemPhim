@@ -44,11 +44,31 @@ namespace WebXemPhim.Controllers
 
             return View("Index", films.ToList());
         }
+        public ActionResult Search(string query, int page = 1)
+        {
+            int pageSize = 8;
+            var films = db.Films
+                .Where(f => f.Title.Contains(query) || f.OriginalTitle.Contains(query))
+                .OrderByDescending(f => f.CreatedAt);
+
+            int totalFilms = films.Count();
+            int totalPages = (int)Math.Ceiling((double)totalFilms / pageSize);
+
+            var filmList = films.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.PageTitle = "Kết quả: " + query;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Query = query;
+
+            return View("Index", filmList); // Tái sử dụng view Index nếu muốn
+        }
 
         // GET: Films
-        public ActionResult Index(string type)
+        public ActionResult Index(string type, int page = 1)
         {
-            var films = db.Films.AsQueryable();
+            int pageSize = 8; // mỗi trang 8 phim, 4 phim 1 hàng × 2 hàng
+            IQueryable<Film> films = db.Films;
 
             // Gán tiêu đề mặc định
             ViewBag.PageTitle = "📽 Phim Mới Cập Nhật";
@@ -63,12 +83,16 @@ namespace WebXemPhim.Controllers
                 films = films.Where(f => f.IsMovie == false);
                 ViewBag.PageTitle = "📺 Phim Bộ";
             }
-            else
-            {
-                films = films.OrderByDescending(f => f.CreatedAt).Take(10);
-            }
-            
-            var filmList = films.OrderByDescending(f => f.CreatedAt).Take(10).ToList();
+
+            films = films.OrderByDescending(f => f.CreatedAt);
+
+            int totalFilms = films.Count();
+            int totalPages = (int)Math.Ceiling((double)totalFilms / pageSize);
+
+            var filmList = films.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
 
             return View(filmList);
         }
