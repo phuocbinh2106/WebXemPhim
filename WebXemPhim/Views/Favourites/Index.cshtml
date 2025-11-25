@@ -1,0 +1,61 @@
+﻿@model IEnumerable<WebXemPhim.Models.Favourite>
+
+@{
+    ViewBag.Title = "Phim yêu thích của bạn";
+}
+
+<div class="container my-4">
+    <h2 class="mb-4 text-center" style="color: #ffe066; font-weight:bold">Phim yêu thích của bạn</h2>
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle" style="border-radius:10px; overflow:hidden;">
+            <thead>
+                <tr style="background:#262626;">
+                    <th style="width:110px;">Ảnh</th>
+                    <th style="width:40%;">Tên phim</th>
+                    <th style="width:20%;">Ngày thêm</th>
+                    <th style="width:10%;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.Film != null && !string.IsNullOrEmpty(item.Film.ThumbnailUrl))
+                                {
+                                    <img src="@item.Film.ThumbnailUrl" alt="@item.Film.Title"
+                                         style="width:90px; height:110px; object-fit:cover; border-radius:8px; box-shadow:0 2px 8px #0003;" />
+                                }
+                                else
+                                {
+                                    <div class="bg-secondary text-white text-center" style="width:90px; height:110px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                        Không có ảnh
+                                    </div>
+                                }
+                            </td>
+                            <td style="font-size:18px; font-weight:500; color:#eee;">
+                                @(item.Film != null ? item.Film.Title : "Không có tên")
+                            </td>
+                            <td>@item.AddedAt.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (item.FilmId > 0)
+                                {
+                                    <a href="@Url.Action("Details", "Films", new { id = item.FilmId })"
+                                       class="btn btn-warning btn-sm px-3 fw-bold">Chi tiết</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-light py-4" style="font-style:italic;">Bạn chưa có phim yêu thích nào.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
