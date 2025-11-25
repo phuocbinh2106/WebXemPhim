@@ -13,8 +13,9 @@ namespace WebXemPhim.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: Admin
-            // Hiển thị danh sách phim
-            public ActionResult Index()
+        // Hiển thị danh sách phim
+        [Authorize(Roles = "Admin")]
+        public ActionResult Index()
             {
                 var films = db.Films.ToList(); // Lấy danh sách phim
                 var episodes = db.Episodes.ToList(); // Lấy danh sách tập phim
