@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WebXemPhim.Models.Film>
+﻿@using System.Linq
+@model IEnumerable<WebXemPhim.Models.Film>
 @{
     ViewBag.Title = "Trang Chủ - HoatHinh3D";
 }
@@ -57,51 +58,42 @@
         });
     </script>
 
-    <!-- Grid Mới Cập Nhật: chuyển sang style trending -->
-    <h2 class="mt-5 mb-3 trending-title">MỚI CẬP NHẬT</h2>
+    <!-- Grid MỚI CẬP NHẬT kiểu trending -->
 
+    <h2 class="mt-5 mb-3 trending-title">MỚI CẬP NHẬT</h2>
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 movie-grid mb-5">
-        @* Dữ liệu từ Banner mới cập nhật *@
-        @foreach (var film in new[]{
-            new { Img="~/Upload/Banner/tiende.jpg", Title="Tiên Đế Trở Về", Sub="Return of Immortal Emperor", Episode="Tập 7"},
-            new { Img="~/Upload/Banner/dailuc.jpg", Title="Đại Lục Linh Võ", Sub="Língwŭ Continent", Episode="Tập 129"},
-            new { Img="~/Upload/Banner/vankiem.jpg", Title="Vạn Kiếm Vướng Chúa", Sub="Throne of Ten Thousand Swords", Episode="Tập 57"},
-            new { Img="~/Upload/Banner/truta.jpg", Title="Trong Tông Môn Trừ Tà Ra", Sub="Everyone In The Sect, Except M...", Episode="Tập 105"},
-            new { Img="~/Upload/Banner/chiton.jpg", Title="Nghịch Thiên Chí Tôn", Sub="Ni Tian Zhi Zun", Episode="Tập 466"},
-            new { Img="~/Upload/Banner/thantai.jpg", Title="Thần Tại Quýnh Đồ", Sub="Oh My God!", Episode="Tập 20"},
-            new { Img="~/Upload/Banner/thienmenh.jpg", Title="Thiên Mệnh Đại Thần Hoàng", Sub="Tian Ming Da Shen Huang", Episode="Tập 26"},
-            new { Img="~/Upload/Banner/tiennghich.jpg", Title="Tiên Nghịch", Sub="Xian Ni", Episode="Tập 116"},
-            new { Img="~/Upload/Banner/mucthan.jpg", Title="Mục Thần Ký", Sub="Mu Shen Ji", Episode="Tập 59"},
-            new { Img="~/Upload/Banner/vothan.jpg", Title="Vô Thần Chúa Tể", Sub="Wu Shen Zhu Zai", Episode="Tập 60"}
-        })
+        @foreach (var film in Model)
         {
             <div class="col">
                 <div class="movie-card-trending">
-                    <img src="@Url.Content(film.Img)" alt="@film.Title" class="movie-trending-img" />
-                    <div class="episode-badge">@film.Episode</div>
+                    <a href="@Url.Action("Details", "Films", new { id = film.FilmId })">
+                        <img src="@film.ThumbnailUrl" alt="@film.Title" class="movie-trending-img" />
+                        @* Badge số tập nếu có *@
+                        @if (film.Episodes != null && film.Episodes.Any())
+                        {
+                            <div class="episode-badge">
+                                Tập @film.Episodes.Max(e => e.EpisodeNumber)
+                            </div>
+                        }
+                    </a>
                     <div class="movie-trending-info">
                         <div class="movie-trending-title">@film.Title</div>
-                        <div class="movie-trending-sub">@film.Sub</div>
+                        <div class="movie-trending-sub">
+                            @film.OriginalTitle
+                        </div>
                     </div>
                 </div>
             </div>
         }
     </div>
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="MoreFilms.html" style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">Xem thêm</a>
-    </div>
-    @if (Model != null && Model.Any())
-    {
-        <div class="film-list">
-            @foreach (var film in Model)
-            {
-                <div class="film-item">
-                    <img src="@film.ThumbnailUrl" alt="@film.Title" style="width:150px;height:auto;" />
-                    <h4>@film.Title</h4>
-                </div>
-            }
-        </div>
 
-        <a class="btn btn-primary" href="@Url.Action("MoreFilms", "Home")">Xem thêm</a>
+    @if (Model.Count() >= 10)
+    {
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="@Url.Action("Index", "Films")"
+               style="padding: 10px 20px; background: #ff4444; color: white; text-decoration: none; border-radius: 6px; font-size: 16px;">
+                Xem thêm
+            </a>
+        </div>
     }
 </main>

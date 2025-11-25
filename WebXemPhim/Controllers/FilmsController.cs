@@ -18,26 +18,12 @@ namespace WebXemPhim.Controllers
         // GET: Films
         public ActionResult Index()
         {
-            var latestFilms = db.Films
-                    .OrderByDescending(f => f.CreatedAt) // sắp xếp theo ngày tạo
-                    .Take(4) // chỉ 4 phim
-                    .ToList();
-            return View(latestFilms);
-        }
-        public ActionResult MoreFilms(int page = 1, int pageSize = 8)
-        {
             var films = db.Films
-                          .OrderByDescending(f => f.CreatedAt)
-                          .Skip((page - 1) * pageSize) // bỏ qua các phim cũ
-                          .Take(pageSize) // lấy số phim theo trang
-                          .ToList();
-
-            ViewBag.CurrentPage = page;
-            ViewBag.PageSize = pageSize;
-            ViewBag.TotalFilms = db.Films.Count();
-
+                .OrderByDescending(f => f.CreatedAt) // hoặc FilmId nếu không có ngày tạo
+                .ToList();
             return View(films);
         }
+
         // GET: Films/Create
         public ActionResult Create()
         {
@@ -51,21 +37,50 @@ namespace WebXemPhim.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Xử lý upload thumbnail như bạn đã có
                 if (Thumbnail != null && Thumbnail.ContentLength > 0)
                 {
                     string fileName = System.IO.Path.GetFileName(Thumbnail.FileName);
-                    string path = Server.MapPath("~/Upload/Banner" + fileName);
+                    string path = Server.MapPath("~/Upload/Banner/" + fileName);
                     Thumbnail.SaveAs(path);
                     film.ThumbnailUrl = "/Upload/Banner/" + fileName;
                 }
 
+                // Gán thể loại (nếu có)
+                if (SelectedGenreIds != null)
+                {
+                    film.Genres = new List<Genre>();
+                    foreach (var genreId in SelectedGenreIds)
+                    {
+                        var genre = db.Genres.Find(genreId);
+                        if (genre != null) film.Genres.Add(genre);
+                    }
+                }
+
                 db.Films.Add(film);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                db.SaveChanges(); // FilmId được sinh ra ở đây
+
+                // TỰ ĐỘNG TẠO EPISODE nếu nhập số tập > 0
+                if (film.EpsisodeCount > 0)
+                {
+                    for (int i = 1; i <= film.EpsisodeCount; i++)
+                    {
+                        var episode = new Episode
+                        {
+                            FilmId = film.FilmId,
+                            EpisodeNumber = i,
+                            Title = $"Tập {i}",
+                            // Nếu cần có trường VideoUrl/ReleaseDate... chỉnh thêm tại đây
+                        };
+                        db.Episodes.Add(episode);
+                    }
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Details", new { id = film.FilmId });
             }
 
-            // Nếu có lỗi thì quay lại view với model hiện tại
-            // Đồng thời cần truyền lại MultiSelectList nếu có dùng chọn thể loại nhiều
+            // Nếu có lỗi, quay lại View, truyền lại các giá trị MultiSelectList
             ViewBag.SelectedGenreIds = new MultiSelectList(db.Genres, "GenreId", "GenreName");
             return View(film);
         }
@@ -73,15 +88,11 @@ namespace WebXemPhim.Controllers
         // GET: Films/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Film film = db.Films.Find(id);
-            if (film == null)
-            {
-                return HttpNotFound();
-            }
+            var film = db.Films
+                .Include("Genres")
+                .Include("Episodes")
+                .FirstOrDefault(f => f.FilmId == id);
+            if (film == null) return HttpNotFound();
             return View(film);
         }
         
