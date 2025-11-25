@@ -83,11 +83,48 @@
     <div class="card mt-4" style="background:#252525;">
         <div class="card-header fw-bold" style="color:#ffb930;">NỘI DUNG</div>
         <div class="card-body">
-            <h5 class="fw-bold">Xem phim @Model.Title Vietsub @Model.ReleaseYear:</h5>
-            <div class="mb-2">@Model.Description</div>
-            <a class="text-warning" href="#">Xem thêm...</a>
+            <div id="descShort" class="movie-desc" style="color:#fff;">
+                @(
+                (Model.Description != null && Model.Description.Length > 280)
+                ? Model.Description.Substring(0, 280) + "..."
+                : Model.Description
+            )
+            </div>
+            @if (Model.Description != null && Model.Description.Length > 280)
+            {
+                <div id="descMore" class="movie-desc d-none" style="color:#fff;">
+                    @Model.Description
+                </div>
+                <a id="btnShowMore" class="text-warning" style="cursor:pointer;">Xem thêm...</a>
+                <a id="btnShowLess" class="text-warning d-none" style="cursor:pointer;">Thu gọn</a>
+            }
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var btnMore = document.getElementById('btnShowMore');
+            var btnLess = document.getElementById('btnShowLess');
+            var short = document.getElementById('descShort');
+            var more = document.getElementById('descMore');
+            if(btnMore && btnLess && short && more){
+                btnMore.onclick = function () {
+                    short.classList.add('d-none');
+                    more.classList.remove('d-none');
+                    btnMore.classList.add('d-none');
+                    btnLess.classList.remove('d-none');
+                };
+                btnLess.onclick = function () {
+                    short.classList.remove('d-none');
+                    more.classList.add('d-none');
+                    btnLess.classList.add('d-none');
+                    btnMore.classList.remove('d-none');
+                };
+            }
+        });
+    </script>
+}
 
 
