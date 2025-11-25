@@ -566,3 +566,11 @@ footer {
     box-shadow: 0 2px 12px #0004;
 }
 
+/* Cách xa cạnh trái */
+.watch-btn {
+    margin-left: 12px;
+}
+/* Cách xa cạnh phải */
+.fav-btn {
+    margin-right: 12px;
+}
