@@ -148,6 +148,9 @@ namespace WebXemPhim.Controllers
                 .Include("Episodes")
                 .FirstOrDefault(f => f.FilmId == id);
             if (film == null) return HttpNotFound();
+            var ratings = db.Ratings.Where(r => r.FilmId == film.FilmId).Include(r => r.User).ToList();
+            ViewBag.AvgRating = ratings.Any() ? ratings.Average(r => r.Value) : 0;
+            ViewBag.Ratings = ratings;
             return View(film);
         }
 
@@ -279,5 +282,34 @@ namespace WebXemPhim.Controllers
                 db.Dispose();
             base.Dispose(disposing);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddRating(int filmId, int value)
+        {
+            var userId = Convert.ToInt32(Session["UserId"]);
+            if (userId == 0)
+                return RedirectToAction("Login", "Account");
+
+            var oldRating = db.Ratings.FirstOrDefault(r => r.FilmId == filmId && r.UserId == userId);
+            if (oldRating == null)
+            {
+                db.Ratings.Add(new Rating
+                {
+                    FilmId = filmId,
+                    UserId = userId,
+                    Value = value,
+                    CreatedAt = DateTime.Now
+                });
+            }
+            else
+            {
+                oldRating.Value = value;
+                oldRating.CreatedAt = DateTime.Now;
+            }
+            db.SaveChanges();
+            return RedirectToAction("Details", new { id = filmId });
+        }
+
+
     }
 }

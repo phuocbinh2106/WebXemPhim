@@ -53,12 +53,51 @@
             <span class="ms-4"><i class="fa fa-film"></i> @((Model.EpsisodeCount ?? Model.Episodes?.Count) ?? 1) Tập</span>
         </div>
         <div class="divider-line"></div>
-        <div class="film-details-block align-items-center mb-2">
+        <div class="film-details-block align-items-center mb-2 py-2 d-flex">
             <span class="label-detail">Đánh Giá</span>
-            <span class="text-warning fw-bold ms-2"><i class="fa fa-star"></i> @Model.AverageRating.ToString("0.00")</span>
-            <span class="ms-2 text-secondary">(@(Model.Ratings?.Count ?? 0) lượt)</span>
-            <a class="btn btn-primary btn-sm ms-3" href="#">Đánh Giá</a>
+            <span class="text-warning fw-bold ms-2" style="font-size: 20px;">
+                <i class="fa fa-star"></i>
+                @{
+                    var avg = ViewBag.AvgRating ?? 0.0;
+                }
+                @avg.ToString("0.00")
+            </span>
+            <span class="ms-2 text-secondary">
+                (@(ViewBag.Ratings != null ? ((List<WebXemPhim.Models.Rating>)ViewBag.Ratings).Count : 0) lượt)
+            </span>
+
+            @if (Session["UserId"] != null)
+            {
+                <button type="button" class="btn btn-primary btn-sm ms-3" data-bs-toggle="collapse" data-bs-target="#ratingForm">
+                    Đánh Giá
+                </button>
+            }
+            else
+            {
+                <a href="@Url.Action("Login", "Account")" class="btn btn-outline-secondary btn-sm ms-3">Đăng nhập để đánh giá</a>
+            }
         </div>
+
+        <div class="collapse w-100" id="ratingForm">
+            @using (Html.BeginForm("AddRating", "Films", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("filmId", Model.FilmId)
+                <div class="d-flex align-items-center mt-2">
+                    <label class="me-2">Chọn:</label>
+                    <div id="star-container" class="me-3">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <span class="rating-star" data-value="@i" style="font-size:2em; cursor:pointer; color:#ddd;">&#9733;</span>
+                        }
+                    </div>
+                    <input type="hidden" id="rating-input" name="value" value="0" />
+                    <button type="submit" class="btn btn-success btn-sm ms-3">Gửi</button>
+                </div>
+
+            }
+        </div>
+
     </div>
 </div>
 
@@ -77,12 +116,12 @@
             </button>
         }
         <form action="@Url.Action("Add", "Favourites")" method="post">
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="filmId" value="@Model.FilmId" />
-            <button type="submit" class="btn btn-outline-info btn-lg fw-bold px-4 py-2 fav-btn">
-                <i class="fa fa-heart"></i> Yêu Thích
-            </button>
-        </form>
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="filmId" value="@Model.FilmId" />
+    <button type="submit" class="btn btn-outline-info btn-lg fw-bold px-4 py-2 fav-btn">
+        <i class="fa fa-heart"></i> Yêu Thích
+    </button>
+</form>
 
     </div>
 </div>
@@ -142,5 +181,21 @@
                 };
             }
         });
+        document.addEventListener("DOMContentLoaded", function () {
+            var stars = document.querySelectorAll('.rating-star');
+            var ratingInput = document.getElementById('rating-input');
+            if (stars && ratingInput) {
+                stars.forEach(function (star, idx) {
+                    star.addEventListener('click', function () {
+                        var rating = parseInt(star.getAttribute('data-value'));
+                        ratingInput.value = rating;
+                        stars.forEach(function (s, i) {
+                            s.style.color = i < rating ? "#FFD600" : "#ddd";
+                        });
+                    });
+                });
+            }
+        });
     </script>
+
 }
