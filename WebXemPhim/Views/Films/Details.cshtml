@@ -1,84 +1,125 @@
-﻿@using System.Linq
+﻿@model WebXemPhim.Models.Film
 
-
-@model WebXemPhim.Models.Film
+@using System.Linq
 
 @{
     ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var firstEp = (Model.Episodes != null && Model.Episodes.Any())
+        ? Model.Episodes.OrderBy(e => e.EpisodeNumber).FirstOrDefault()
+        : null;
+    var eps = Model.Episodes ?? Enumerable.Empty<WebXemPhim.Models.Episode>();
+    var hasEp = eps.Any();
+    var maxEp = hasEp ? eps.Max(e => e.EpisodeNumber) : 1;
 }
 
-<div class="row" style="background:#232323; border-radius:12px; padding:36px 26px; margin-top:22px;">
+<div class="film-details-main" style="background:#232323; border-radius:12px; margin-top:14px; display:flex;">
     <!-- Poster Left -->
-    <div class="film-details-card row">
-        @{
-            // Lấy tập đầu tiên, lấy episode có số nhỏ nhất hoặc null
-            var firstEp = (Model.Episodes != null && Model.Episodes.Any())
-                ? Model.Episodes.OrderBy(e => e.EpisodeNumber).FirstOrDefault()
-                : null;
-        }
-        <!-- Poster -->
-        <div class="col-md-3 col-12 d-flex flex-column align-items-center">
-            <img src="@Url.Content(Model.ThumbnailUrl)" alt="@Model.Title"
-                 class="film-details-poster rounded shadow mb-2" />
-            @if (firstEp != null)
-            {
-                <a href="@Url.Action("Watch", "Episodes", new { id = firstEp.EpisodeId })" class="btn btn-warning mt-2">
-                    <i class="fa fa-play"></i> Xem Phim
-                </a>
-            }
-            else
-            {
-                <button class="btn btn-warning mt-2" disabled>
-                    <i class="fa fa-play"></i> Không có tập để xem
-                </button>
-            }
+    <div class="film-details-poster-col">
+        <img src="@Url.Content(Model.ThumbnailUrl)" alt="@Model.Title"
+             class="film-details-poster rounded"/>
+    </div>
+</div>
+
+    <!-- Info Right -->
+    <div class="film-details-info-col flex-grow-1" style="padding-left:40px; padding-top:8px; min-width:0;">
+        <div class="film-details-block mb-2">
+            <span class="label-detail">Tên</span>
+            <span class="film-details-title ms-2">@Model.Title</span>
         </div>
-        <!-- Info -->
-        <div class="col-md-9 col-12">
-            <div class="film-details-block">
-                <span class="label-detail">Tên</span>
-                <span class="film-details-title ms-2">@Model.Title</span>
+        <div class="divider-line"></div>
+        <div class="film-details-block mb-2">
+            <span class="label-detail">Tên Khác</span>
+            <span class="film-details-othertitle ms-2">@Model.OriginalTitle</span>
+        </div>
+        <div class="divider-line"></div>
+        <div class="film-details-block d-flex align-items-center flex-wrap mb-2">
+            <span class="label-detail me-2">Thể Loại</span>
+            <div class="film-genre-list d-flex flex-wrap align-items-center">
+                @foreach (var g in Model.Genres ?? Enumerable.Empty<WebXemPhim.Models.Genre>())
+                {
+                    <div class="film-genre-chip me-2 mb-1">@g.GenreName</div>
+                }
             </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block">
-                <span class="label-detail">Tên Khác</span>
-                <span class="film-details-othertitle ms-2">@Model.OriginalTitle</span>
-            </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block d-flex align-items-center flex-wrap">
-                <span class="label-detail me-2">Thể Loại</span>
-                <div class="film-genre-list d-flex flex-wrap align-items-center">
-                    @foreach (var g in Model.Genres ?? Enumerable.Empty<WebXemPhim.Models.Genre>())
-                    {
-                        <div class="film-genre-chip me-2 mb-1">@g.GenreName</div>
-                    }
-                </div>
-            </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block">
-                <span class="label-detail">Tập mới nhất</span>
-                <span class="badge bg-info ms-2">@("Tập " + (Model.Episodes?.Max(e=>e.EpisodeNumber) ?? 1))</span>
-            </div>
-            <div class="divider-line"></div>
-            <div class="film-details-block">
-                <span class="label-detail">Thông Tin Khác</span>
-                <span class="ms-2"><i class="fa fa-calendar-alt"></i> @Model.ReleaseYear</span>
-                <span class="ms-4"><i class="fa fa-film"></i> @((Model.EpsisodeCount ?? Model.Episodes?.Count) ?? 1) Tập</span>
-            </div>
-            <div class="divider-line"></div>
+        </div>
+        <div class="divider-line"></div>
+        <div class="film-details-block mb-2">
+            <span class="label-detail">Tập mới nhất</span>
+            <span class="badge bg-info ms-2">@("Tập " + maxEp)</span>
+        </div>
+        <div class="divider-line"></div>
+        <div class="film-details-block mb-2">
+            <span class="label-detail">Thông Tin Khác</span>
+            <span class="ms-2"><i class="fa fa-calendar-alt"></i> @Model.ReleaseYear</span>
+            <span class="ms-4"><i class="fa fa-film"></i> @((Model.EpsisodeCount ?? Model.Episodes?.Count) ?? 1) Tập</span>
+        </div>
+        <div class="divider-line"></div>
+        <div class="film-details-block align-items-center mb-2">
+            <span class="label-detail">Đánh Giá</span>
+            <span class="text-warning fw-bold ms-2"><i class="fa fa-star"></i> @Model.AverageRating.ToString("0.00")</span>
+            <span class="ms-2 text-secondary">(@(Model.Ratings?.Count ?? 0) lượt)</span>
+            <a class="btn btn-primary btn-sm ms-3" href="#">Đánh Giá</a>
         </div>
     </div>
 </div>
 
-<div>
-    <h5 class="text-info">Danh sách tập:</h5>
-    <div class="d-flex flex-wrap gap-2">
-        @foreach (var ep in Model.Episodes.OrderByDescending(e => e.EpisodeNumber))
+<div class="watch-box">
+    <div class="watch-fav-box d-flex justify-content-between align-items-center">
+        @if (firstEp != null)
         {
-            <a class="btn btn-outline-secondary" href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })">Tập @ep.EpisodeNumber</a>
+            <a href="@Url.Action("Watch", "Episodes", new { id = firstEp.EpisodeId })" class="btn btn-warning btn-lg fw-bold w-10 px-5 py-2">
+                <i class="fa fa-play"></i> Xem Phim
+            </a>
         }
+        else
+        {
+            <button class="btn btn-warning btn-lg fw-bold w-10 px-5 py-2" disabled>
+                <i class="fa fa-play"></i> Không có tập để xem
+            </button>
+        }
+        <form action="@Url.Action("AddFavourite", "Films", new { id = Model.FilmId })" method="post" style="margin:0;">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-outline-info btn-lg fw-bold px-4 py-2">
+                <i class="fa fa-heart"></i> Yêu Thích
+            </button>
+        </form>
+    </div>
+</div>
 
+<!-- Danh sách tập -->
+<div class="card mt-4" style="background:#3333334A;">
+    <div class="card-header fw-bold" style="background:transparent;color:#FFD800;">VIỆT SUB</div>
+    <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var ep in eps.OrderByDescending(e => e.EpisodeNumber))
+            {
+                <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })" class="btn btn-dark episode-btn">
+                    @ep.EpisodeNumber
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Nội dung phim -->
+<div class="card mt-4" style="background:#252525;">
+    <div class="card-header fw-bold" style="color:#ffb930;">NỘI DUNG</div>
+    <div class="card-body">
+        @if (!string.IsNullOrEmpty(Model.Description) && Model.Description.Length > 280)
+        {
+            <div id="descShort" class="movie-desc" style="color:#fff;">
+                @Model.Description.Substring(0, 280)...
+                <a id="btnShowMore" class="text-warning" style="cursor:pointer;">Xem thêm</a>
+            </div>
+            <div id="descAll" class="movie-desc d-none" style="color:#fff;">
+                @Model.Description
+                <a id="btnShowLess" class="text-warning" style="cursor:pointer;">Thu gọn</a>
+            </div>
+        }
+        else
+        {
+            <div class="movie-desc" style="color:#fff;">@Model.Description</div>
+        }
     </div>
 </div>
 
@@ -88,23 +129,17 @@
             var btnMore = document.getElementById('btnShowMore');
             var btnLess = document.getElementById('btnShowLess');
             var short = document.getElementById('descShort');
-            var more = document.getElementById('descMore');
-            if(btnMore && btnLess && short && more){
+            var more = document.getElementById('descAll');
+            if (btnMore && btnLess && short && more) {
                 btnMore.onclick = function () {
                     short.classList.add('d-none');
                     more.classList.remove('d-none');
-                    btnMore.classList.add('d-none');
-                    btnLess.classList.remove('d-none');
                 };
                 btnLess.onclick = function () {
-                    short.classList.remove('d-none');
                     more.classList.add('d-none');
-                    btnLess.classList.add('d-none');
-                    btnMore.classList.remove('d-none');
+                    short.classList.remove('d-none');
                 };
             }
         });
     </script>
 }
-
-
