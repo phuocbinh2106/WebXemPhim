@@ -297,19 +297,6 @@ footer {
     text-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
 
-.episode-badge {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background-color: #e50914;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.85em;
-    z-index: 10;
-}
-
 .trending-title {
     font-size: 1.05em;
     font-weight: bold;
@@ -331,10 +318,6 @@ footer {
     border-radius: 1.5px;
     background: linear-gradient(90deg, #ffc107 0px, #fd2d87 70px, #fd2d87 140px, #232328 141px, #232328 100%);
     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-}
-
-.movie-grid {
-    justify-content: center;
 }
 
 /* Profile CSS */
@@ -516,6 +499,9 @@ footer {
     object-fit: cover;
     border-radius: 9px;
     box-shadow: 0 2px 12px #0007;
+    margin-left: 18px;
+    margin-top: 18px;
+    box-shadow: 0 4px 16px #0008;
 }
 
 .movie-desc {
@@ -530,32 +516,28 @@ footer {
 }
 
 .film-details-main {
-    margin-top: 14px; /* Ít margin phía trên, sát menu hơn */
-    margin-left: 0 !important; /* Gần sát viền trái của container */
+    margin-top: 10px;
+    margin-left: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     display: flex;
+    align-items: flex-start;
+    min-height: 315px;
 }
 
 .film-details-poster-col {
-    min-width: 240px;
-    max-width: 260px;
-    padding-left: 0 !important;
-    margin-left: 0 !important;
+    min-width: 210px;
+    max-width: 210px;
+    padding: 0;
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
     align-items: flex-start;
-}
-
-.film-details-poster {
-    margin-left: 0 !important;
-    margin-top: 0 !important;
-    box-shadow: 0 4px 16px #0008;
+    justify-content: flex-start;
 }
 
 .film-details-info-col {
     padding-left: 36px;
-    padding-top: 6px;
+    padding-top: 8px;
     margin-top: 0 !important;
 }
 
@@ -568,5 +550,19 @@ footer {
         padding-left: 0 !important;
         padding-top: 18px;
     }
+
+    .film-details-poster-col {
+        margin-bottom: 16px !important;
+    }
+}
+
+.watch-box {
+    margin-top: 18px;
+    margin-bottom: 18px;
+    background: #232323;
+    border-radius: 12px;
+    padding: 18px 0 18px 0;
+    text-align: center;
+    box-shadow: 0 2px 12px #0004;
 }
 

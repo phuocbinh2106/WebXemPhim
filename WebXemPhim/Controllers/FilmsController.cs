@@ -233,9 +233,36 @@ namespace WebXemPhim.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Film film = db.Films.Find(id);
+            // Tìm phim cần xóa
+            var film = db.Films.Find(id);
+
+            // Xóa các episode liên quan (và các comment của episode đó)
+            var episodes = db.Episodes.Where(e => e.FilmId == id).ToList();
+            foreach (var epi in episodes)
+            {
+                var comments = db.Comments.Where(c => c.EpisodeId == epi.EpisodeId).ToList();
+                db.Comments.RemoveRange(comments);
+            }
+            db.Episodes.RemoveRange(episodes);
+
+            // Xóa các comment trực tiếp trên phim (nếu có loại comment này)
+            var filmComments = db.Comments.Where(c => c.FilmId == id).ToList();
+            db.Comments.RemoveRange(filmComments);
+
+            // Xóa các bảng liên quan khác
+            var favourites = db.Favourites.Where(f => f.FilmId == id).ToList();
+            db.Favourites.RemoveRange(favourites);
+
+            var ratings = db.Ratings.Where(r => r.FilmId == id).ToList();
+            db.Ratings.RemoveRange(ratings);
+
+            var schedules = db.Schedules.Where(s => s.FilmId == id).ToList();
+            db.Schedules.RemoveRange(schedules);
+
+            // Cuối cùng xóa phim
             db.Films.Remove(film);
             db.SaveChanges();
+
             return RedirectToAction("Index", "Admin");
         }
 
