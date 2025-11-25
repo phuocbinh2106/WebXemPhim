@@ -11,7 +11,7 @@
             <div class="card bg-dark text-light shadow-lg border-0 rounded-3">
                 <div class="card-body p-4">
                     <h2 class="mb-4 text-center">Chỉnh sửa phim</h2>
-                    @using (Html.BeginForm("Create", "Films", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("Edit", "Films", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
 
