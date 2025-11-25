@@ -1,6 +1,5 @@
-﻿@{
-    Layout = null;
-}
+﻿@{ Layout = null; }
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -24,7 +23,19 @@
                 <input type="text" placeholder="Tìm Kiếm ..." />
             </form>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
+                <!-- Icon yêu thích -->
+                <li class="nav-item icon-header">
+                    <a class="nav-link" href="@Url.Action("Favourite", "Account")" title="Phim yêu thích">
+                        <i class="fa fa-heart" style="color:#DA0037; font-size:1.5rem;"></i>
+                    </a>
+                </li>
+                <!-- Icon lịch sử xem -->
+                <li class="nav-item icon-header">
+                    <a class="nav-link" href="@Url.Action("History", "Account")" title="Lịch sử xem">
+                        <i class="fa fa-clock" style="color:#0099FF; font-size:1.5rem;"></i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown icon-header">
                     @if (Session["UserId"] != null)
                     {
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

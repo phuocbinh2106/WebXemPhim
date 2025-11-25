@@ -422,3 +422,7 @@ body {
     font-weight: 500;
     color: #fff;
 }
+/* icon */
+.btn-header:not(:first-child) {
+    margin-left: 12px;
+}
