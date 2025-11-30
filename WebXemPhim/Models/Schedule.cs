@@ -8,9 +8,9 @@ namespace WebXemPhim.Models
     public class Schedule
     {
         public int ScheduleId { get; set; }
-        public DayOfWeek DayOfWeek { get; set; } // Thứ mấy trong tuần
-        public TimeSpan? Time { get; set; } //Giờ Chiếu
-        public DateTime? NextEpisodeDate { get; set; } //Ngày Chiếu Tập Mới
+        public DayOfWeek DayOfWeek { get; set; }
+        public TimeSpan? Time { get; set; }
+        public DateTime? NextEpisodeDate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Foreign Key
