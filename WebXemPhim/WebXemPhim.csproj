@@ -159,6 +159,10 @@
     <Compile Include="Migrations\202511251226566_AddAdmin.Designer.cs">
       <DependentUpon>202511251226566_AddAdmin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202611260631039_AddVip.cs" />
+    <Compile Include="Migrations\202611260631039_AddVip.Designer.cs">
+      <DependentUpon>202611260631039_AddVip.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -265,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202511251226566_AddAdmin.resx">
       <DependentUpon>202511251226566_AddAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202611260631039_AddVip.resx">
+      <DependentUpon>202611260631039_AddVip.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
