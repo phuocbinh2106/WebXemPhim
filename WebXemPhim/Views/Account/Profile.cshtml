@@ -44,6 +44,19 @@
 
                 </div>
                 <div class="profile-field">
+                    <label class="form-label">VIP</label>
+                    @if (WebXemPhim.Services.VipService.IsVip(Model.VipExpiresAt, DateTime.Now))
+                    {
+                        <span class="badge bg-warning text-dark">VIP đến @Model.VipExpiresAt.Value.ToString("HH:mm dd/MM/yyyy")</span>
+                    }
+                    else
+                    {
+                        <span>Thành viên thường</span>
+                    }
+                    <span class="ms-3">Số dư: <b class="text-warning">@WebXemPhim.Services.VipService.FormatMoney(Model.Balance)</b></span>
+                    <a href="@Url.Action("Index", "Vip")" class="btn btn-outline-warning btn-sm ms-2">Gói VIP</a>
+                </div>
+                <div class="profile-field">
                     <label class="form-label">Ngày tạo</label>
                     <span>@Model.CreatedAt.ToString("dd/MM/yyyy")</span>
                     <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
