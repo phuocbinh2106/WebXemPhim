@@ -7,6 +7,7 @@ using System.Data.Entity;
 using WebXemPhim.Models;
 using System.Collections.Generic;
 using System.IO;
+using WebXemPhim.Helpers;
 
 namespace WebXemPhim.Controllers
 {
@@ -109,13 +110,27 @@ namespace WebXemPhim.Controllers
         // POST: Films/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail)
+        public ActionResult Create(Film film, int[] SelectedGenreIds, HttpPostedFileBase Thumbnail, HttpPostedFileBase VideoFile)
         {
             if (Session["Role"]?.ToString().ToLower() != "admin")
                 return RedirectToAction("Index", "Home");
 
+            if (VideoUploadHelper.HasFile(VideoFile) && !VideoUploadHelper.IsAllowed(VideoFile))
+            {
+                ModelState.AddModelError("VideoFile", "Chỉ hỗ trợ file video: " + VideoUploadHelper.AllowedExtensionsText);
+            }
+
             if (ModelState.IsValid)
             {
+                // Có chọn video thì cần ít nhất 1 tập để gắn video vào
+                string videoUrl = null;
+                if (VideoUploadHelper.HasFile(VideoFile))
+                {
+                    videoUrl = VideoUploadHelper.Save(VideoFile, Server);
+                    if (!(film.EpsisodeCount > 0))
+                        film.EpsisodeCount = 1;
+                }
+
                 // Xử lý upload thumbnail như bạn đã có
                 if (Thumbnail != null && Thumbnail.ContentLength > 0)
                 {
@@ -149,7 +164,7 @@ namespace WebXemPhim.Controllers
                             FilmId = film.FilmId,
                             EpisodeNumber = i,
                             Title = $"Tập {i}",
-                            // Nếu cần có trường VideoUrl/ReleaseDate... chỉnh thêm tại đây
+                            VideoUrl = i == 1 ? videoUrl : null,
                         };
                         db.Episodes.Add(episode);
                     }

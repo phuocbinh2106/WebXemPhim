@@ -22,8 +22,10 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Video tập phim</label>
-            <input type="file" name="VideoFile" class="form-control bg-secondary text-light" accept="video/*" />
+            <label class="form-label" for="VideoFile">Video tập phim</label>
+            <input type="file" id="VideoFile" name="VideoFile" class="form-control bg-secondary text-light" accept="video/mp4,video/webm,video/ogg,.mp4,.m4v,.webm,.ogg,.ogv" />
+            <div class="form-text text-secondary">Bấm để chọn file video ở bất kỳ thư mục nào trên máy (mp4, webm, ogg).</div>
+            @Html.ValidationMessage("VideoFile", "", new { @class = "text-danger" })
         </div>
 
         <div class="mb-3">
