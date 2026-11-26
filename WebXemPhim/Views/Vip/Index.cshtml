@@ -60,7 +60,7 @@
                    style="max-width:240px;" placeholder="Số tiền (VNĐ)" step="1000" />
             <button type="submit" class="btn btn-warning fw-bold" id="topup-submit">Nạp tiền</button>
             <div class="w-100"></div>
-            @foreach (var quick in new[] { 50000, 100000, 200000, 500000 })
+            foreach (var quick in new[] { 50000, 100000, 200000, 500000 })
             {
                 <button type="button" class="btn btn-outline-light btn-sm"
                         onclick="document.getElementById('topup-amount').value=@quick">

@@ -125,7 +125,7 @@ namespace WebXemPhim.Tests
         [DataTestMethod]
         [DataRow("VIP99M")]
         [DataRow("")]
-        [DataRow(null)]
+        [DataRow((string)null)]
         public void FindPackage_MaKhongTonTai_TraVeNull(string code)
         {
             Assert.IsNull(VipService.FindPackage(code));
