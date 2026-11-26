@@ -11,6 +11,7 @@
     var eps = Model.Episodes ?? Enumerable.Empty<WebXemPhim.Models.Episode>();
     var hasEp = eps.Any();
     var maxEp = hasEp ? eps.Max(e => e.EpisodeNumber) : 1;
+    bool isAdminUser = Session["Role"] != null && Session["Role"].ToString().ToLower() == "admin";
 }
 
 <div class="film-details-main" style="background:#232323; border-radius:12px; margin-top:14px; display:flex;">
@@ -133,9 +134,23 @@
         <div class="d-flex flex-wrap gap-2">
             @foreach (var ep in eps.OrderByDescending(e => e.EpisodeNumber))
             {
-                <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })" class="btn btn-dark episode-btn">
-                    @ep.EpisodeNumber
-                </a>
+                var epState = WebXemPhim.Services.VipService.GetAvailability(ep.PublishedAt, DateTime.Now);
+                if (epState == WebXemPhim.Services.EpisodeAvailability.Upcoming && !isAdminUser)
+                {
+                    <span class="btn btn-dark episode-btn disabled" title="Sắp chiếu">
+                        @ep.EpisodeNumber <small>(Sắp chiếu)</small>
+                    </span>
+                }
+                else
+                {
+                    <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })" class="btn btn-dark episode-btn">
+                        @ep.EpisodeNumber
+                        @if (epState == WebXemPhim.Services.EpisodeAvailability.EarlyAccess)
+                        {
+                            <span class="badge bg-warning text-dark ms-1" title="VIP xem sớm">VIP</span>
+                        }
+                    </a>
+                }
             }
         </div>
     </div>

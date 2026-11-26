@@ -30,11 +30,11 @@
 - [ ] Viết test (các mốc trong Review Focus), sau đó code, commit.
 
 ### Task 2: Model + DbContext
-**Files:** Modify `Models/User.cs` (Balance, VipExpiresAt, VipTransactions nav), Create `Models/VipTransaction.cs`, Modify `Models/AppDbContext.cs` (DbSet + quan hệ cascade), `Migrations/Configuration.cs` (seed user `vipuser` VIP 30 ngày, số dư 100000 và `user1` thường, mật khẩu 123123).
+**Files:** Modify `Models/User.cs` (Balance, VipExpiresAt, VipTransactions nav), Create `Models/VipTransaction.cs`, Modify `Models/AppDbContext.cs` (DbSet + quan hệ cascade), `Controllers/AccountController.cs` (Register reset Balance/VipExpiresAt chống over-posting). Dữ liệu mẫu (user VIP, tập phát hành tương lai) để thread tạo dữ liệu mẫu lo, tránh sửa trùng `Configuration.cs`.
 
 ### Task 3: VipController + view
 **Files:** Create `Controllers/VipController.cs`, `Views/Vip/Index.cshtml`; Modify `_Layout.cshtml` (mục "Gói VIP" + nhãn VIP), `Views/Account/Profile.cshtml` (số dư, hạn VIP).
 - TopUp/Buy: POST + AntiForgery, chưa đăng nhập → Login; ghi `VipTransaction`; TempData thông báo.
 
 ### Task 4: Chặn xem + nhãn tập
-**Files:** Modify `Controllers/EpisodesController.cs` (Watch), Create `Views/Episodes/Locked.cshtml`, Modify `Views/Episodes/Watch.cshtml`, `Views/Films/Details.cshtml`, `Controllers/FilmsController.cs` (Details đặt ViewBag.IsVip/IsAdmin).
+**Files:** Modify `Controllers/EpisodesController.cs` (Watch), Create `Views/Episodes/Locked.cshtml`, Modify `Views/Episodes/Watch.cshtml`, `Views/Films/Details.cshtml` (tự đọc Role từ Session, không sửa FilmsController để tránh đụng thread chọn file).

@@ -1,0 +1,54 @@
+@model WebXemPhim.Models.Episode
+@using WebXemPhim.Services
+@{
+    ViewBag.Title = Model.Film.Title + " - Tập " + Model.EpisodeNumber;
+    var availability = (EpisodeAvailability)ViewBag.Availability;
+    bool isLoggedIn = ViewBag.IsLoggedIn;
+    var publicAt = Model.PublishedAt.Value;
+    var vipAt = publicAt - VipService.EarlyAccessWindow;
+}
+
+<div class="container py-5 text-light" style="max-width:720px;">
+    <div class="p-5 rounded-4 shadow text-center" style="background:#232323;" id="episode-locked">
+        <div style="font-size:3rem;"><i class="fa fa-lock text-warning"></i></div>
+        <h3 class="mt-3">@Model.Film.Title - Tập @Model.EpisodeNumber</h3>
+
+        @if (availability == EpisodeAvailability.EarlyAccess)
+        {
+            <p class="fs-5 mt-3" id="locked-reason">
+                Tập này đang mở sớm cho <span class="badge bg-warning text-dark">VIP</span>.
+            </p>
+            <p class="text-secondary">
+                Thành viên thường xem được từ <b class="text-light">@publicAt.ToString("HH:mm dd/MM/yyyy")</b>.
+            </p>
+            if (isLoggedIn)
+            {
+                <a href="@Url.Action("Index", "Vip")" class="btn btn-warning fw-bold px-4 mt-2" id="locked-buy-vip">
+                    <i class="fa fa-crown"></i> Mua VIP để xem ngay
+                </a>
+            }
+            else
+            {
+                <a href="@Url.Action("Login", "Account")" class="btn btn-warning fw-bold px-4 mt-2" id="locked-login">
+                    Đăng nhập để mua VIP
+                </a>
+            }
+        }
+        else
+        {
+            <p class="fs-5 mt-3" id="locked-reason">Tập này chưa phát hành.</p>
+            <p class="text-secondary mb-1">
+                VIP xem sớm từ <b class="text-light">@vipAt.ToString("HH:mm dd/MM/yyyy")</b>.
+            </p>
+            <p class="text-secondary">
+                Thành viên thường xem từ <b class="text-light">@publicAt.ToString("HH:mm dd/MM/yyyy")</b>.
+            </p>
+        }
+
+        <div class="mt-4">
+            <a href="@Url.Action("Details", "Films", new { id = Model.FilmId })" class="btn btn-outline-light">
+                Quay lại trang phim
+            </a>
+        </div>
+    </div>
+</div>

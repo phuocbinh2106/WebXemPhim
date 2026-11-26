@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebXemPhim.Models;
 using System.IO;
+using WebXemPhim.Services;
 
 namespace WebXemPhim.Controllers
 {
@@ -39,6 +40,28 @@ namespace WebXemPhim.Controllers
         {
             var episode = db.Episodes.Include(e => e.Film).FirstOrDefault(e => e.EpisodeId == id);
             if (episode == null) return HttpNotFound();
+
+            // --- Kiểm tra quyền xem sớm (VIP) ---
+            var now = DateTime.Now;
+            bool isAdmin = Session["Role"]?.ToString().ToLower() == "admin";
+            bool isVip = false;
+            int currentUserId;
+            if (Session["UserId"] != null && int.TryParse(Session["UserId"].ToString(), out currentUserId))
+            {
+                var currentUser = db.Users.Find(currentUserId);
+                isVip = currentUser != null && VipService.IsVip(currentUser.VipExpiresAt, now);
+            }
+            ViewBag.IsVip = isVip;
+            ViewBag.IsAdmin = isAdmin;
+            ViewBag.Now = now;
+
+            var availability = VipService.GetAvailability(episode.PublishedAt, now);
+            if (!VipService.CanWatch(availability, isVip, isAdmin))
+            {
+                ViewBag.Availability = availability;
+                ViewBag.IsLoggedIn = Session["UserId"] != null;
+                return View("Locked", episode);
+            }
 
 
             // Truy vấn tất cả comment vừa lưu (bao gồm info user, không cache cũ)
