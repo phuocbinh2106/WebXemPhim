@@ -9,7 +9,7 @@
 {
     @Html.AntiForgeryToken()
 <div class="bg-dark text-light rounded p-4 shadow-lg" style="max-width:700px; margin:auto">
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
     <div class="mb-3">
         @Html.LabelFor(m => m.Title, "Tên phim", new { @class = "form-label" })
@@ -51,7 +51,7 @@
 
     <div class="mb-3">
         <label class="form-label">Ảnh nền phim</label>
-        <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept="image/*" />
+        <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept=".jpg,.jpeg,.png,.gif,.webp" />
     </div>
 
     <div class="mb-3">

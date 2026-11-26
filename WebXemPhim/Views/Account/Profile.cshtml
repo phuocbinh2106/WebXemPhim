@@ -14,7 +14,7 @@
                     <img src="@Url.Content(Model.Avatar ?? "~/Images/default-avatar.png")" alt="Avatar" class="rounded-circle profile-avatar shadow" />
                     <br />
                     <label for="Avatar" class="btn btn-outline-info btn-sm mt-2 mb-2">Chỉnh sửa ảnh</label>
-                    <input type="file" name="Avatar" id="Avatar" class="d-none" accept="image/*" />
+                    <input type="file" name="Avatar" id="Avatar" class="d-none" accept=".jpg,.jpeg,.png,.gif,.webp" />
                 </div>
                 <div class="profile-field">
                     <label class="form-label">Biệt danh</label>
@@ -24,18 +24,18 @@
                 <div class="profile-field">
                     <label class="form-label">Giới thiệu</label>
                     @Html.TextAreaFor(m => m.AboutMe, 2, 40, new { @class = "form-control", style = "background:#242526; color:#FFFFFF;" })
-                    <button type="submit" name="EditField" value="GioiThieu" class="btn btn-outline-info">Chỉnh Sửa</button>
+                    <button type="submit" name="EditField" value="AboutMe" class="btn btn-outline-info">Chỉnh Sửa</button>
                 </div>
                 <div class="profile-field">
                     <label class="form-label">Tên đăng nhập</label>
                     @Html.TextBoxFor(m => m.Username, new { @class = "form-control", style = "background:#242526; color:#FFFFFF;" })
-                    <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
+                    <button type="submit" name="EditField" value="Username" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
 
                 </div>
                 <div class="profile-field">
                     <label class="form-label">Email</label>
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "background:#242526; color:#FFFFFF;" })
-                    <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
+                    <button type="submit" name="EditField" value="Email" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
 
                 </div>
                 <div class="profile-field">
@@ -59,7 +59,6 @@
                 <div class="profile-field">
                     <label class="form-label">Ngày tạo</label>
                     <span>@Model.CreatedAt.ToString("dd/MM/yyyy")</span>
-                    <button type="submit" name="EditField" value="CreatedAt" class="btn btn-outline-info ms-2">Chỉnh Sửa</button>
                 </div>
                 <button type="submit" class="btn btn-info w-100" style="color:#0b0c10;">Cập Nhật Toàn Bộ</button>
             }

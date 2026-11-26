@@ -140,6 +140,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Helpers\AuthHelper.cs" />
+    <Compile Include="Helpers\ImageUploadHelper.cs" />
     <Compile Include="Helpers\VideoUploadHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -179,6 +181,10 @@
     <Compile Include="Models\VideoSource.cs" />
     <Compile Include="Models\WatchHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountRules.cs" />
+    <Compile Include="Services\FilmRules.cs" />
+    <Compile Include="Services\PasswordHasher.cs" />
+    <Compile Include="Services\ViewRules.cs" />
     <Compile Include="Services\VipService.cs" />
     <Compile Include="ViewModel\AdminIndexViewModel.cs" />
   </ItemGroup>
@@ -232,6 +238,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\InvalidInput.cshtml" />
     <Content Include="Views\Films\Create.cshtml" />
     <Content Include="Views\Films\Delete.cshtml" />
     <Content Include="Views\Films\Details.cshtml" />

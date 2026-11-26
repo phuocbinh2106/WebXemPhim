@@ -16,9 +16,18 @@
                 <label for="Password" class="form-label">Mật khẩu</label>
                 <input type="password" name="Password" class="form-control" placeholder="Mật khẩu" style="background:#0b0c10; color:#FFFFFF;" />
             </div>
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="rememberMe" name="RememberMe" value="true" />
+                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+            </div>
+            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
             <button type="submit" class="btn btn-info w-100 mb-2" style="color:#0b0c10; font-weight:600;">Đăng nhập</button>
         }
         <!-- THÔNG BÁO LỖI ĐẶT NGOÀI BLOCK FORM -->
+        @if (ViewBag.Success != null)
+        {
+            <div class="alert alert-success mt-2 text-center">@ViewBag.Success</div>
+        }
         @if (ViewBag.Error != null)
         {
             <div class="alert alert-danger mt-2 text-center">@ViewBag.Error</div>
@@ -27,15 +36,6 @@
             <span>Chưa có tài khoản?</span>
             <a href="@Url.Action("Register", "Account")" class="btn btn-link" style="color:#66fcf1;font-weight:600;">Đăng ký ngay</a>
         </div>
-        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            <!-- Username, Password -->
-            <div class="form-check mb-2">
-                <input type="checkbox" class="form-check-input" id="rememberMe" name="RememberMe" />
-                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
-            </div>
-        }
 
     </div>
 </div>
