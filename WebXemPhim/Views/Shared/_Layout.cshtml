@@ -61,7 +61,7 @@
                                     {
                                         <i class="fa fa-user-circle me-2" style="font-size: 2.5rem; color: #FFD800;"></i>
                                     }
-                                    <span class="fw-bold" style="font-size:1.1rem">@Session["Nickname"]</span>
+                                    <span class="fw-bold" style="font-size:1.1rem">@(Session["Nickname"] ?? Session["Username"])</span>
                                 </div>
                             </li>
                             <li><hr class="dropdown-divider" /></li>

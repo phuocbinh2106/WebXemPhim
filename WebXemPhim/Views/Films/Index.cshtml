@@ -2,11 +2,27 @@
 @{
     int currentPage = ViewBag.CurrentPage ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
+    string pageAction = ViewBag.PageAction ?? "Index";
+    var baseRouteValues = ViewBag.PageRouteValues as System.Web.Routing.RouteValueDictionary
+        ?? new System.Web.Routing.RouteValueDictionary();
+
+    // SCRUM-29: link phân trang giữ nguyên action và từ khóa / điều kiện lọc
+    Func<int, string> pageUrl = p =>
+    {
+        var values = new System.Web.Routing.RouteValueDictionary(baseRouteValues);
+        values["page"] = p;
+        return Url.Action(pageAction, "Films", values);
+    };
 }
 
 <div class="d-flex justify-content-between mb-3 align-items-center">
     <h2 class="films-title">@ViewBag.PageTitle</h2>
 </div>
+
+@if (ViewBag.EmptyMessage != null)
+{
+    <div class="alert alert-secondary text-center">@ViewBag.EmptyMessage</div>
+}
 
 <div class="films-grid">
     @foreach (var film in Model)
@@ -31,18 +47,18 @@
     <nav aria-label="Movie pagination">
         <ul class="pagination justify-content-center">
             <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1 })" aria-label="Previous">
+                <a class="page-link" href="@pageUrl(currentPage - 1)" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             @for (int i = 1; i <= totalPages; i++)
             {
                 <li class="page-item @(i == currentPage ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                    <a class="page-link" href="@pageUrl(i)">@i</a>
                 </li>
             }
             <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1 })" aria-label="Next">
+                <a class="page-link" href="@pageUrl(currentPage + 1)" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

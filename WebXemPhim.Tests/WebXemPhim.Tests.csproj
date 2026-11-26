@@ -10,6 +10,11 @@
   <ItemGroup>
     <!-- Link thẳng file luật nghiệp vụ để không phải build cả project web khi chạy unit test -->
     <Compile Include="..\WebXemPhim\Services\VipService.cs" Link="Services\VipService.cs" />
+    <!-- Luật nghiệp vụ Release 2 (sửa bug Jira SCRUM-5..34) -->
+    <Compile Include="..\WebXemPhim\Services\PasswordHasher.cs" Link="Services\PasswordHasher.cs" />
+    <Compile Include="..\WebXemPhim\Services\AccountRules.cs" Link="Services\AccountRules.cs" />
+    <Compile Include="..\WebXemPhim\Services\FilmRules.cs" Link="Services\FilmRules.cs" />
+    <Compile Include="..\WebXemPhim\Services\ViewRules.cs" Link="Services\ViewRules.cs" />
   </ItemGroup>
 
   <ItemGroup>

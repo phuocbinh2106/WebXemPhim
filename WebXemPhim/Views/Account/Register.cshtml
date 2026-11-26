@@ -10,15 +10,18 @@
             @Html.AntiForgeryToken()
             <div class="mb-3">
                 <label for="Username" class="form-label">Tên đăng nhập</label>
-                <input type="text" name="Username" class="form-control" placeholder="Tên đăng nhập" style="background:#0b0c10; color:#FFFFFF;" />
+                <input type="text" name="Username" value="@ViewBag.Username" maxlength="100" class="form-control" placeholder="Tên đăng nhập" style="background:#0b0c10; color:#FFFFFF;" />
+                @Html.ValidationMessage("Username", new { @class = "text-danger small" })
             </div>
             <div class="mb-3">
                 <label for="Email" class="form-label">Email</label>
-                <input type="email" name="Email" class="form-control" placeholder="Email" style="background:#0b0c10; color:#FFFFFF;" />
+                <input type="email" name="Email" value="@ViewBag.Email" class="form-control" placeholder="Email" style="background:#0b0c10; color:#FFFFFF;" />
+                @Html.ValidationMessage("Email", new { @class = "text-danger small" })
             </div>
             <div class="mb-3">
                 <label for="Password" class="form-label">Mật khẩu</label>
-                <input type="password" name="Password" class="form-control" placeholder="Mật khẩu" style="background:#0b0c10; color:#FFFFFF;" />
+                <input type="password" name="Password" class="form-control" placeholder="Mật khẩu (tối thiểu 6 ký tự)" style="background:#0b0c10; color:#FFFFFF;" />
+                @Html.ValidationMessage("Password", new { @class = "text-danger small" })
             </div>
             <button type="submit" class="btn btn-info w-100 mb-2" style="color:#0b0c10; font-weight:600;">Đăng ký</button>
         }

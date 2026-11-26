@@ -59,7 +59,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Ảnh poster phim</label>
-                            <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept="image/*" />
+                            <input type="file" name="Thumbnail" class="form-control bg-secondary text-light" accept=".jpg,.jpeg,.png,.gif,.webp" />
+                            @Html.ValidationMessage("Thumbnail", "", new { @class = "text-danger" })
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-block">Lưu thay đổi</button>
