@@ -18,9 +18,14 @@ namespace WebXemPhim.Models
         public string Role { get; set; } = "User"; // User or Admin
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string Avatar { get; set; }
+
+        // VIP
+        public decimal Balance { get; set; } = 0; // Số dư (VNĐ), nạp tiền giả lập
+        public DateTime? VipExpiresAt { get; set; } // Hạn VIP, null = chưa từng mua
         //Navigation
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Favourite> Favourites { get; set; }
         public virtual ICollection<WatchHistory> WatchHistories { get; set; }
+        public virtual ICollection<VipTransaction> VipTransactions { get; set; }
     }
 }

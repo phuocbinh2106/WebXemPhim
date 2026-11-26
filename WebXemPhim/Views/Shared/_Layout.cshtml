@@ -70,6 +70,11 @@
                                     <i class="fa fa-user me-2"></i>Thông tin cá nhân
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Vip")">
+                                    <i class="fa fa-crown me-2" style="color:#FFD800;"></i>Gói VIP &amp; nạp tiền
+                                </a>
+                            </li>
                             @if (Session["Role"] != null && Session["Role"].ToString().ToLower() == "admin")
                             {
                                 <li>

@@ -1,0 +1,121 @@
+@model WebXemPhim.Models.User
+@using WebXemPhim.Services
+@{
+    ViewBag.Title = "Gói VIP";
+    bool isVip = ViewBag.IsVip;
+    var packages = (IEnumerable<VipPackage>)ViewBag.Packages;
+    var transactions = (List<WebXemPhim.Models.VipTransaction>)ViewBag.Transactions;
+}
+
+<div class="container py-4 text-light" style="max-width:960px;">
+    <h3 class="mb-4 text-warning"><i class="fa fa-crown"></i> Gói VIP</h3>
+
+    @if (TempData["VipSuccess"] != null)
+    {
+        <div class="alert alert-success" id="vip-success">@TempData["VipSuccess"]</div>
+    }
+    @if (TempData["VipError"] != null)
+    {
+        <div class="alert alert-danger" id="vip-error">@TempData["VipError"]</div>
+    }
+
+    <!-- Trạng thái tài khoản -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="p-4 rounded-4 shadow h-100" style="background:#232323;">
+                <div class="text-secondary">Số dư</div>
+                <div class="fs-3 fw-bold text-warning" id="vip-balance">@VipService.FormatMoney(Model.Balance)</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 rounded-4 shadow h-100" style="background:#232323;">
+                <div class="text-secondary">Trạng thái</div>
+                @if (isVip)
+                {
+                    <div class="fs-4 fw-bold" id="vip-status"><span class="badge bg-warning text-dark">VIP</span> đến @Model.VipExpiresAt.Value.ToString("HH:mm dd/MM/yyyy")</div>
+                }
+                else if (Model.VipExpiresAt.HasValue)
+                {
+                    <div class="fs-5" id="vip-status">Thành viên thường (VIP đã hết hạn lúc @Model.VipExpiresAt.Value.ToString("HH:mm dd/MM/yyyy"))</div>
+                }
+                else
+                {
+                    <div class="fs-5" id="vip-status">Thành viên thường</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Nạp tiền giả lập -->
+    <div class="p-4 rounded-4 shadow mb-4" style="background:#232323;">
+        <h5 class="mb-1">Nạp tiền</h5>
+        <div class="text-secondary small mb-3">
+            Nạp tiền giả lập, không qua cổng thanh toán. Từ @VipService.FormatMoney(VipService.MinTopUp)
+            đến @VipService.FormatMoney(VipService.MaxTopUp) mỗi lần, là bội số của @VipService.FormatMoney(VipService.TopUpStep).
+        </div>
+        @using (Html.BeginForm("TopUp", "Vip", FormMethod.Post, new { @class = "d-flex flex-wrap gap-2" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="number" name="amount" id="topup-amount" class="form-control bg-secondary text-light border-0"
+                   style="max-width:240px;" placeholder="Số tiền (VNĐ)" step="1000" />
+            <button type="submit" class="btn btn-warning fw-bold" id="topup-submit">Nạp tiền</button>
+            <div class="w-100"></div>
+            foreach (var quick in new[] { 50000, 100000, 200000, 500000 })
+            {
+                <button type="button" class="btn btn-outline-light btn-sm"
+                        onclick="document.getElementById('topup-amount').value=@quick">
+                    @VipService.FormatMoney(quick)
+                </button>
+            }
+        }
+    </div>
+
+    <!-- Các gói VIP -->
+    <h5 class="mb-2">Chọn gói</h5>
+    <div class="text-secondary small mb-3">Thành viên VIP được xem tập mới sớm hơn 24 giờ so với thành viên thường. Mua thêm khi đang còn VIP sẽ được cộng dồn ngày.</div>
+    <div class="row g-3 mb-4">
+        @foreach (var p in packages)
+        {
+            <div class="col-md-4">
+                <div class="p-4 rounded-4 shadow h-100 text-center" style="background:#2b2b2b; border:1px solid #FFD80055;">
+                    <div class="fs-5 fw-bold text-warning">@p.Name</div>
+                    <div class="fs-3 fw-bold my-2">@VipService.FormatMoney(p.Price)</div>
+                    <div class="text-secondary mb-3">@p.Days ngày</div>
+                    @using (Html.BeginForm("Buy", "Vip", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="packageCode" value="@p.Code" />
+                        <button type="submit" class="btn btn-warning fw-bold w-100" id="buy-@p.Code">Mua gói</button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Lịch sử giao dịch -->
+    <h5 class="mb-2">Lịch sử giao dịch</h5>
+    @if (transactions.Any())
+    {
+        <table class="table table-dark table-striped" id="vip-transactions">
+            <thead>
+                <tr><th>Thời gian</th><th>Nội dung</th><th class="text-end">Số tiền</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var t in transactions)
+                {
+                    <tr>
+                        <td>@t.CreatedAt.ToString("HH:mm dd/MM/yyyy")</td>
+                        <td>@t.Description</td>
+                        <td class="text-end @(t.Amount >= 0 ? "text-success" : "text-danger")">
+                            @(t.Amount >= 0 ? "+" : "-")@VipService.FormatMoney(Math.Abs(t.Amount))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="text-secondary">Chưa có giao dịch nào.</div>
+    }
+</div>
