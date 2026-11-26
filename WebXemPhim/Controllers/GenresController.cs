@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebXemPhim.Models;
+using WebXemPhim.Services;
 
 namespace WebXemPhim.Controllers
 {
@@ -20,8 +21,11 @@ namespace WebXemPhim.Controllers
             return PartialView("_GenreDropdown", genres);
         }
         // GET: Genres
+        // SCRUM-9: trang quản lý thể loại chỉ dành cho Admin
         public ActionResult Index()
         {
+            if (Session["Role"]?.ToString().ToLower() != "admin")
+                return RedirectToAction("Index", "Home");
             return View(db.Genres.ToList());
         }
 
@@ -56,12 +60,15 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Create([Bind(Include = "GenreId,GenreName")] Genre genre)
         {
             if (Session["Role"]?.ToString().ToLower() != "admin")
                 return RedirectToAction("Index", "Home");
+            ValidateGenre(genre);
             if (ModelState.IsValid)
             {
+                genre.GenreName = genre.GenreName.Trim();
                 db.Genres.Add(genre);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -92,12 +99,15 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Edit([Bind(Include = "GenreId,GenreName")] Genre genre)
         {
             if (Session["Role"]?.ToString().ToLower() != "admin")
                 return RedirectToAction("Index", "Home");
+            ValidateGenre(genre);
             if (ModelState.IsValid)
             {
+                genre.GenreName = genre.GenreName.Trim();
                 db.Entry(genre).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -130,9 +140,27 @@ namespace WebXemPhim.Controllers
             if (Session["Role"]?.ToString().ToLower() != "admin")
                 return RedirectToAction("Index", "Home");
             Genre genre = db.Genres.Find(id);
+            if (genre == null) return HttpNotFound();
             db.Genres.Remove(genre);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // SCRUM-25, SCRUM-26: tên bắt buộc, tối đa 50 ký tự, không trùng thể loại khác
+        private void ValidateGenre(Genre genre)
+        {
+            var error = FilmRules.ValidateGenreName(genre.GenreName);
+            if (error == null)
+            {
+                var name = genre.GenreName.Trim();
+                bool duplicate = db.Genres
+                    .Where(g => g.GenreId != genre.GenreId)
+                    .Select(g => g.GenreName)
+                    .ToList()
+                    .Any(n => FilmRules.SameName(n, name));
+                if (duplicate) error = "Thể loại đã tồn tại.";
+            }
+            if (error != null) ModelState.AddModelError("GenreName", error);
         }
 
         protected override void Dispose(bool disposing)

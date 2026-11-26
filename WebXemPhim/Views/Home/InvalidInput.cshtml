@@ -1,0 +1,17 @@
+@{
+    ViewBag.Title = "Dữ liệu không hợp lệ";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height:60vh;">
+    <div class="card shadow-lg p-4 rounded text-center" style="max-width:520px; width:100%; background:#1f2833; color:#fff;">
+        <h2 class="mb-3" style="color:#66fcf1;">Dữ liệu không hợp lệ</h2>
+        <p class="mb-4">
+            Nội dung bạn vừa nhập có chứa ký tự không được phép (ví dụ thẻ HTML như <code>&lt;script&gt;</code>).
+            Vui lòng kiểm tra lại và thử lần nữa.
+        </p>
+        <div>
+            <a href="javascript:history.back()" class="btn btn-outline-info me-2">Quay lại</a>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-info" style="color:#0b0c10;">Về trang chủ</a>
+        </div>
+    </div>
+</div>

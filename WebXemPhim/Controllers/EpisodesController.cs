@@ -37,8 +37,10 @@ namespace WebXemPhim.Controllers
             }
             // ...
         }
-        public ActionResult Watch(int id)
+        // SCRUM-30: id không phải số / không tồn tại -> 404 thay vì lỗi 500
+        public ActionResult Watch(int? id)
         {
+            if (id == null) return HttpNotFound();
             var episode = db.Episodes.Include(e => e.Film).FirstOrDefault(e => e.EpisodeId == id);
             if (episode == null) return HttpNotFound();
 
@@ -65,6 +67,11 @@ namespace WebXemPhim.Controllers
             }
 
 
+            // SCRUM-31: tăng lượt xem của tập và của phim mỗi lần mở xem
+            episode.ViewCount++;
+            if (episode.Film != null) episode.Film.ViewCount++;
+            db.SaveChanges();
+
             // Truy vấn tất cả comment vừa lưu (bao gồm info user, không cache cũ)
             var comments = db.Comments
                 .Include(c => c.User)
@@ -82,7 +89,7 @@ namespace WebXemPhim.Controllers
                     history = new WatchHistory
                     {
                         UserId = userId,
-                        EpisodeId = id,
+                        EpisodeId = id.Value,
                         WatchedAt = DateTime.Now
                     };
                     db.WatchHistories.Add(history);
@@ -127,7 +134,7 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        [ValidateInput(false)]
         public ActionResult Create([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
             if (Session["Role"]?.ToString().ToLower() != "admin")
@@ -137,9 +144,11 @@ namespace WebXemPhim.Controllers
             {
                 ModelState.AddModelError("VideoFile", "Chỉ hỗ trợ file video: " + VideoUploadHelper.AllowedExtensionsText);
             }
+            ValidateEpisode(episode);
 
             if (ModelState.IsValid)
             {
+                episode.Title = episode.Title.Trim();
                 // Lưu file video người dùng chọn từ máy lên server
                 if (VideoUploadHelper.HasFile(VideoFile))
                     episode.VideoUrl = VideoUploadHelper.Save(VideoFile, Server);
@@ -172,6 +181,7 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Edit([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
             if (Session["Role"]?.ToString().ToLower() != "admin")
@@ -182,8 +192,11 @@ namespace WebXemPhim.Controllers
                 ModelState.AddModelError("VideoFile", "Chỉ hỗ trợ file video: " + VideoUploadHelper.AllowedExtensionsText);
             }
 
+            ValidateEpisode(episode);
+
             if (ModelState.IsValid)
             {
+                episode.Title = episode.Title.Trim();
                 // Chọn file mới thì thay video, không chọn thì giữ video hiện tại (VideoUrl ẩn trong form)
                 if (VideoUploadHelper.HasFile(VideoFile))
                     episode.VideoUrl = VideoUploadHelper.Save(VideoFile, Server);
@@ -221,9 +234,37 @@ namespace WebXemPhim.Controllers
                 return RedirectToAction("Index", "Home");
 
             Episode episode = db.Episodes.Find(id);
+            if (episode == null) return HttpNotFound();
+
+            // SCRUM-21: xóa bình luận và lịch sử xem của tập trước (khóa ngoại không xóa dây chuyền)
+            db.Comments.RemoveRange(db.Comments.Where(c => c.EpisodeId == id));
+            db.WatchHistories.RemoveRange(db.WatchHistories.Where(h => h.EpisodeId == id));
             db.Episodes.Remove(episode);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// SCRUM-24, SCRUM-25, SCRUM-26: số thứ tự &gt; 0 và không trùng trong cùng phim,
+        /// tên tập bắt buộc, tối đa 255 ký tự, phim phải tồn tại.
+        /// </summary>
+        private void ValidateEpisode(Episode episode)
+        {
+            ModelState.Remove("EpisodeNumber"); // thay thông báo mặc định bằng thông báo tiếng Việt
+            var numberError = FilmRules.ValidateEpisodeNumber(episode.EpisodeNumber);
+            if (numberError != null)
+                ModelState.AddModelError("EpisodeNumber", numberError);
+            else if (db.Episodes.Any(e => e.FilmId == episode.FilmId && e.EpisodeNumber == episode.EpisodeNumber && e.EpisodeId != episode.EpisodeId))
+                ModelState.AddModelError("EpisodeNumber", "Số thứ tự tập " + episode.EpisodeNumber + " đã tồn tại trong phim này.");
+
+            var titleError = FilmRules.ValidateEpisodeTitle(episode.Title);
+            if (titleError != null) ModelState.AddModelError("Title", titleError);
+
+            if (!db.Films.Any(f => f.FilmId == episode.FilmId))
+                ModelState.AddModelError("FilmId", "Vui lòng chọn phim.");
+
+            if (episode.ViewCount < 0)
+                ModelState.AddModelError("ViewCount", "Số lượt xem không được âm.");
         }
 
         protected override void Dispose(bool disposing)
@@ -234,10 +275,16 @@ namespace WebXemPhim.Controllers
             }
             base.Dispose(disposing);
         }
+        // SCRUM-13: bình luận chứa thẻ HTML được lưu và hiển thị dạng văn bản (Razor tự mã hóa)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult AddComment(int EpisodeId, string Content)
 {
+    if (!db.Episodes.Any(e => e.EpisodeId == EpisodeId))
+        return HttpNotFound();
+    if (Content != null && Content.Length > 2000)
+        Content = Content.Substring(0, 2000);
     // Kiểm tra xác thực và nội dung
     if (Session["UserId"] == null || string.IsNullOrWhiteSpace(Content))
         return RedirectToAction("Watch", new { id = EpisodeId });

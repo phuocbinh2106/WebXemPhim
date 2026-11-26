@@ -20,6 +20,14 @@ namespace WebXemPhim.Controllers
             return View(films); // Sử dụng model là List<Film>
         }
 
+        // SCRUM-13: trang thông báo thân thiện khi dữ liệu nhập chứa ký tự không cho phép
+        public ActionResult InvalidInput()
+        {
+            Response.StatusCode = 400;
+            Response.TrySkipIisCustomErrors = true;
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
