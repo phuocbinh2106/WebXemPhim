@@ -23,6 +23,7 @@ namespace WebXemPhim.Models
         public DbSet<Favourite> Favourites { get; set; }
         public DbSet<WatchHistory> WatchHistories { get; set; }
         public DbSet<VideoSource> VideoSources { get; set; }
+        public DbSet<VipTransaction> VipTransactions { get; set; }
         public object FilmGenres { get; internal set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -75,6 +76,16 @@ namespace WebXemPhim.Models
                 .WithRequired(r => r.Film)
                 .HasForeignKey(r => r.FilmId)
                 .WillCascadeOnDelete(true);
+
+            //User - VipTransaction ( 1 - n )
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.VipTransactions)
+                .WithRequired(t => t.User)
+                .HasForeignKey(t => t.UserId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<User>().Property(u => u.Balance).HasPrecision(18, 2);
+            modelBuilder.Entity<VipTransaction>().Property(t => t.Amount).HasPrecision(18, 2);
 
             base.OnModelCreating(modelBuilder);
         }

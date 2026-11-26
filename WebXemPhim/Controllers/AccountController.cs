@@ -20,6 +20,9 @@ namespace WebXemPhim.Controllers
         {
             if (ModelState.IsValid && !db.Users.Any(u => u.Username == model.Username || u.Email == model.Email))
             {
+                // Không cho phép tự gán số dư / hạn VIP khi đăng ký (chống over-posting)
+                model.Balance = 0;
+                model.VipExpiresAt = null;
                 db.Users.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Login");

@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebXemPhim.Models;
 using System.IO;
+using WebXemPhim.Services;
+using WebXemPhim.Helpers;
 
 namespace WebXemPhim.Controllers
 {
@@ -39,6 +41,28 @@ namespace WebXemPhim.Controllers
         {
             var episode = db.Episodes.Include(e => e.Film).FirstOrDefault(e => e.EpisodeId == id);
             if (episode == null) return HttpNotFound();
+
+            // --- Kiểm tra quyền xem sớm (VIP) ---
+            var now = DateTime.Now;
+            bool isAdmin = Session["Role"]?.ToString().ToLower() == "admin";
+            bool isVip = false;
+            int currentUserId;
+            if (Session["UserId"] != null && int.TryParse(Session["UserId"].ToString(), out currentUserId))
+            {
+                var currentUser = db.Users.Find(currentUserId);
+                isVip = currentUser != null && VipService.IsVip(currentUser.VipExpiresAt, now);
+            }
+            ViewBag.IsVip = isVip;
+            ViewBag.IsAdmin = isAdmin;
+            ViewBag.Now = now;
+
+            var availability = VipService.GetAvailability(episode.PublishedAt, now);
+            if (!VipService.CanWatch(availability, isVip, isAdmin))
+            {
+                ViewBag.Availability = availability;
+                ViewBag.IsLoggedIn = Session["UserId"] != null;
+                return View("Locked", episode);
+            }
 
 
             // Truy vấn tất cả comment vừa lưu (bao gồm info user, không cache cũ)
@@ -109,19 +133,17 @@ namespace WebXemPhim.Controllers
             if (Session["Role"]?.ToString().ToLower() != "admin")
                 return RedirectToAction("Index", "Home");
 
-            if (VideoFile != null && VideoFile.ContentLength > 0)
+            if (VideoUploadHelper.HasFile(VideoFile) && !VideoUploadHelper.IsAllowed(VideoFile))
             {
-                // Đường dẫn lưu video
-                var fileName = Path.GetFileName(VideoFile.FileName);
-                var path = Path.Combine(Server.MapPath("~/Upload/Videos/"), fileName);
-                VideoFile.SaveAs(path);
-
-                // Lưu đường dẫn vào Episode
-                episode.VideoUrl = "/Upload/Videos/" + fileName;
+                ModelState.AddModelError("VideoFile", "Chỉ hỗ trợ file video: " + VideoUploadHelper.AllowedExtensionsText);
             }
 
             if (ModelState.IsValid)
             {
+                // Lưu file video người dùng chọn từ máy lên server
+                if (VideoUploadHelper.HasFile(VideoFile))
+                    episode.VideoUrl = VideoUploadHelper.Save(VideoFile, Server);
+
                 db.Episodes.Add(episode);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -141,19 +163,6 @@ namespace WebXemPhim.Controllers
             Episode episode = db.Episodes.Find(id);
             if (episode == null) return HttpNotFound();
 
-            // Lấy danh sách file video trong thư mục Upload/Videos
-            string videoDirPath = Server.MapPath("~/Upload/Videos/");
-            var videoFileList = Directory.Exists(videoDirPath)
-                ? Directory.GetFiles(videoDirPath)
-                    .Select(f => new SelectListItem
-                    {
-                        Text = Path.GetFileName(f),
-                        Value = "/Upload/Videos/" + Path.GetFileName(f)
-                    }).ToList()
-                : new List<SelectListItem>();
-
-            ViewBag.VideoFiles = videoFileList;
-
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title", episode.FilmId);
             return View(episode);
         }
@@ -163,30 +172,26 @@ namespace WebXemPhim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode)
+        public ActionResult Edit([Bind(Include = "EpisodeId,EpisodeNumber,Title,VideoUrl,PublishedAt,ViewCount,FilmId")] Episode episode, HttpPostedFileBase VideoFile)
         {
             if (Session["Role"]?.ToString().ToLower() != "admin")
                 return RedirectToAction("Index", "Home");
 
+            if (VideoUploadHelper.HasFile(VideoFile) && !VideoUploadHelper.IsAllowed(VideoFile))
+            {
+                ModelState.AddModelError("VideoFile", "Chỉ hỗ trợ file video: " + VideoUploadHelper.AllowedExtensionsText);
+            }
+
             if (ModelState.IsValid)
             {
+                // Chọn file mới thì thay video, không chọn thì giữ video hiện tại (VideoUrl ẩn trong form)
+                if (VideoUploadHelper.HasFile(VideoFile))
+                    episode.VideoUrl = VideoUploadHelper.Save(VideoFile, Server);
+
                 db.Entry(episode).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            // Đặt lại ViewBag.VideoFiles trước khi trả về View nếu ModelState không hợp lệ
-            string videoDirPath = Server.MapPath("~/Upload/Videos/");
-            var videoFileList = Directory.Exists(videoDirPath)
-                ? Directory.GetFiles(videoDirPath)
-                    .Select(f => new SelectListItem
-                    {
-                        Text = Path.GetFileName(f),
-                        Value = "/Upload/Videos/" + Path.GetFileName(f)
-                    }).ToList()
-                : new List<SelectListItem>();
-
-            ViewBag.VideoFiles = videoFileList;
-
             ViewBag.FilmId = new SelectList(db.Films, "FilmId", "Title", episode.FilmId);
             return View(episode);
         }

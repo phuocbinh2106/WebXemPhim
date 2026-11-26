@@ -18,7 +18,7 @@
                 @if (!string.IsNullOrEmpty(Model.VideoUrl))
                 {
                     <video controls width="900" class="rounded shadow">
-                        <source src="@Model.VideoUrl" type="video/mp4" />
+                        <source src="@Model.VideoUrl" />
                     </video>
                 }
                 else
@@ -33,10 +33,24 @@
                 <div class="d-flex flex-wrap justify-content-center gap-2">
                     @foreach (var ep in Model.Film.Episodes.OrderBy(e => e.EpisodeNumber))
                     {
-                        <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })"
-                           class="btn @(ep.EpisodeId == Model.EpisodeId ? "btn-primary" : "btn-outline-secondary") fw-bold">
-                            Tập @ep.EpisodeNumber
-                        </a>
+                        var epState = WebXemPhim.Services.VipService.GetAvailability(ep.PublishedAt, (DateTime)ViewBag.Now);
+                        if (epState == WebXemPhim.Services.EpisodeAvailability.Upcoming && !(bool)ViewBag.IsAdmin)
+                        {
+                            <span class="btn btn-outline-secondary fw-bold disabled" title="Sắp chiếu">
+                                Tập @ep.EpisodeNumber <small>(Sắp chiếu)</small>
+                            </span>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Watch", "Episodes", new { id = ep.EpisodeId })"
+                               class="btn @(ep.EpisodeId == Model.EpisodeId ? "btn-primary" : "btn-outline-secondary") fw-bold">
+                                Tập @ep.EpisodeNumber
+                                @if (epState == WebXemPhim.Services.EpisodeAvailability.EarlyAccess)
+                                {
+                                    <span class="badge bg-warning text-dark ms-1">VIP</span>
+                                }
+                            </a>
+                        }
                     }
                 </div>
             </div>
