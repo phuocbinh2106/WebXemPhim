@@ -89,7 +89,7 @@ namespace WebXemPhim.Controllers
                     history = new WatchHistory
                     {
                         UserId = userId,
-                        EpisodeId = id,
+                        EpisodeId = id.Value,
                         WatchedAt = DateTime.Now
                     };
                     db.WatchHistories.Add(history);
