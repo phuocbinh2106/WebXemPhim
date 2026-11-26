@@ -18,7 +18,7 @@
                 @if (!string.IsNullOrEmpty(Model.VideoUrl))
                 {
                     <video controls width="900" class="rounded shadow">
-                        <source src="@Model.VideoUrl" type="video/mp4" />
+                        <source src="@Model.VideoUrl" />
                     </video>
                 }
                 else

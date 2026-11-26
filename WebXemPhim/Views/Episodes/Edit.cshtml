@@ -27,10 +27,22 @@
                             @Html.TextBoxFor(m => m.EpisodeNumber, new { @class = "form-control bg-secondary text-light" })
                             @Html.ValidationMessageFor(m => m.EpisodeNumber, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.VideoUrl)
-                            @Html.DropDownListFor( model => model.VideoUrl,ViewBag.VideoFiles as IEnumerable<SelectListItem>,"- Chọn file video -",new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.VideoUrl)
+                        <div class="mb-3">
+                            <label class="form-label" for="VideoFile">Video tập phim</label>
+                            @Html.HiddenFor(model => model.VideoUrl)
+                            @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                            {
+                                <div class="small text-secondary mb-2">
+                                    Video hiện tại: <a href="@Model.VideoUrl" target="_blank" class="link-light">@System.IO.Path.GetFileName(Model.VideoUrl)</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="small text-warning mb-2">Tập này chưa có video.</div>
+                            }
+                            <input type="file" id="VideoFile" name="VideoFile" class="form-control bg-secondary text-light" accept="video/mp4,video/webm,video/ogg,.mp4,.m4v,.webm,.ogg,.ogv" />
+                            <div class="form-text text-secondary">Bấm để chọn file video ở bất kỳ thư mục nào trên máy (mp4, webm, ogg). Bỏ trống nếu muốn giữ video hiện tại.</div>
+                            @Html.ValidationMessage("VideoFile", "", new { @class = "text-danger" })
                         </div>
                             <div class="mb-3">
                                 @Html.LabelFor(m => m.PublishedAt, "Ngày xuất bản", new { @class = "form-label" })
