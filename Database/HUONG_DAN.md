@@ -35,12 +35,14 @@ tìm dòng `DECLARE @XoaHetDuLieuCu BIT = 0;` và đổi thành `1`.
 
 - **10 thể loại**: Hành động, Tiên hiệp, Huyền huyễn, Võ thuật, Phiêu lưu, Hài hước, Thần thoại,
   Khoa học viễn tưởng, Cổ trang, Hoạt hình 3D.
-- **20 phim**: 13 phim bộ có tập, 3 phim lẻ (Tiên Nghịch Movie, Na Tra 1, Na Tra 2),
-  4 phim chưa có tập nào (Già Thiên, Thần Ấn Vương Tọa, Tru Tiên, Đấu La Đại Lục 2) để test phim trống.
+- **30 phim**: 21 phim bộ có tập, 4 phim lẻ (Tiên Nghịch Movie, Na Tra 1, Na Tra 2, Thế Giới Hoàn Mỹ bản điện ảnh),
+  5 phim chưa có tập nào (Già Thiên, Thần Ấn Vương Tọa, Tru Tiên, Đấu La Đại Lục 2, Thần Tại Tù Đồ) để test phim trống.
+  10 phim cuối (đợt 2) có ngày tạo cũ hơn (21–30 ngày trước) nên không làm đổi thứ tự trang chủ của 20 phim đầu.
+  Đã có database từ trước thì chỉ cần chạy lại script: phim nào đã có sẽ được bỏ qua, chỉ thêm phim mới.
   Ảnh bìa lấy từ `Upload/Banner`.
-- **36 tập**, video lấy từ `Upload/Videos`. Phim nào chỉ có một video thì các tập dùng chung video đó.
-  Có 3 tập có ngày phát hành **trong tương lai** (Tiên Nghịch tập 3 và Đấu Phá Thương Khung tập 3: +12 giờ,
-  Tiên Nghịch tập 4: +3 ngày) để test chức năng xem sớm VIP.
+- **57 tập**, video lấy từ `Upload/Videos`. Phim nào chỉ có một video thì các tập dùng chung video đó.
+  Có 4 tập có ngày phát hành **trong tương lai** (Tiên Nghịch tập 3 và Đấu Phá Thương Khung tập 3: +12 giờ,
+  Tiên Nghịch tập 4: +3 ngày, Tiên Đế Quy Lai tập 3: +20 giờ) để test chức năng xem sớm VIP.
 - Bình luận (theo phim và theo tập), đánh giá 1–5 sao (điểm trung bình được tính lại), yêu thích,
   lịch sử xem, lịch chiếu, nguồn video.
 

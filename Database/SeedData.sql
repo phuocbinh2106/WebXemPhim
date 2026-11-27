@@ -272,7 +272,18 @@ INSERT INTO @Films VALUES
  ('GT',   N'Già Thiên', N'遮天', N'Diệp Phàm cùng bạn học bị cuốn tới vùng đất Bắc Đẩu, mở ra hành trình tu luyện che trời.', 2023, 0, 0, 0, N'/Upload/Banner/giathien.jpg', 17, 0),
  ('TAVT', N'Thần Ấn Vương Tọa', N'神印王座', N'Long Hạo Thần khổ luyện trở thành kỵ sĩ mạnh nhất, chống lại Ma tộc bảo vệ nhân loại.', 2022, 0, 0, 0, N'/Upload/Banner/thananvuongtoa.jpg', 18, 0),
  ('TRUT', N'Tru Tiên', N'诛仙', N'Trương Tiểu Phàm từ cậu bé thôn Thảo Miếu trở thành nhân vật trung tâm giữa chính và tà.', 2022, 0, 0, 0, N'/Upload/Banner/Trutien.jpg', 19, 0),
- ('DLDL2',N'Đấu La Đại Lục 2: Tuyệt Thế Đường Môn', N'斗罗大陆2 绝世唐门', N'Vạn năm sau, Hoắc Vũ Hạo kế thừa Đường Môn, viết tiếp truyền thuyết Đấu La.', 2023, 0, 0, 0, N'/Upload/Banner/dauladailuc2.jpg', 20, 0);
+ ('DLDL2',N'Đấu La Đại Lục 2: Tuyệt Thế Đường Môn', N'斗罗大陆2 绝世唐门', N'Vạn năm sau, Hoắc Vũ Hạo kế thừa Đường Môn, viết tiếp truyền thuyết Đấu La.', 2023, 0, 0, 0, N'/Upload/Banner/dauladailuc2.jpg', 20, 0),
+ -- 10 phim bổ sung (đợt 2)
+ ('NTCT', N'Nghịch Thiên Chí Tôn', N'逆天至尊', N'Thiếu niên bị phế tu vi tình cờ nhận được truyền thừa thượng cổ, từng bước nghịch thiên trở thành chí tôn.', 2023, 0, 0, 3, N'/Upload/Banner/chiton.jpg', 21, 6120),
+ ('LVDL', N'Linh Võ Đại Lục', N'灵武大陆', N'Trên đại lục nơi võ hồn quyết định số phận, chàng trai trẻ mang võ hồn bị coi là phế vật quyết chứng minh bản thân.', 2022, 0, 1, 3, N'/Upload/Banner/dailuc.jpg', 22, 8340),
+ ('TMDTH',N'Thiên Mệnh Đại Thần Hoàng', N'天命大神皇', N'Người kế thừa huyết mạch thần hoàng gánh trên vai thiên mệnh, chiến đấu để bảo vệ hoàng triều khỏi thế lực đen tối.', 2024, 0, 0, 2, N'/Upload/Banner/thienmenh.jpg', 23, 4210),
+ ('TDQL', N'Tiên Đế Quy Lai', N'仙帝归来', N'Tiên đế trùng sinh trở về thời niên thiếu, mang theo ký ức nghìn năm để sửa lại những tiếc nuối của kiếp trước.', 2023, 0, 0, 3, N'/Upload/Banner/tiende.jpg', 24, 5480),
+ ('TMND', N'Tông Môn Toàn Là Nội Gián', N'宗门里都是卧底', N'Chưởng môn một tông môn nhỏ phát hiện đệ tử nào cũng là nội gián của thế lực khác, dở khóc dở cười giữ tông môn.', 2024, 0, 0, 2, N'/Upload/Banner/truta.jpg', 25, 3920),
+ ('VKVT', N'Vạn Kiếm Vương Tọa', N'万剑王座', N'Kiếm tu trẻ tuổi bước lên con đường tranh đoạt vương tọa vạn kiếm giữa muôn vàn thiên tài kiếm đạo.', 2024, 0, 0, 2, N'/Upload/Banner/vankiem.jpg', 26, 3650),
+ ('VTCT', N'Võ Thần Chúa Tể', N'武神主宰', N'Tần Trần, Võ Đế một đời, trùng sinh vào thân xác thiếu niên bị khinh rẻ và một lần nữa bước lên đỉnh võ đạo.', 2020, 0, 1, 3, N'/Upload/Banner/vothan.jpg', 27, 11200),
+ ('TTTD', N'Thần Tại Tù Đồ', N'神在囚途', N'Bị giam cầm giữa vùng đất cấm, thanh niên mang thần lực bị phong ấn tìm đường thoát ra và khám phá bí mật của chư thần.', 2025, 0, 0, 0, N'/Upload/Banner/thantai.jpg', 28, 0),
+ ('PNTT2',N'Phàm Nhân Tu Tiên: Tinh Hải Phi Trì', N'凡人修仙传 星海飞驰', N'Phần tiếp theo của Phàm Nhân Tu Tiên: Hàn Lập rời Thiên Nam, phiêu bạt giữa Loạn Tinh Hải đầy hiểm nguy.', 2024, 0, 0, 2, N'/Upload/Banner/phamnhantutien3.webp', 29, 9760),
+ ('TGHMM',N'Thế Giới Hoàn Mỹ (Bản Điện Ảnh)', N'完美世界 剧场版', N'Bản điện ảnh kể lại một chương trong hành trình của Thạch Hạo với những trận chiến hoành tráng.', 2024, 1, 1, 1, N'/Upload/Banner/hoanmy.jpg', 30, 7830);
 
 DECLARE @NewFilms TABLE (FilmId INT, Title NVARCHAR(255));
 
@@ -316,7 +327,17 @@ FROM (VALUES
   ('GT',N'Huyền huyễn'),('GT',N'Phiêu lưu'),
   ('TAVT',N'Huyền huyễn'),('TAVT',N'Hành động'),
   ('TRUT',N'Tiên hiệp'),('TRUT',N'Cổ trang'),
-  ('DLDL2',N'Huyền huyễn'),('DLDL2',N'Võ thuật')
+  ('DLDL2',N'Huyền huyễn'),('DLDL2',N'Võ thuật'),
+  ('NTCT',N'Huyền huyễn'),('NTCT',N'Hành động'),
+  ('LVDL',N'Huyền huyễn'),('LVDL',N'Võ thuật'),('LVDL',N'Phiêu lưu'),
+  ('TMDTH',N'Huyền huyễn'),('TMDTH',N'Cổ trang'),
+  ('TDQL',N'Tiên hiệp'),('TDQL',N'Hành động'),('TDQL',N'Hoạt hình 3D'),
+  ('TMND',N'Hài hước'),('TMND',N'Tiên hiệp'),
+  ('VKVT',N'Võ thuật'),('VKVT',N'Hành động'),('VKVT',N'Cổ trang'),
+  ('VTCT',N'Võ thuật'),('VTCT',N'Huyền huyễn'),
+  ('TTTD',N'Thần thoại'),('TTTD',N'Phiêu lưu'),
+  ('PNTT2',N'Tiên hiệp'),('PNTT2',N'Phiêu lưu'),('PNTT2',N'Hoạt hình 3D'),
+  ('TGHMM',N'Huyền huyễn'),('TGHMM',N'Hành động'),('TGHMM',N'Hoạt hình 3D')
 ) AS fg(Code, GenreName)
 JOIN @Map m ON m.Code = fg.Code
 CROSS APPLY (SELECT TOP 1 GenreId FROM dbo.Genres WHERE GenreName = fg.GenreName ORDER BY GenreId) g
@@ -363,7 +384,29 @@ INSERT INTO @Eps VALUES
  ('NT1',1,N'Bản đầy đủ',N'natramadonggiangthe.mp4',-24*400,25400),
  ('NT2',1,N'Bản đầy đủ',N'natramadonggiangthe2.mp4',-24*60,22100),
  ('SHASH',1,N'Tập 1',N'suhuynhasuhuynh.mp4',-24*13,4300),
- ('SHASH',2,N'Tập 2',N'suhuynhasuhuynh.mp4',-24*6,4150);
+ ('SHASH',2,N'Tập 2',N'suhuynhasuhuynh.mp4',-24*6,4150),
+ -- 10 phim bổ sung (đợt 2); video dùng chung các file có sẵn trong Upload/Videos
+ ('NTCT',1,N'Tập 1',N'democoa.mp4',-24*25,2300),
+ ('NTCT',2,N'Tập 2',N'democoa.mp4',-24*18,2050),
+ ('NTCT',3,N'Tập 3',N'democoa.mp4',-24*11,1770),
+ ('LVDL',1,N'Tập 1',N'langthanthamhaigiaolong.mp4',-24*200,3100),
+ ('LVDL',2,N'Tập 2',N'langthanthamhaigiaolong.mp4',-24*193,2700),
+ ('LVDL',3,N'Tập 3',N'langthanthamhaigiaolong.mp4',-24*186,2540),
+ ('TMDTH',1,N'Tập 1',N'Tramthan.mp4',-24*9,2200),
+ ('TMDTH',2,N'Tập 2',N'Tramthan.mp4',-24*2,2010),
+ ('TDQL',1,N'Tập 1',N'luyenkhimuoivannam.mp4',-24*20,2000),
+ ('TDQL',2,N'Tập 2',N'luyenkhimuoivannam.mp4',-24*13,1850),
+ ('TDQL',3,N'Tập 3 (sắp phát hành - VIP xem sớm)',N'luyenkhimuoivannam.mp4',20,0),
+ ('TMND',1,N'Tập 1',N'suhuynhasuhuynh.mp4',-24*8,2000),
+ ('TMND',2,N'Tập 2',N'suhuynhasuhuynh.mp4',-24*1,1920),
+ ('VKVT',1,N'Tập 1',N'kiemlai.mp4',-24*10,1900),
+ ('VKVT',2,N'Tập 2',N'kiemlai.mp4',-24*3,1750),
+ ('VTCT',1,N'Tập 1',N'dauphathuongkhungphan5.mp4',-24*500,3900),
+ ('VTCT',2,N'Tập 2',N'dauphathuongkhungphan5.mp4',-24*493,3700),
+ ('VTCT',3,N'Tập 3',N'dauphathuongkhungphan5.mp4',-24*486,3600),
+ ('PNTT2',1,N'Tập 1',N'phamnhantutien.mp4',-24*12,5000),
+ ('PNTT2',2,N'Tập 2',N'phamnhantutien.mp4',-24*5,4760),
+ ('TGHMM',1,N'Bản đầy đủ',N'thegioihoanmy.mp4',-24*45,7830);
 
 INSERT INTO dbo.Episodes (EpisodeNumber, Title, VideoUrl, PublishedAt, ViewCount, FilmId)
 SELECT e.EpNo, e.Title, @V + e.VideoFile, DATEADD(HOUR, e.HoursFromNow, @Now), e.ViewCount, m.FilmId
@@ -402,6 +445,13 @@ FROM (VALUES
   ('MTK',  0, '10:00', 6),
   ('KL',   5, '10:00', 3),
   ('SHASH',2, '12:00', 1),
+  ('NTCT', 3, '20:00', 2),
+  ('TMDTH',1, '19:00', 4),
+  ('TDQL', 5, '10:00', 1),
+  ('TMND', 0, '12:00', 6),
+  ('VKVT', 4, '20:00', 4),
+  ('TTTD', 6, '10:00', 10),
+  ('PNTT2',6, '11:00', 2),
   ('GT',   2, '10:00', 7),
   ('TAVT', 4, '10:00', 9)
 ) AS s(Code, Dow, T, NextInDays)
@@ -422,7 +472,16 @@ FROM (VALUES
   ('phamthid','NT1',5,10),('tranthib','NT1',5,9),('hoangvane','NT1',4,8),
   ('phamthid','NT2',5,5),('nguyenvana','NT2',5,4),
   ('levanc','TT',4,2),('hoangvane','LKMVN',2,2),('tranthib','SHASH',4,1),
-  ('nguyenvana','KL',4,2),('levanc','MTK',3,1),('hoangvane','TM',3,6)
+  ('nguyenvana','KL',4,2),('levanc','MTK',3,1),('hoangvane','TM',3,6),
+  ('nguyenvana','NTCT',4,5),('levanc','NTCT',3,3),
+  ('tranthib','LVDL',4,90),('hoangvane','LVDL',5,80),
+  ('phamthid','TMDTH',3,2),
+  ('nguyenvana','TDQL',5,6),('vipuser','TDQL',5,1),
+  ('tranthib','TMND',5,1),('levanc','TMND',4,1),
+  ('hoangvane','VKVT',3,2),
+  ('levanc','VTCT',5,200),('nguyenvana','VTCT',4,150),('tranthib','VTCT',5,120),
+  ('nguyenvana','PNTT2',5,3),('tranthib','PNTT2',5,2),('vipuser','PNTT2',4,1),
+  ('phamthid','TGHMM',4,20),('nguyenvana','TGHMM',5,15)
 ) AS r(Username, Code, Val, DaysAgo)
 JOIN @Map m ON m.Code = r.Code
 JOIN dbo.Users u ON u.Username = r.Username
@@ -436,7 +495,9 @@ FROM (VALUES
   ('tranthib','DLDL',5),('tranthib','PNTT',3),
   ('levanc','TN',1),('levanc','TT',2),
   ('phamthid','NT1',8),('phamthid','NT2',4),
-  ('hoangvane','TPTK',2),('vipuser','TN',1),('vipuser','DPTK',1)
+  ('hoangvane','TPTK',2),('vipuser','TN',1),('vipuser','DPTK',1),
+  ('nguyenvana','PNTT2',2),('tranthib','TMND',1),('levanc','VTCT',30),
+  ('vipuser','TDQL',1),('phamthid','TGHMM',10)
 ) AS f(Username, Code, DaysAgo)
 JOIN @Map m ON m.Code = f.Code
 JOIN dbo.Users u ON u.Username = f.Username
@@ -464,7 +525,13 @@ FROM (VALUES
   ('hoangvane','LKMVN',1,N'Phim hài, xem giải trí ổn.',60),
   ('levanc','TT',1,N'Ý tưởng thần minh hiện đại lạ mà hay.',45),
   ('nguyenvana','TGHM',3,N'Thạch Hạo mạnh lên từng tập.',25),
-  ('tranthib','SHASH',1,N'Sư huynh cẩn thận quá trời, cười đau bụng.',35)
+  ('tranthib','SHASH',1,N'Sư huynh cẩn thận quá trời, cười đau bụng.',35),
+  ('nguyenvana','PNTT2',NULL,N'Hàn Lập ra biển rồi, phần này hấp dẫn quá.',20),
+  ('tranthib','TMND',1,N'Cả tông môn toàn nội gián, buồn cười thật sự.',18),
+  ('levanc','VTCT',NULL,N'Tần Trần trùng sinh vẫn bá đạo như xưa.',400),
+  ('vipuser','TDQL',2,N'Đang chờ tập 3, VIP xem sớm được rồi.',4),
+  ('hoangvane','LVDL',3,N'Đoạn võ hồn thức tỉnh làm khá đẹp.',150),
+  ('phamthid','TGHMM',1,N'Bản điện ảnh đánh nhau mãn nhãn.',60)
 ) AS c(Username, Code, EpNo, Content, HoursAgo)
 JOIN @Map m ON m.Code = c.Code
 JOIN dbo.Users u ON u.Username = c.Username
@@ -481,7 +548,10 @@ FROM (VALUES
   ('levanc','TN',2,6),('levanc','TT',1,12),
   ('phamthid','NT1',1,200),('phamthid','NT2',1,50),
   ('hoangvane','TPTK',1,20),('hoangvane','LKMVN',1,15),
-  ('vipuser','DPTK',2,3),('vipuser','TN',2,2)
+  ('vipuser','DPTK',2,3),('vipuser','TN',2,2),
+  ('nguyenvana','PNTT2',1,30),('nguyenvana','PNTT2',2,6),
+  ('tranthib','TMND',1,18),('levanc','VTCT',1,400),
+  ('vipuser','TDQL',2,4),('phamthid','TGHMM',1,60)
 ) AS w(Username, Code, EpNo, HoursAgo)
 JOIN @Map m ON m.Code = w.Code
 JOIN dbo.Users u ON u.Username = w.Username
